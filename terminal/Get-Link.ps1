@@ -142,28 +142,20 @@ namespace Huddled.Interop
    {
       #region Methods inherited from IPersist
 
-      void GetClassID(
-         out Guid pClassID);
+      void GetClassID(out Guid pClassID);
 
       #endregion
 
       [PreserveSig()]
       int IsDirty();
 
-      void Load(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszFileName,
-         int dwMode);
+      void Load([MarshalAs(UnmanagedType.LPWStr)] string pszFileName, int dwMode);
 
-      void Save(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszFileName,
-         [MarshalAs(UnmanagedType.Bool)] bool fRemember);
+      void Save([MarshalAs(UnmanagedType.LPWStr)] string pszFileName, [MarshalAs(UnmanagedType.Bool)] bool fRemember);
 
-      void SaveCompleted(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszFileName);
+      void SaveCompleted([MarshalAs(UnmanagedType.LPWStr)] string pszFileName);
 
-      void GetCurFile(
-         out IntPtr ppszFileName);
-
+      void GetCurFile(out IntPtr ppszFileName);
    }
 
    [ComImport(),
@@ -177,65 +169,39 @@ namespace Huddled.Interop
          out WIN32_FIND_DATA pfd,
          GetPathFlags fFlags);
 
-      void GetIDList(
-         out IntPtr ppidl);
+      void GetIDList(out IntPtr ppidl);
 
-      void SetIDList(
-         IntPtr pidl);
+      void SetIDList(IntPtr pidl);
 
-      void GetDescription(
-         [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName,
-         int cchMaxName);
+      void GetDescription( [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, int cchMaxName);
 
-      void SetDescription(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszName);
+      void SetDescription([MarshalAs(UnmanagedType.LPWStr)] string pszName);
 
-      void GetWorkingDirectory(
-         [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir,
-         int cchMaxPath);
+      void GetWorkingDirectory([Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir, int cchMaxPath);
 
-      void SetWorkingDirectory(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+      void SetWorkingDirectory([MarshalAs(UnmanagedType.LPWStr)] string pszDir);
 
-      void GetArguments(
-         [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs,
-         int cchMaxPath);
+      void GetArguments([Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs, int cchMaxPath);
 
-      void SetArguments(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
+      void SetArguments([MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
 
-      void GetHotkey(
-         out short pwHotkey);
+      void GetHotkey(out short pwHotkey);
 
-      void SetHotkey(
-         short wHotkey);
+      void SetHotkey(short wHotkey);
 
-      void GetShowCmd(
-         out int piShowCmd);
+      void GetShowCmd(out int piShowCmd);
 
-      void SetShowCmd(
-         int iShowCmd);
+      void SetShowCmd(int iShowCmd);
 
-      void GetIconLocation(
-         [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath,
-         int cchIconPath,
-         out int piIcon);
+      void GetIconLocation([Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, int cchIconPath, out int piIcon);
 
-      void SetIconLocation(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszIconPath,
-         int iIcon);
+      void SetIconLocation([MarshalAs(UnmanagedType.LPWStr)] string pszIconPath, int iIcon);
 
-      void SetRelativePath(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszPathRel,
-         int dwReserved);
+      void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel, int dwReserved);
 
-      void Resolve(
-         IntPtr hwnd,
-         ResolveFlags fFlags);
+      void Resolve(IntPtr hwnd, ResolveFlags fFlags);
 
-      void SetPath(
-         [MarshalAs(UnmanagedType.LPWStr)] string pszFile);
-
+      void SetPath([MarshalAs(UnmanagedType.LPWStr)] string pszFile);
    }
 
    [ComImport(),
@@ -496,13 +462,13 @@ namespace Huddled.Interop
 "@ -ReferencedAssemblies System.Drawing
 
 function global:Get-Link { 
-param([Parameter(ValueFromPipelineByPropertyName=$true)][Alias("PSPath")][string]$Path) 
-process {
-   New-Object Huddled.Interop.ShellLink (Convert-Path $Path)
-}
+   param([Parameter(ValueFromPipelineByPropertyName=$true)][Alias("PSPath")][string]$Path) 
+      process {
+         New-Object Huddled.Interop.ShellLink (Convert-Path $Path)
+      }
+   }
 }
 
-}
 process { 
    Get-Link $Path
 }
