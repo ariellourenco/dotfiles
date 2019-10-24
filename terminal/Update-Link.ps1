@@ -1,26 +1,46 @@
-﻿#
-# Apply Solarized themes to Windows shortcut (.lnk) files.
-# Applications launched via a Windows shortcut file persists changes directly into the
-# .lnk file. These information are stored in shortcuts as opaque blobs of data and are  
-# used by the Windows Console Host to override the default settings stored as values in [HKCU\Console\] registry key.
-# For further info see: https://devblogs.microsoft.com/commandline/understanding-windows-console-host-settings/
-#
+﻿<#
+.SYNOPSIS
+Applies Solarized theme to Windows shortcut (.lnk) files.
+
+.DESCRIPTION
+Applications launched via a Windows shortcut file persists changes directly into the .lnk file. 
+These information are stored as opaque blobs of data and are used by the Windows Console Host 
+to override the default settings stored as values in [HKCU\Console\] registry key.
+
+The Update-Link.ps1 script updates the Windows shortcut files replacing the default color pallete 
+for the chosen theme.
+
+.PARAMETER Path
+The absolute path of the file (.lnk) containing the icon to be opened.
+
+.PARAMETER Theme
+Sets the theme of the application. Possible values: "Light", "Dark", "System".
+
+.EXAMPLE
+PS> .\Update-Link -Path "%USERPROFILE%\Desktop\Windows PowerShell.lnk"
+
+.EXAMPLE
+PS> .\Update-Link -Path "%USERPROFILE%\Desktop\Windows PowerShell.lnk\Windows PowerShell.lnk" -Theme "Dark"
+
+.LINK
+https://devblogs.microsoft.com/commandline/understanding-windows-console-host-settings/
+#>
+
 param(
     [Parameter(Mandatory=$true)]
     [ValidateScript({Test-Path $_})]
-    [string]$Path,
+    [string][Alias('p')]$Path,
 
     [Parameter()]
-    [ValidateSet('Solarized Light','Solarized Dark', 'Default')]
-    [string]$Theme = 'Dark'
+    [ValidateSet('Light','Dark', 'System')]
+    [string][Alias('t')]$Theme = 'System'
 )
 
-# TODO: Provide a help function
-
-# Exposes methods that create, modify, and resolve Shell links.
+# Opens the specified file and initializes an object (Shell links) 
+# from the file contents.
 $lnk = & ("$PSScriptRoot\Get-Link.ps1") $Path
 
-if(-not ($Theme -eq "Default"))
+if(-not ($Theme -eq "System"))
 {
     # Set Common Solarized Colors
     $lnk.ConsoleColors[0]="#002b36"
@@ -41,7 +61,7 @@ if(-not ($Theme -eq "Default"))
     $lnk.ConsoleColors[10]="#859900"
 
     # Set Light/Dark Theme-Specific Colors
-    if ($Theme -eq "Solarized Dark") {
+    if ($Theme -eq "Dark") {
         $lnk.PopUpBackgroundColor=0xf
         $lnk.PopUpTextColor=0x6
         $lnk.ScreenBackgroundColor=0x0
