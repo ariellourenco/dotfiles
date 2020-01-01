@@ -51,3 +51,11 @@ To restore the shortcut file defaults use the follow command.
 ```PowerShell
 Update-Link "<shortcut.lnk>" System
 ```
+
+## Side Notes
+
+There are a bunch of great modules out there that can help boost your experience using PowerShell such as [PSReadLine](https://github.com/PowerShell/PSReadLine), which makes PowerShell behave like zsh, that is my favorite shell in GNU/Linux. It gives you substring history search, incremental history search, and awesome tab-completion. Down below, there are a few modules that compose my customizations to PowerShell:
+
+* [Get-ChildItemColor](https://github.com/joonro/Get-ChildItemColor)
+* [PSReadLine](https://github.com/PowerShell/PSReadLine)
+* [posh-git](https://github.com/dahlbyk/posh-git)
