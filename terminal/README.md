@@ -21,7 +21,15 @@ shortcuts you may already created because they have their own color mapping stor
 
 ### Update PowerShell shortcut .lnks
 
-The easiest way to do this on Windows 10 is to click `Start`, then type in the command you want to change. When it appears in the list, `right-click` and select `Open file location`. This will open an Explorer window and show you the shortcut. Hold shift and right-click on the shortcut, then select `Copy as path`. Now open a PowerShell to the location of this project.
+First, ensure that you can execute scripts on your system by running the following command from an elevated PowerShell. To run PowerShell as Administrator, click `Start`, search for PowerShell, `right-click` PowerShell and select `Run as Administrator`.
+
+In the PowerShell window use this command.
+
+```PowerShell
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+```
+
+Then, to update the shortcuts on Windows 10 click `Start`, search for PowerShell. When it appears in the list, `right-click` and select `Open file location`. This will open an Explorer window and show you the shortcut. Hold shift and right-click on the shortcut, then select `Copy as path`. Now open a PowerShell to the location of this project.
 
 In the PowerShell window use this command.
 
@@ -31,7 +39,7 @@ Update-Link "<shortcut.lnk>" [Light|Dark|System]
 
 The path to the shortcut.lnk is the same as you copied to your clipboard in the previous step. To easily paste it in Windows 10, 
 just right-click on the window. If the path has spaces, you will want to wrap it in quotes, but if you followed the recommended 
-way to use Copy as path, it will be done for you. If no theme is given, `Update-Link` will default to Solarized Dark. 
+way to use Copy as path, it will be done for you. If no theme is given, `Update-Link` will default to Solarized Dark.
 
 ## Uninstall
 
@@ -54,9 +62,9 @@ Update-Link "<shortcut.lnk>" System
 
 ## Side Notes
 
-There are a bunch of great modules out there that can help boost your experience using PowerShell such as [PSReadLine](https://github.com/PowerShell/PSReadLine), which makes PowerShell behave like zsh, that is my favorite shell in GNU/Linux. It gives you substring history search, incremental history search, and awesome tab-completion. Down below, some other modules that compose my Powershell customizations:
+There are a bunch of great modules out there that can help boost your experience using PowerShell such as [PSReadLine](https://github.com/PowerShell/PSReadLine), which makes PowerShell behave like zsh, that is my favorite shell in GNU/Linux. It gives you substring history search, incremental history search, and awesome tab-completion ([full details on Jason's blog](https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense/?WT.mc_id=-blog-scottha)). Down below, some other modules that compose my Powershell customizations:
 
 * [Get-ChildItemColor](https://github.com/joonro/Get-ChildItemColor)
-* [PackageManagement (OneGet)](https://github.com/OneGet/oneget)
+* [PackageManagement (WinGet)](https://github.com/microsoft/winget-cli)
 * [PSReadLine](https://github.com/PowerShell/PSReadLine)
 * [posh-git](https://github.com/dahlbyk/posh-git)
