@@ -15,6 +15,8 @@ if(-Not (Test-Path Variable:PSise)) {
 Set-PSReadLineOption -EditMode Windows
 Set-PSReadLineOption -HistoryNoDuplicates
 Set-PSReadLineOption -MaximumHistoryCount 100
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
 
 # CaptureScreen is good for blog posts or email showing a transaction
 # of what you did when asking for help or demonstrating a technique.
