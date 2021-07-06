@@ -67,4 +67,5 @@ There are a bunch of great modules out there that can help boost your experience
 * [Get-ChildItemColor](https://github.com/joonro/Get-ChildItemColor)
 * [PackageManagement (WinGet)](https://github.com/microsoft/winget-cli)
 * [PSReadLine](https://github.com/PowerShell/PSReadLine)
+* [Termnal-Icons](https://github.com/devblackops/Terminal-Icons)
 * [posh-git](https://github.com/dahlbyk/posh-git)
