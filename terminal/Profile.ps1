@@ -1,8 +1,9 @@
 ﻿using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
-Import-Module posh-git
-Import-Module PSReadLine
+Import-Module -Name posh-git
+Import-Module -Name PSReadLine
+Import-Module -Name Terminal-Icons
 
 # Only run this in the console and not in the ISE
 if(-Not (Test-Path Variable:PSise)) {
