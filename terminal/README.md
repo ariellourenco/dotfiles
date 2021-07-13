@@ -64,8 +64,7 @@ Update-Link "<shortcut.lnk>" System
 
 There are a bunch of great modules out there that can help boost your experience using PowerShell such as [PSReadLine](https://github.com/PowerShell/PSReadLine), which makes PowerShell behave like zsh, that is my favorite shell in GNU/Linux. It gives you substring history search, incremental history search, and awesome tab-completion ([full details on Jason's blog](https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense/?WT.mc_id=-blog-scottha)). Down below, some other modules that compose my Powershell customizations:
 
-* [Get-ChildItemColor](https://github.com/joonro/Get-ChildItemColor)
 * [PackageManagement (WinGet)](https://github.com/microsoft/winget-cli)
 * [PSReadLine](https://github.com/PowerShell/PSReadLine)
-* [Termnal-Icons](https://github.com/devblackops/Terminal-Icons)
 * [posh-git](https://github.com/dahlbyk/posh-git)
+* [Termnal-Icons](https://github.com/devblackops/Terminal-Icons)

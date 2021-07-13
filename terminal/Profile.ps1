@@ -5,14 +5,7 @@ Import-Module -Name posh-git
 Import-Module -Name PSReadLine
 Import-Module -Name Terminal-Icons
 
-# Only run this in the console and not in the ISE
-if(-Not (Test-Path Variable:PSise)) {
-    Import-Module Get-ChildItemColor
-    
-    Set-Alias l Get-ChildItem -Option AllScope
-    Set-Alias ls Get-ChildItemColorFormatWide  -Option AllScope
-}
-
+# Configure the PSreadLine module.
 Set-PSReadLineOption -EditMode Windows
 Set-PSReadLineOption -HistoryNoDuplicates
 Set-PSReadLineOption -MaximumHistoryCount 100
