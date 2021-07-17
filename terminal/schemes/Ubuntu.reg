@@ -1,1 +1,46 @@
-Windows Registry Editor Version 5.00; Registry file that maps the Ubuntu palette to the 16 avaliable colors; in a Windows command prompt. Note, hex values in the table are RGB but byte; ordering of a DWORD is BGR, e.g. "ColorTable<##>"=DWORD:00<B><G><R>;;| UBUNTU        | HEX     | ANSI      | TERMCOL   | cmd.exe     | PowerShell  | ColorTable | DWORD    |;|---------------|---------|-----------|-----------|-------------|-------------|------------|----------|;| DarkAubergine | #2C001E | ESC[0;30m | brblack   | Black       | Black       | 00         | 001e002c |;| Red           | #cc0000 | ESC[0;31m | brred     | Red         | DarkRed     | 04         | 000000cc |;| Green         | #4e9a06 | ESC[0;32m | brgreen   | Green       | DarkGreen   | 02         | 00069a4e |;| Yellow        | #c4a000 | ESC[0;33m | bryellow  | Yellow      | DarkYellow  | 06         | 0000a0c4 |;| Blue          | #3465a4 | ESC[0;34m | brblue    | Blue        | DarkBlue    | 01         | 00a46534 |;| Purple        | #75507b | ESC[0;35m | brmagenta | Purple      | DarkMagenta | 05         | 007b5075 |;| Cyan          | #06989a | ESC[0;36m | brcyan    | Aqua        | DarkCyan    | 03         | 009a9806 |;| Gray          | #d3d7cf | ESC[0;37m | white     | White       | Gray        | 07         | 00cfd7d3 |;| DarkGray      | #555753 | ESC[1;30m | black     | Gray        | DarkGray    | 08         | 00535755 |;| LightRed      | #ef2929 | ESC[1;31m | red       | LightRed    | Red         | 12         | 002929ef |;| LightGreen    | #8ae234 | ESC[1;32m | green     | LightGreen  | Green       | 10         | 0034e28a |;| LightYellow   | #fce94f | ESC[1;33m | yellow    | LightYellow | Yellow      | 14         | 004fe9fc |;| LightBlue     | #729fcf | ESC[1;34m | blue      | LightBlue   | Blue        | 09         | 00cf9f72 |;| LightPurple   | #ad7fa8 | ESC[1;35m | magenta   | LightPurple | Magenta     | 13         | 00a87fad |;| LightCyan     | #34e2e2 | ESC[1;36m | cyan      | LightAqua   | Cyan        | 11         | 00e2e234 |;| LightGray     | #eeeeee | ESC[1;37m | brwhite   | BrightWhite | White       | 15         | 00eeeeee |;[HKEY_CURRENT_USER\Console\%SystemRoot%_system32_bash.exe]"ColorTable00"=dword:001e002c"ColorTable01"=dword:00a46534"ColorTable02"=dword:00069a4e"ColorTable03"=dword:009a9806"ColorTable04"=dword:000000cc"ColorTable05"=dword:007b5075"ColorTable06"=dword:0000a0c4"ColorTable07"=dword:00cfd7d3"ColorTable08"=dword:00535755"ColorTable09"=dword:00cf9f72"ColorTable10"=dword:0034e28a"ColorTable11"=dword:00e2e234"ColorTable12"=dword:002929ef"ColorTable13"=dword:00a87fad"ColorTable14"=dword:004fe9fc"ColorTable15"=dword:00eeeeee"FontSize"=dword:120008
+Windows Registry Editor Version 5.00
+
+; Maps Ubuntu palette to the 16 avaliable colors in Bash on Ubuntu on Windows.
+; Note, hex values in the table are RGB but byte ordering of a DWORD is BGR, 
+; e.g. "ColorTable<##>"=DWORD:00<B><G><R>
+;
+; https://betterprogramming.pub/make-bash-on-ubuntu-on-windows-10-look-like-the-ubuntu-terminal-f7566008c5c2
+;
+;| UBUNTU        | HEX     | ANSI      | TERMCOL   | cmd.exe     | PowerShell  | ColorTable | DWORD    |
+;|---------------|---------|-----------|-----------|-------------|-------------|------------|----------|
+;| DarkAubergine | #2C001E | ESC[0;30m | brblack   | Black       | Black       | 00         | 001e002c |
+;| Red           | #cc0000 | ESC[0;31m | brred     | Red         | DarkRed     | 04         | 000000cc |
+;| Green         | #4e9a06 | ESC[0;32m | brgreen   | Green       | DarkGreen   | 02         | 00069a4e |
+;| Yellow        | #c4a000 | ESC[0;33m | bryellow  | Yellow      | DarkYellow  | 06         | 0000a0c4 |
+;| Blue          | #3465a4 | ESC[0;34m | brblue    | Blue        | DarkBlue    | 01         | 00a46534 |
+;| Purple        | #75507b | ESC[0;35m | brmagenta | Purple      | DarkMagenta | 05         | 007b5075 |
+;| Cyan          | #06989a | ESC[0;36m | brcyan    | Aqua        | DarkCyan    | 03         | 009a9806 |
+;| Gray          | #d3d7cf | ESC[0;37m | white     | White       | Gray        | 07         | 00cfd7d3 |
+;| DarkGray      | #555753 | ESC[1;30m | black     | Gray        | DarkGray    | 08         | 00535755 |
+;| LightRed      | #ef2929 | ESC[1;31m | red       | LightRed    | Red         | 12         | 002929ef |
+;| LightGreen    | #8ae234 | ESC[1;32m | green     | LightGreen  | Green       | 10         | 0034e28a |
+;| LightYellow   | #fce94f | ESC[1;33m | yellow    | LightYellow | Yellow      | 14         | 004fe9fc |
+;| LightBlue     | #729fcf | ESC[1;34m | blue      | LightBlue   | Blue        | 09         | 00cf9f72 |
+;| LightPurple   | #ad7fa8 | ESC[1;35m | magenta   | LightPurple | Magenta     | 13         | 00a87fad |
+;| LightCyan     | #34e2e2 | ESC[1;36m | cyan      | LightAqua   | Cyan        | 11         | 00e2e234 |
+;| LightGray     | #eeeeee | ESC[1;37m | brwhite   | BrightWhite | White       | 15         | 00eeeeee |
+;
+
+[HKEY_CURRENT_USER\Console\%SystemRoot%_system32_bash.exe]
+"ColorTable00"=dword:001e002c
+"ColorTable01"=dword:00a46534
+"ColorTable02"=dword:00069a4e
+"ColorTable03"=dword:009a9806
+"ColorTable04"=dword:000000cc
+"ColorTable05"=dword:007b5075
+"ColorTable06"=dword:0000a0c4
+"ColorTable07"=dword:00cfd7d3
+"ColorTable08"=dword:00535755
+"ColorTable09"=dword:00cf9f72
+"ColorTable10"=dword:0034e28a
+"ColorTable11"=dword:00e2e234
+"ColorTable12"=dword:002929ef
+"ColorTable13"=dword:00a87fad
+"ColorTable14"=dword:004fe9fc
+"ColorTable15"=dword:00eeeeee
+"FontSize"=dword:120008
