@@ -67,4 +67,4 @@ There are a bunch of great modules out there that can help boost your experience
 * [PackageManagement (WinGet)](https://github.com/microsoft/winget-cli)
 * [PSReadLine](https://github.com/PowerShell/PSReadLine)
 * [posh-git](https://github.com/dahlbyk/posh-git)
-* [Termnal-Icons](https://github.com/devblackops/Terminal-Icons)
+* [Terminal-Icons](https://github.com/devblackops/Terminal-Icons)
