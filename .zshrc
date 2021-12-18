@@ -1,58 +1,67 @@
-# Manually set the overall locale to en_US except the decimal dot, 
-# the monetary format and the date/time which will be pt_BR.
-export LC_ALL=en_US.UTF-8
-export LC_MONETARY=pt_BR.UTF-8
-export LC_NUMERIC=pt_BR.UTF-8
-export LC_TIME=pt_BR.UTF-8
+# Zsh ships with a framework for getting information from version control
+# systems, called vcs_info, and a tab-completion library for Git.
+autoload -Uz compinit && compinit
+autoload -Uz colors && colors
 
-# For security reasons compinit also checks if the completion system would use files not owned by root
-# or by the current user, or files in directories that are world- or group-writable or that are not owned by root 
-# or by the current user. If such files or directories are found, compinit will ask if the completion system should really be used. 
-# To avoid these tests and make all files found be used without asking, use the option -u, and to make compinit silently 
-# ignore all insecure files and directories use the option -i. 
-# In this case,by removing the write permissions for group/others for the files in cause (compaudit | xargs chmod go-w) 
-# we mitigate this vulnerability.
-autoload -Uz compinit
-compinit -d ~/Library/Cache/zcompdump
+# Allow substitutions and expansions in the prompt, necessary for
+# using a single-quoted $vcs_info_msg_0_ in PS1 and PROMPT.
+setopt promptsubst
 
-# Colorizes the ls output with color and icons.
-export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
+# Load vcs_info to display information about version control repositories.
+autoload -Uz vcs_info
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias diff='diff --color=auto'
+# Check the repository for changes so they can be used in %u/%c
+# This comes with a speed penalty for bigger repositories.
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
 
-# Whether lsd is installed then override the ls alias.
-# For more information: https://github.com/Peltoche/lsd
-command -v lsd > /dev/null && alias ls='lsd --group-dirs first' && alias tree='lsd --tree'
+# Set values for the follow styles in all contexts.
+zstyle ':vcs_info:*' unstagedstr '!'
+zstyle ':vcs_info:*' stagedstr '+'
+zstyle ':vcs_info:git:*' formats " %{$fg[blue]%}(%{$fg[yellow]%}%{$fg[magenta]%}%b%{$fg[red]%}%m%u%c%{$fg[blue]%})"
+zstyle ':vcs_info:git*+set-message:*' hooks git-st  git-untracked
 
-# Colorize Man Pages
-export LESS_TERMCAP_mb=$'\e[1;32m'
-export LESS_TERMCAP_md=$'\e[1;32m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;33m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[1;4;31m'
-export LESSHISTFILE=-
+# Use the zsh hook function precmd to run the vcs_info function 
+# right before we display the prompt.
+precmd_vcs_info() { vcs_info }
+precmd_functions+=(precmd_vcs_info)
 
-# Prompt
-PROMPT=$'%F{%(#.blue.green)}┌──(%B%F{%(#.red.blue)}%n%b%F{%(#.blue.green)})-[%B%F{reset}%(6~.%-1~/…/%4~.%5~)%b%F{%(#.blue.green)}]\n└─%B%(#.%F{red}#.%F{blue}$)%b%F{reset} '
-#RPROMPT=$'%(?.. %? %F{red}%Bx%b%F{reset})%(1j. %j %F{yellow}%Bbg %b%F{reset}.)'
+# Display the existence of files not yet know to VCS (untracked files).
+# The marker (?) is shown if there are untracked files in repository.
++vi-git-untracked(){
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain | grep -q '^?? ' 2> /dev/null ; then
+        # This will show the marker if there are any untracked files in repo.
+        # If instead you want to show the marker only if there are untracked
+        # files in $PWD, use:
+        #[[ -n $(git ls-files --others --exclude-standard) ]] ; then
+        hook_com[staged]+='?'
+    fi
+}
 
-# ZSH Completion System
-# https://thevaluable.dev/zsh-completion-guide-examples/
-zstyle ':completion:*' verbose true
+# Show +N/-N when the local branch is ahead-of or behind remote HEAD.
+# Make sure to have added misc to your 'formats':  %m
++vi-git-st(){
+    local ahead behind
+    local -a gitstatus
 
-# Add DOTNET Tools and the 'code' command in PATH env variable.
-export PATH="~/.dotnet/tools:$PATH"
-export PATH="/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin:$PATH"
+    # Exit early in case the worktree is on a detached HEAD
+    git rev-parse ${hook_com[branch]}@{upstream} >/dev/null 2>&1 || return 0
 
-# Setup the terminal to use gpg-agent as the  SSH agent and make it starts with the terminal.
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+    local -a ahead_and_behind=(
+        $(git rev-list --left-right --count HEAD...${hook_com[branch]}@{upstream} 2>/dev/null)
+    )
+
+    ahead=${ahead_and_behind[1]}
+    behind=${ahead_and_behind[2]}
+
+    (( $ahead )) && gitstatus+=( "+${ahead}" )
+    (( $behind )) && gitstatus+=( "-${behind}" )
+
+    hook_com[misc]+=${(j:/:)gitstatus}
+}
+
+PROMPT+="\$vcs_info_msg_0_ "
+
+export SSH_AUTH_SOCK=`gpgconf --list-dirs agent-ssh-socket`
 export GPG_TTY=$(tty)
-
-
