@@ -1,14 +1,16 @@
-# Terminal Color Schemes
+# Terminal
 
-This folder contains files to setup a fancy experience on Windows across all its terminal options such as PowerShell, Linux Subsystem on Windows and Windows Terminal. 
+This folder contains files to setup a fancy experience on Windows across all its terminal options such as PowerShell, Linux Subsystem on Windows and Windows Terminal. This repository and its files was inspired by the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized). 
 
-Included are three important color schemes:
+## Color Schemes
+
+Included are three color schemes:
 
 * Solarized Light
 * Solarized Dark - The default theme for all PowerShell instances
 * Ubuntu - The default theme for Linux Subsystem (Ubuntu distro)
 
-This repository and its files was inspired by the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized). For screenshots and more details, as well as color schemes for other applications see the [Solarized](https://ethanschoonover.com/solarized) home page. The [ColorTool](https://github.com/Microsoft/Terminal/tree/master/src/tools/ColorTool) is also a great tool to create and explore new color schemes and it also  includes support for [iTerm](https://github.com/mbadolato/iTerm2-Color-Schemes) themes!
+For more details and screenshots, as well as color schemes for other applications see the [Solarized](https://ethanschoonover.com/solarized) home page. The [ColorTool](https://github.com/Microsoft/Terminal/tree/master/src/tools/ColorTool) is also a great tool to create and explore new color schemes and it also  includes support for [iTerm](https://github.com/mbadolato/iTerm2-Color-Schemes) themes!
 
 ## Installation
 
