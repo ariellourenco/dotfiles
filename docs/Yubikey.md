@@ -6,7 +6,8 @@ Setting up a new YubiKey as a second factor is easy — your browser walks you t
 
 This guide will walk you through how to generate GPG keys that are good for general use, including encryption and code signing with all keys generated and stored on YubiKey.
 
->⚠️  These are my preferences and it might not suit your needs. Do your own research and pick the appropriate strategy for your specific requirements.
+> [!WARNING] 
+> These are my preferences and it might not suit your needs. Do your own research and pick the appropriate strategy for your specific requirements.
 
 ## Overview
 
@@ -100,7 +101,8 @@ The OpenPGP app has 3 PINs: the **Admin PIN**, the **User PIN**, and the **Reset
 
 You need to change the various default PINs on the YubiKey. Pick something unique and consider using a password manager such as [Bitwarden](https://bitwarden.com/) for storing them.
 
-> 🚩 We don't need and won’t set a **Reset Code**. 
+> [!NOTE]  
+> We don't need and won’t set a **Reset Code**. 
 
 ```bash
 gpg/card> passwd
@@ -115,7 +117,8 @@ Q - quit
 
 Enter `1` at the prompt for the `passwd` command, and then enter `123456` which is the default PIN. Next, enter the new **User PIN** (you’ll be prompted for it twice). Do not use a numbers — instead use a simple passphrase that’s at least 6 characters long and easy to type (you’ll need to type it frequently, probably at least several times a day).
 
-> ❗❗ Make sure it’s different than any other PIN or passphrase you’ve ever used before.
+> [!CAUTION]
+> Make sure it’s different than any other PIN or passphrase you’ve ever used before.
 
 For the **Admin PIN** enter `12345678`, which is the default PIN, and use a simple passphrase with at least 8 characters long. It doesn’t need to be any stronger than the **User PIN**, just different (enough so that an adversary wouldn’t be able to guess the **Admin PIN** if she finds out your user PIN).
 
@@ -202,6 +205,7 @@ Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 
 When prompted for your real name, email address, and comment, use the “real name” field for the display name or alias you want associated with the OpenPGP key, the “email address” field for the email account associated with the key (to keep your email private use your GitHub-provided no-reply email address) and the “comment” field for a word or phrase that will distinguish this key from other keys you have used or will use in the future with the same name and email. 
 
+> [!NOTE]
 > Note that we can later add more UIDs to an OpenPGP key via the `gpg --edit-key` command. We can also delete existing UIDs from a key the same way — but deleting UIDs can be difficult to get completely right and correctly propagated to all copies of the key.
 
 ## Adding a New GPG Key to your GitHub Account
@@ -231,7 +235,8 @@ Copy the entire text block, including the `-----BEGIN PGP PUBLIC KEY BLOCK-----`
 
 Give the key a name and save it.
 
-> 💡 On macOS, you can pipe the output directly to your clipboard using pbcopy, for example, `gpg --armor --export {your-key-id} | pbcopy`.
+> [!TIP]
+> On macOS, you can pipe the output directly to your clipboard using pbcopy, for example, `gpg --armor --export {your-key-id} | pbcopy`.
 
 ## Enable GPG Key for SSH
 
@@ -290,7 +295,8 @@ Update `~/.gnupg/sshcontrol` with the authentication _keygrip_; this allows the 
 28E05AC1DCFCB0C23EFD89A86C627B0959758813
 ```
 
-> ☣️  Do not confuse the Key ID with the Keygrip which is the hexadecimal number right below the line designated [A]: `28E05AC1DCFCB0C23EFD89A86C627B0959758813`.
+> [!IMPORTANT] 
+> Do not confuse the Key ID with the Keygrip which is the hexadecimal number right below the line designated [A]: `28E05AC1DCFCB0C23EFD89A86C627B0959758813`.
 
 ### Set SSH_AUTH_SOCK
 
