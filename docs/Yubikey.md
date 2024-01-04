@@ -7,7 +7,7 @@ Setting up a new YubiKey as a second factor is easy — your browser walks you t
 This guide will walk you through how to generate GPG keys that are good for general use, including encryption and code signing with all keys generated and stored on YubiKey.
 
 > [!WARNING] 
-> These are my preferences and it might not suit your needs. Do your own research and pick the appropriate strategy for your specific requirements.
+> This is the result of my own curiosity, investigation and preferences which might not suit your needs. Do your own research and pick the appropriate strategy for your specific requirements.
 
 ## Overview
 
@@ -32,12 +32,25 @@ What you need depends on your operating system. As I am primarily a Mac user thi
 Install the following packages via Homebrew:
 
 - GnuPG
-- pinentry
+- pinentry-mac
 - [YubiKey Manager CLI](https://developers.yubico.com/yubikey-manager/)
 
 ```bash
-brew install gnupg pinentry ykman
+brew install gnupg pinentry-mac ykman
 ```
+
+To verify everything is set up correctly, open Terminal, run the `gpgconf` command and make sure the output is like the following:
+
+```bash
+gpg:OpenPGP:/usr/local/Cellar/gnupg/2.4.3/bin/gpg
+gpgsm:S/MIME:/usr/local/Cellar/gnupg/2.4.3/bin/gpgsm
+keyboxd:Public Keys:/usr/local/Cellar/gnupg/2.4.3/libexec/keyboxd
+gpg-agent:Private Keys:/usr/local/Cellar/gnupg/2.4.3/bin/gpg-agent
+scdaemon:Smartcards:/usr/local/Cellar/gnupg/2.4.3/libexec/scdaemon
+dirmngr:Network:/usr/local/Cellar/gnupg/2.4.3/bin/dirmngr
+pinentry:Passphrase Entry:/usr/local/opt/pinentry/bin/pinentry
+```
+Make sure the pinentry shows a GUI prompt by running the `echo GETPIN | pinentry-mac` command.
 
 ## What Is OpenPGP?
 
@@ -240,7 +253,8 @@ Give the key a name and save it.
 
 ## Enable GPG Key for SSH
 
-There are a few moving parts needed to expose your new GPG key in a way that your SSH client will use them. The SSH client reads the `SSH_AUTH_SOCK` environment variable which contains the location of a Unix socket managed by an agent. A `gpg-agent` running in the background controls this socket and allows your GPG key to be used for authentication. Also, the `gpg-agent` can be configured via `pinentry-program` stanza to use a particular pinentry user interface when prompting the user for a passphrase.
+There are a few moving parts needed to expose your new GPG key in a way that your SSH client will use them. The SSH client reads the `SSH_AUTH_SOCK` environment variable which contains the location of a Unix socket managed by an agent. A `gpg-agent` running in the background controls this socket and allows your GPG key to be used for authentication. 
+Optionally, the `gpg-agent` can be configured via `pinentry-program` stanza to use a particular pinentry user interface when prompting the user for a passphrase. The default is a CLI program that does not provide a nice user experience, in this guide we use `pinentry-mac` instead. With `pinentry-mac` you can choose to save your passphrase in your MacOS keychain.
 
 Enable SSH support using standard sockets by updating the `~/.gnupg/gpg-agent.conf` file:
 
@@ -252,11 +266,15 @@ Enable SSH support using standard sockets by updating the `~/.gnupg/gpg-agent.co
 # https://www.gnupg.org/documentation/manuals/gnupg/Agent-Options.html  
 enable-ssh-support
 
-# Connects gpg-agent to the OSX keychain via the brew-installed pinentry program from GPGtools. 
-# This is the OSX 'magic sauce', allowing the gpg key's passphrase to be stored in the login
-# keychain, enabling automatic key signing.
-pinentry-program "$(which pinentry)"
+# Connects gpg-agent to the OSX keychain via the pinentry-mac program from GPGtools. 
+# This is the OSX 'magic sauce', allowing the gpg key's passphrase to be stored in 
+# the login keychain, enabling automatic key signing.
+pinentry-program /usr/local/bin/pinentry-mac 
 ```
+
+> [!NOTE]
+> For Apple Silicon Macs, Homebrew uses a different path: `pinentry-program /opt/homebrew/bin/pinentry-mac`.
+> Uses the `which` command to identify the location of the `pinentry-mac` executable.
 
 ### Using The Authentication Subkey
 
@@ -303,6 +321,7 @@ Update `~/.gnupg/sshcontrol` with the authentication _keygrip_; this allows the 
 Edit the `~/.zshrc` file (or similar shell startup file) to include the following variables that enable the communication with `gpg-agent` instead of the default `ssh-agent`. 
 
 ```bash
+# Enable GPG Key for SSH
 unset SSH_AGENT_PID
 
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
@@ -310,8 +329,15 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
 fi
 
 export GPG_TTY=$(tty)
+
+# gpg-agent is a daemon to manage secret (private) keys independently from any protocol.
+# It's automatically started on demand by gpg, gpgsm, gpgconf, or gpg-connect-agent.
+# However, as we want to use the included Secure Shell Agent we need to start the 
+# agent if it isn't started already.
+gpgconf --launch gpg-agent
 ```
 
+> [!NOTE]
 > 🧪 The test involving `gnupg_SSH_AUTH_SOCK_by` variable is for the case where the agent is started as `gpg-agent --daemon /bin/sh` in which case the shell inherits the `SSH_AUTH_SOCK` variable from the parent, `gpg-agent`.
 
 After changing the configuration, reload the agent using `gpg-connect-agent`.
