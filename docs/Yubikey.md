@@ -14,6 +14,8 @@ This guide will walk you through how to generate GPG keys that are good for gene
 - Install and Configure Necessary Software
 - What Is OpenPGP?
 - Why ED25519 Keys?
+- YubiKey Manager
+   - YubiKey Lock Code
 - Setting up YubiKey OpenPGP
    - Configure PIN/Admin PIN
    - Changing to Better Defaults
@@ -52,10 +54,49 @@ pinentry:Passphrase Entry:/usr/local/opt/pinentry/bin/pinentry
 ```
 Make sure the pinentry shows a GUI prompt by running the `echo GETPIN | pinentry-mac` command.
 
-## What Is OpenPGP?
+## YubiKey Manager
 
-OpenPGP is a specification ([RFC-4880](https://datatracker.ietf.org/doc/html/rfc4880)), which describes a protocol for using public-key cryptography for encryption, signing, and key exchange, based on the original [Phil Zimmermann](https://www.philzimmermann.com/EN/background/index.html) work of Pretty Good Privacy (PGP). 
+The [YubiKey Manager CLI](https://developers.yubico.com/yubikey-manager) (aka ykman) can help you set up each YubiKey application. Once you have the `ykman` CLI installed, plug your YubiKey into your computer, and run the following command to see its details:
 
+```bash
+$ ykman info
+Device type: YubiKey 5 NFC
+Serial number: 12345678
+Firmware version: 5.2.4
+Form factor: Keychain (USB-A)
+Enabled USB interfaces: FIDO, CCID
+NFC transport is enabled.
+
+Applications	USB          	NFC          
+OTP         	Disabled     	Disabled
+FIDO U2F    	Enabled      	Enabled
+FIDO2       	Enabled      	Enabled
+OATH        	Disabled     	Disabled
+PIV         	Disabled     	Disabled
+OpenPGP     	Enabled      	Enabled
+YubiHSM Auth	Not available	Not available
+```
+
+Each one of the listed applications has its own separated PIN or passphrase, that is set independently of the other applications (except for the FIDO U2F and FIDO2 apps which share a single FIDO management interface). Obviously, each app's PIN or passphrase controls access to the configurations and secrets stored by the app. For the sake of this guide, we going to disable all application interfaces that won't be used, which leave us with FIDO U2F, FIDO2 and OpenPGP.
+
+The applications can be enabled and disabled independently over different transports (USB and NFC). For instance, to enable the FIDO2 app run the following command:
+
+```bash
+ykman config usb --enable FIDO2
+```
+
+Repeat the step above for each app/interface you want to enable.
+
+> [!NOTE]
+> You can disable an app by running the same commands with the `--disable` option instead of the `--enable` option.
+
+### YubiKey Lock Code
+### YubiKey Lock Code
+### YubiKey Lock Code
+### YubiKey Lock Code## What Is OpenPGP?
+### YubiKey Lock Code
+### YubiKey Lock CodeOpenPGP is a specification ([RFC-4880](https://datatracker.ietf.org/doc/html/rfc4880)), which describes a protocol for using public-key cryptography for encryption, signing, and key exchange, based on the original [Phil Zimmermann](https://www.philzimmermann.com/EN/background/index.html) work of Pretty Good Privacy (PGP). 
+### YubiKey Lock Code
 There is often confusion between PGP and Gnu Privacy Guard (GnuPG or GPG), probably because of the inverted acronym. Sometimes these terms are used interchangeably, but GPG is an implementation of the OpenPGP specification (and arguably the most popular one). In OpenPGP an individual has an "OpenPGP key", which is actually a set of public-private key pairs grouped together under a _master key_. Other key pairs are known as _subkeys_, and any sub-key belonging to the "OpenPGP key" will be signed by the _master key_. In addition to the master key, it is common to have 3 sub-keys with different usage:
 
 - **Authentication key** - Used to authenticate things like an SSH session.
@@ -135,11 +176,13 @@ Enter `1` at the prompt for the `passwd` command, and then enter `123456` which 
 
 For the **Admin PIN** enter `12345678`, which is the default PIN, and use a simple passphrase with at least 8 characters long. It doesn’t need to be any stronger than the **User PIN**, just different (enough so that an adversary wouldn’t be able to guess the **Admin PIN** if she finds out your user PIN).
 
-### Changing to Better Defaults
-
-We want to make sure we're using the strongest key types that are available for GPG. For our purposes, we gonna use [Ed25519](https://ed25519.cr.yp.to/) signing key for signing messages, an [X25519](https://cr.yp.to/ecdh.html) decryption key for decrypting messages, and an [Ed25519](https://ed25519.cr.yp.to/) authentication key for signature-based authentication (such as for SSH).
-
-So, use the `key-attr` command so that when you generate your keys, it will generate Curve 25519 keys instead of RSA keys:
+> [!NOTE]
+> Optionally, we can protect against unintended operations by requiring every remote Git operation an additional key tap to ensure that malwares cannot initiate requests without approval.
+> ```bash                                                                                                                                                                                  ### Changing to Better Defaults
+> $ ykman openpgp keys set-touch aut on
+> $ ykman openpgp keys set-touch dec on                                                                                                                                                    We want to make sure we're using the strongest key types that are available for GPG. For our purposes, we gonna use [Ed25519](https://ed25519.cr.yp.to/) signing key for signing messages, an [X25519](https://cr.yp.to/ecdh.html) decryption key for decrypting messages, and an [Ed25519](https://ed25519.cr.yp.to/) authentication key for signature-based authentication (such as for SSH).
+> $ ykman openpgp keys set-touch sig on
+> ```                                                                                                                                                                                      So, use the `key-attr` command so that when you generate your keys, it will generate Curve 25519 keys instead of RSA keys:
 
 ```bash
 gpg/card> key-attr
