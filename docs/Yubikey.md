@@ -4,7 +4,7 @@ A YubiKey is a hardware-based authentication device that can securely store secr
 
 Setting up a new YubiKey as a second factor is easy — your browser walks you through the entire process. However, setting up a YubiKey to sign commits and Secure Shell (SSH) authentication is a very different experience. 
 
-This guide will walk you through how to generate GPG keys that are good for general use, including encryption and code signing with all keys generated and stored on YubiKey.
+This guide will walk you through how to generate GPG keys that are good for general use, including encryption and code signing with all keys generated and stored on YubiKey, instead of generating the keys elsewhere and importing them into the YubiKey later. This guarantees that only the YubiKey holder can use the YubiKey's private keys. We also protect all applications on YubiKey that can be protected by PIN or passphrase to prevent thieves whose steal your YubiKey from using any credentials stored on it.
 
 > [!WARNING] 
 > This is the result of my own curiosity, investigation and preferences which might not suit your needs. Do your own research and pick the appropriate strategy for your specific requirements.
@@ -128,7 +128,7 @@ gpg: OpenPGP card no. D2760001240102010006078005150000 detected
 Q - quit
 ```
 
-Enter `1` at the prompt for the `passwd` command, and then enter `123456` which is the default PIN. Next, enter the new **User PIN** (you’ll be prompted for it twice). Do not use a numbers — instead use a simple passphrase that’s at least 6 characters long and easy to type (you’ll need to type it frequently, probably at least several times a day).
+Enter `1` at the prompt for the `passwd` command, and then enter `123456` which is the default PIN. Next, enter the new **User PIN** (you’ll be prompted for it twice). Do not use numbers only — instead use a simple passphrase that’s at least 6 characters long and easy to type (you’ll need to type it frequently, probably at least several times a day).
 
 > [!CAUTION]
 > Make sure it’s different than any other PIN or passphrase you’ve ever used before.
@@ -249,12 +249,11 @@ Copy the entire text block, including the `-----BEGIN PGP PUBLIC KEY BLOCK-----`
 Give the key a name and save it.
 
 > [!TIP]
-> On macOS, you can pipe the output directly to your clipboard using pbcopy, for example, `gpg --armor --export {your-key-id} | pbcopy`.
+> On macOS, you can pipe the output directly to your clipboard using `pbcopy`, for example, `gpg --armor --export {your-key-id} | pbcopy`.
 
 ## Enable GPG Key for SSH
 
 There are a few moving parts needed to expose your new GPG key in a way that your SSH client will use them. The SSH client reads the `SSH_AUTH_SOCK` environment variable which contains the location of a Unix socket managed by an agent. A `gpg-agent` running in the background controls this socket and allows your GPG key to be used for authentication. 
-Optionally, the `gpg-agent` can be configured via `pinentry-program` stanza to use a particular pinentry user interface when prompting the user for a passphrase. The default is a CLI program that does not provide a nice user experience, in this guide we use `pinentry-mac` instead. With `pinentry-mac` you can choose to save your passphrase in your MacOS keychain.
 
 Enable SSH support using standard sockets by updating the `~/.gnupg/gpg-agent.conf` file:
 
@@ -271,6 +270,8 @@ enable-ssh-support
 # the login keychain, enabling automatic key signing.
 pinentry-program /usr/local/bin/pinentry-mac 
 ```
+
+Optionally, the `gpg-agent` can be configured via `pinentry-program` stanza to use a particular pinentry user interface when prompting the user for a passphrase. The default is a CLI program that does not provide a nice user experience, in this guide we use `pinentry-mac` instead. With `pinentry-mac` you can choose to save your passphrase in your MacOS keychain.
 
 > [!NOTE]
 > For Apple Silicon Macs, Homebrew uses a different path: `pinentry-program /opt/homebrew/bin/pinentry-mac`.
@@ -318,7 +319,7 @@ Update `~/.gnupg/sshcontrol` with the authentication _keygrip_; this allows the 
 
 ### Set SSH_AUTH_SOCK
 
-Edit the `~/.zshrc` file (or similar shell startup file) to include the following variables that enable the communication with `gpg-agent` instead of the default `ssh-agent`. 
+Edit the `~/.zshrc` file (or similar shell startup file) to include the following variables that enable the communication with `gpg-agent` instead of the default `ssh-agent` and start the `gpg-agent` if it isn't started already. 
 
 ```bash
 # Enable GPG Key for SSH
