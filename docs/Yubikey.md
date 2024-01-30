@@ -91,13 +91,10 @@ Repeat the step above for each app/interface you want to enable.
 > You can disable an app by running the same commands with the `--disable` option instead of the `--enable` option.
 
 ### YubiKey Lock Code
-### YubiKey Lock Code
-### YubiKey Lock Code
-### YubiKey Lock Code## What Is OpenPGP?
-### YubiKey Lock Code
-### YubiKey Lock CodeOpenPGP is a specification ([RFC-4880](https://datatracker.ietf.org/doc/html/rfc4880)), which describes a protocol for using public-key cryptography for encryption, signing, and key exchange, based on the original [Phil Zimmermann](https://www.philzimmermann.com/EN/background/index.html) work of Pretty Good Privacy (PGP). 
-### YubiKey Lock Code
-There is often confusion between PGP and Gnu Privacy Guard (GnuPG or GPG), probably because of the inverted acronym. Sometimes these terms are used interchangeably, but GPG is an implementation of the OpenPGP specification (and arguably the most popular one). In OpenPGP an individual has an "OpenPGP key", which is actually a set of public-private key pairs grouped together under a _master key_. Other key pairs are known as _subkeys_, and any sub-key belonging to the "OpenPGP key" will be signed by the _master key_. In addition to the master key, it is common to have 3 sub-keys with different usage:
+
+## What Is OpenPGP?
+
+OpenPGP is a specification ([RFC-4880](https://datatracker.ietf.org/doc/html/rfc4880)), which describes a protocol for using public-key cryptography for encryption, signing, and key exchange, based on the original [Phil Zimmermann](https://www.philzimmermann.com/EN/background/index.html) work of Pretty Good Privacy (PGP). There is often confusion between PGP and Gnu Privacy Guard (GnuPG or GPG), probably because of the inverted acronym. Sometimes these terms are used interchangeably, but GPG is an implementation of the OpenPGP specification (and arguably the most popular one). In OpenPGP an individual has an "OpenPGP key", which is actually a set of public-private key pairs grouped together under a _master key_. Other key pairs are known as _subkeys_, and any sub-key belonging to the "OpenPGP key" will be signed by the _master key_. In addition to the master key, it is common to have 3 sub-keys with different usage:
 
 - **Authentication key** - Used to authenticate things like an SSH session.
 - **Encryption key** - Used to encrypt/decrypt stuff like files or e-mails so that only you can see them.
@@ -178,11 +175,17 @@ For the **Admin PIN** enter `12345678`, which is the default PIN, and use a simp
 
 > [!NOTE]
 > Optionally, we can protect against unintended operations by requiring every remote Git operation an additional key tap to ensure that malwares cannot initiate requests without approval.
-> ```bash                                                                                                                                                                                  ### Changing to Better Defaults
+> ```bash
 > $ ykman openpgp keys set-touch aut on
-> $ ykman openpgp keys set-touch dec on                                                                                                                                                    We want to make sure we're using the strongest key types that are available for GPG. For our purposes, we gonna use [Ed25519](https://ed25519.cr.yp.to/) signing key for signing messages, an [X25519](https://cr.yp.to/ecdh.html) decryption key for decrypting messages, and an [Ed25519](https://ed25519.cr.yp.to/) authentication key for signature-based authentication (such as for SSH).
+> $ ykman openpgp keys set-touch dec on
 > $ ykman openpgp keys set-touch sig on
-> ```                                                                                                                                                                                      So, use the `key-attr` command so that when you generate your keys, it will generate Curve 25519 keys instead of RSA keys:
+> ```
+
+### Changing to Better Defaults
+
+We want to make sure we're using the strongest key types that are available for GPG. For our purposes, we gonna use [Ed25519](https://ed25519.cr.yp.to/) signing key for signing messages, an [X25519](https://cr.yp.to/ecdh.html) decryption key for decrypting messages, and an [Ed25519](https://ed25519.cr.yp.to/) authentication key for signature-based authentication (such as for SSH). 
+
+So, use the `key-attr` command so that when you generate your keys, it will generate Curve 25519 keys instead of RSA keys:
 
 ```bash
 gpg/card> key-attr
