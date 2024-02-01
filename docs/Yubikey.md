@@ -79,18 +79,39 @@ YubiHSM Auth	Not available	Not available
 
 Each one of the listed applications has its own separated PIN or passphrase, that is set independently of the other applications (except for the FIDO U2F and FIDO2 apps which share a single FIDO management interface). Obviously, each app's PIN or passphrase controls access to the configurations and secrets stored by the app. For the sake of this guide, we going to disable all application interfaces that won't be used, which leave us with FIDO U2F, FIDO2 and OpenPGP.
 
-The applications can be enabled and disabled independently over different transports (USB and NFC). For instance, to enable the FIDO2 app run the following command:
+The applications can be enabled and disabled independently over different transports (USB and NFC). For instance, to disable the OATH app run the following command:
 
 ```bash
-ykman config usb --enable FIDO2
+ykman config usb --disable OATH
 ```
 
-Repeat the step above for each app/interface you want to enable.
+Repeat the step above for each app/interface you want to disable.
 
 > [!NOTE]
-> You can disable an app by running the same commands with the `--disable` option instead of the `--enable` option.
+> You can enable an app by running the same commands with the `--enable` option instead of the `--disable` option.
 
 ### YubiKey Lock Code
+
+As you may have noticed the YubiKey has a master config application that allows you to enable or disable other apps on the YubiKey. When an application is disabled, its configuration and secrets cannot be accessed or changed – or even "factory reseted". This is particularly important, since wiping an app's config and secrets **does not** require the app's own PIN or passphrase.
+
+Fortunately, YubiKey allows you to set a 128-bit "lock code" to protect changes to this master config app. By default, the YubiKey comes with no lock code set. However, it is recommend to set this lock code to prevent an adversary who gains access to your computer while your YubiKey is plugged in from lock you out of all your YubiKey secrets.
+
+Unfortunately, you must always enter this lock code as a string of 32 hex digits, but most people will need to use it rarely, if ever.
+
+Run the following command to set the lock code for your YubiKey:
+
+```bash
+ykman config set-lock-code --generate
+```
+
+This will generate a new random number, and print it out:
+
+```bash
+Using a randomly generated lock code: a93292209401554f76f6f65b2de72810
+Lock configuration with this lock code? [y/N]: y
+```
+
+After enter `y` at the prompt you will have to provide this lock code for future changes on the status of nay app on your YubiKey.
 
 ## What Is OpenPGP?
 
@@ -176,9 +197,9 @@ For the **Admin PIN** enter `12345678`, which is the default PIN, and use a simp
 > [!NOTE]
 > Optionally, we can protect against unintended operations by requiring every remote Git operation an additional key tap to ensure that malwares cannot initiate requests without approval.
 > ```bash
-> $ ykman openpgp keys set-touch aut on
-> $ ykman openpgp keys set-touch dec on
-> $ ykman openpgp keys set-touch sig on
+> ykman openpgp keys set-touch aut on
+> ykman openpgp keys set-touch dec on
+> ykman openpgp keys set-touch sig on
 > ```
 
 ### Changing to Better Defaults
