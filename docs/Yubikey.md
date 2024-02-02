@@ -11,9 +11,9 @@ This guide will walk you through how to generate GPG keys that are good for gene
 
 ## Overview
 
-- Install and Configure Necessary Software
 - What Is OpenPGP?
 - Why ED25519 Keys?
+- Install and Configure Necessary Software
 - YubiKey Manager
    - YubiKey Lock Code
 - Setting up YubiKey OpenPGP
@@ -26,6 +26,24 @@ This guide will walk you through how to generate GPG keys that are good for gene
    - Set SSH_AUTH_SOCK
    - Take It For a Spin 
 - Signing Commits & Tags
+
+## What Is OpenPGP?
+
+OpenPGP is a specification ([RFC-4880](https://datatracker.ietf.org/doc/html/rfc4880)), which describes a protocol for using public-key cryptography for encryption, signing, and key exchange, based on the original [Phil Zimmermann](https://www.philzimmermann.com/EN/background/index.html) work of Pretty Good Privacy (PGP). There is often confusion between PGP and Gnu Privacy Guard (GnuPG or GPG), probably because of the inverted acronym. Sometimes these terms are used interchangeably, but GPG is an implementation of the OpenPGP specification (and arguably the most popular one). In OpenPGP an individual has an "OpenPGP key", which is actually a set of public-private key pairs grouped together under a _master key_. Other key pairs are known as _subkeys_, and any sub-key belonging to the "OpenPGP key" will be signed by the _master key_. In addition to the master key, it is common to have 3 sub-keys with different usage:
+
+- **Authentication key** - Used to authenticate things like an SSH session.
+- **Encryption key** - Used to encrypt/decrypt stuff like files or e-mails so that only you can see them.
+- **Signature key** - Used for signing git commits, files, e-mails, etc. to prove that they came from you.
+
+## Why ED25519 Keys?
+
+Historically RSA has been more widely used than ECC ([Elliptic Curve Cryptography](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/)) with TLS and PGP both make heavy use of it. However, Elliptic Curve Cryptography has been increasingly used more, becoming the digital signature scheme of choice for new cryptographic non-web applications. In Apple’s [white paper on iOS security](http://images.apple.com/ipad/business/docs/iOS_Security_Feb14.pdf), they relayed how they use ECDSA extensively in the Apple ecosystem. [Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [Gitlab](https://docs.gitlab.com/ee/user/ssh.html) also recommend it for SSH keys. 
+
+Furthermore, ECC keys are smaller and their operations run faster and use less power on most hardware. Lastly, all the curves available on the YubiKey are at least as strong or stronger than RSA-2048 against classical-computing attacks. 
+
+For more information, see [ECDSA: The digital signature algorithm of a better internet](https://blog.cloudflare.com/ecdsa-the-digital-signature-algorithm-of-a-better-internet/) by Nick Sullivan.
+
+It's enough background, let's get it started!
 
 ## Install and Configure Necessary Software
 
@@ -112,24 +130,6 @@ Lock configuration with this lock code? [y/N]: y
 ```
 
 After enter `y` at the prompt you will have to provide this lock code for future changes on the status of nay app on your YubiKey.
-
-## What Is OpenPGP?
-
-OpenPGP is a specification ([RFC-4880](https://datatracker.ietf.org/doc/html/rfc4880)), which describes a protocol for using public-key cryptography for encryption, signing, and key exchange, based on the original [Phil Zimmermann](https://www.philzimmermann.com/EN/background/index.html) work of Pretty Good Privacy (PGP). There is often confusion between PGP and Gnu Privacy Guard (GnuPG or GPG), probably because of the inverted acronym. Sometimes these terms are used interchangeably, but GPG is an implementation of the OpenPGP specification (and arguably the most popular one). In OpenPGP an individual has an "OpenPGP key", which is actually a set of public-private key pairs grouped together under a _master key_. Other key pairs are known as _subkeys_, and any sub-key belonging to the "OpenPGP key" will be signed by the _master key_. In addition to the master key, it is common to have 3 sub-keys with different usage:
-
-- **Authentication key** - Used to authenticate things like an SSH session.
-- **Encryption key** - Used to encrypt/decrypt stuff like files or e-mails so that only you can see them.
-- **Signature key** - Used for signing git commits, files, e-mails, etc. to prove that they came from you.
-
-## Why ED25519 Keys?
-
-Historically RSA has been more widely used than ECC ([Elliptic Curve Cryptography](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/)) with TLS and PGP both make heavy use of it. However, Elliptic Curve Cryptography has been increasingly used more, becoming the digital signature scheme of choice for new cryptographic non-web applications. In Apple’s [white paper on iOS security](http://images.apple.com/ipad/business/docs/iOS_Security_Feb14.pdf), they relayed how they use ECDSA extensively in the Apple ecosystem. [Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [Gitlab](https://docs.gitlab.com/ee/user/ssh.html) also recommend it for SSH keys. 
-
-Furthermore, ECC keys are smaller and their operations run faster and use less power on most hardware. Lastly, all the curves available on the YubiKey are at least as strong or stronger than RSA-2048 against classical-computing attacks. 
-
-For more information, see [ECDSA: The digital signature algorithm of a better internet](https://blog.cloudflare.com/ecdsa-the-digital-signature-algorithm-of-a-better-internet/) by Nick Sullivan.
-
-It's enough background, let's get it started!
 
 ## Setting up YubiKey OpenPGP
 
