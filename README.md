@@ -11,6 +11,7 @@ This repository includes multiple configuration files that help me setting up a 
 
 ### Top-level directory layout
     .
+    ├── assets             # Contains image and other asset files used by the documents on this repo.
     ├── terminal           # Configuration files for Windows Terminal and PowerShell.
     ├── zsh                # Configuration files for ZSH such as extra prompt info, autocompletion and so on.
     ├── LICENSE
