@@ -9,14 +9,26 @@
 # load shell modules, set history options, change the prompt, set up zle and completion.
 # It can also set any variables that are only used in the interactive shell (e.g. $LS_COLORS).
 
-# Source .zsh_prompt file from the same directory in which the current file resides
-# if the file exists.
-[[ -f ${ZDOTDIR}/.zsh_prompt ]] && source ${ZDOTDIR}/.zsh_prompt
+# Save command history
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+HISTSIZE=2000
+SAVEHIST=1000
+
+# Load the prompt theme from ZDORDIR or HOME directory.
+if [[ -f ${ZDOTDIR:-$HOME}/.zsh_prompt ]] ; then
+  source ${ZDOTDIR:-$HOME}/.zsh_prompt
+fi
+
+# Updates zsh configuration files for use XDG directories.
+[ -d "$XDG_CACHE_HOME"/zsh ] || mkdir -p "$XDG_CACHE_HOME"/zsh
+
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
 
 # Enable GPG Key for SSH
 unset SSH_AGENT_PID
 
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+if [ ${gnupg_SSH_AUTH_SOCK_by:-0} -ne $$ ] ; then
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
