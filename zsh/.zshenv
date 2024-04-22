@@ -23,6 +23,10 @@ if [[ -d "$XDG_DATA_HOME/gnupg" ]] ; then
     export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 fi
 
+# Override the global location for .NET CLI settings and opt out of the telemetry feature.
+export DOTNET_CLI_HOME="$XDG_DATA_HOME/Microsoft/Dotnet CLI"
+export DOTNET_CLI_TELEMETRY_OPTOUT="yes"
+
 # Updates NuGet configuration for use XDG directories.
 # https://learn.microsoft.com/en-us/nuget/consume-packages/managing-the-global-packages-and-cache-folders
 export NUGET_PACKAGES="$XDG_DATA_HOME/NuGet/packages"
