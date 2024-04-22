@@ -32,3 +32,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT="yes"
 export NUGET_PACKAGES="$XDG_DATA_HOME/NuGet/packages"
 export NUGET_HTTP_CACHE_PATH="$XDG_CACHE_HOME/NuGet/v3-cache"
 export NUGET_PLUGINS_CACHE_PATH="$XDG_CACHE_HOME/NuGet/plugins-cache"
+
+# Add DOTNET Tools and the 'code' command in PATH env variable.
+export PATH="$PATH:$DOTNET_CLI_HOME/.dotnet/tools"
+export PATH="$PATH:/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin"
