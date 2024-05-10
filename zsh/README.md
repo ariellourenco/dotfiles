@@ -29,7 +29,7 @@ The table below depicts the most important XDG environment variables used across
 
 Although the [XDG Base Directory specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) defines clear locations where configuration files should be placed and, as a user, you expect that softwares adhere to these specifications, the truth is that there are a myriad of programs that does not respect the specification and writes data to a non-canonical location in the user's home directory.
 
-The Arch Wiki has a [list of programs](https://wiki.archlinux.org/title/XDG_Base_Directory#Support) that are XBD-compliant by default and those with hard-coded non-XBD paths. The latter two lists combined is almost twice as long as the compliant list, and includes some very prominent *nix-first software like Bash, Vim, OpenSSH, and Firefox.
+The Arch Wiki has a [list of programs](https://wiki.archlinux.org/title/XDG_Base_Directory#Support) that are XBD-compliant by default and those with hard-coded non-XBD paths. The latter two lists combined is almost twice as long as the compliant list, and includes some very prominent *nix-first software like Bash, Vim, ZSH, and Firefox.
 
 Below there is a list of open issues that worth to keep an eye on:
 
@@ -42,8 +42,11 @@ Below there is a list of open issues that worth to keep an eye on:
 | Visual Studio Code      | `~/.vscode[-variant]/extensions/` | [5](https://github.com/microsoft/vscode/issues/3884)            |
 
 > [!IMPORTANT]
-> By default, **git config** will read configuration options from multiple files. When the `XDG_CONFIG_HOME` environment variable is not set or empty, `$HOME/.config/` is used as `$XDG_CONFIG_HOME`. However, on MacOS we need to manually create a `git` folder on `XDG_CONFIG_HOME` and have our `.gitconfig` file renamed to `config` to adhere to the following structure: `$XDG_CONFIG_HOME/git/config` <br /><br />
-> For further info, see: [https://git-scm.com/docs/git-config](https://git-scm.com/docs/git-config#FILES)
+> By default, **git config** will read configuration options from multiple files. When the `XDG_CONFIG_HOME` environment variable is not set or empty, `$HOME/.config/` is used as `$XDG_CONFIG_HOME`. However, on MacOS we need to manually create a `git` folder on `XDG_CONFIG_HOME` and have our `.gitconfig` file renamed to `config` to adhere to the following structure: `$XDG_CONFIG_HOME/git/config`.
+> For further details, see: [https://git-scm.com/docs/git-config](https://git-scm.com/docs/git-config#FILES)
+
+> [!NOTE]
+> Starting with version 9.1.0337, [Vim has incorporated support for the XDG Base Directory Specification](https://github.com/vim/vim/pull/14182). This is a significant development, but it may take some time for Apple to integrate it. In the meantime, this repository implements a slightly different [workaround](https://jorenar.com/blog/vim-xdg) suggested by Jorengarenar. For further details, see: [https://github.com/vim/vim/blob/master/runtime/doc/starting.txt](https://github.com/vim/vim/blob/master/runtime/doc/starting.txt)
 
 ## References
 
