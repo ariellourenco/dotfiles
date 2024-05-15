@@ -1,6 +1,6 @@
 # Terminal
 
-This folder contains files to setup a fancy experience on Windows across all its terminal options such as PowerShell, Linux Subsystem on Windows and Windows Terminal. This repository and its files was inspired by the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized). 
+This folder contains files to setup a fancy experience on Windows across all its terminal options such as PowerShell, Linux Subsystem on Windows and Windows Terminal. This repository and its files was inspired by the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized).
 
 ## Color Schemes
 
@@ -18,11 +18,9 @@ For more details and screenshots, as well as color schemes for other application
 
 Import the `.reg` file of choice, e.g. `regedit /s Solarized-Dark.reg`.
 
-This updates the registry defaults that are used for NEW shortcuts that start afresh, via `Windows+R`. It won't change existing 
-shortcuts you may already created because they have their own color mapping stored as opaque blobs of data directly into the .lnk file.
+This updates the registry defaults that are used for NEW shortcuts that start afresh, via `Windows+R`. It won't change existing shortcuts you may already created because they have their own color mapping stored as opaque blobs of data directly into the .lnk file.
 
 >[!WARNING]
->
 > Editing the registry carries risks, as a single mistake can lead to system instability. Therefore, it is essential to back up the registry and create a restore point before proceeding with the following steps.
 
 ### Update PowerShell shortcut .lnks
@@ -35,9 +33,7 @@ In the PowerShell window use this command.
 Update-Link "<shortcut.lnk>" [Light|Dark|System]
 ```
 
-The path to the shortcut.lnk is the same as you copied to your clipboard in the previous step. To easily paste it in Windows 10, 
-just right-click on the window. If the path has spaces, you will want to wrap it in quotes, but if you followed the recommended 
-way to use Copy as path, it will be done for you. If no theme is given, `Update-Link` will default to Solarized Dark. 
+The path to the shortcut.lnk is the same as you copied to your clipboard in the previous step. To easily paste it in Windows 10, just right-click on the window. If the path has spaces, you will want to wrap it in quotes, but if you followed the recommended way to use Copy as path, it will be done for you. If no theme is given, `Update-Link` will default to Solarized Dark.
 
 ## Uninstall
 

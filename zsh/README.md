@@ -5,8 +5,17 @@
      _ / /\__ \ | | | | | (__
     (_)___|___/_| |_|_|  \___|
 
-
 This repository includes greatly customized zsh with antibody featuring auto-completion, syntax highlighting, autopair and a Pure Powerlevel10k theme. Also, a one-liner install leverages Brew and mackup to setup an entire macOS environment.
+
+## Requeriments
+
+Before we proceed, ensure you have [Nerd Font](https://www.nerdfonts.com) installed and used in your terminal. [Cascadia Code](https://github.com/microsoft/cascadia-code) is a popular choice and it now [supports Nerd Font glyphs](https://devblogs.microsoft.com/commandline/cascadia-code-2404-23/) by default. To verify that you have everything set up correctly, run the following command in your terminal:
+
+```bash
+echo -e "\xee\x82\xa0"
+```
+
+If you see a git branch glyph as output, it means your terminal is successfully rendering the Nerd Font glyphs. If not, double-check your font settings and ensure you have installed a compatible Nerd Font.
 
 ## ZSHENV
 
@@ -27,11 +36,14 @@ The table below depicts the most important XDG environment variables used across
 > [!NOTE]
 > These mappings seem pretty reasonable but they aren't exact. Some data may be more appropriate for `~/Library/My App` or some configuration file for `~/Library/Application Support`, for instance, the [choice](https://pkg.go.dev/os#UserConfigDir) made by the `OS` package in `golang` maps `$XDG_CONFIG_HOME` to `~/Library/Application Support`. For further details, see: [Mac OS Directories](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html).
 
-Although the [XDG Base Directory specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) defines clear locations where configuration files should be placed and, as a user, you expect that softwares adhere to these specifications, the truth is that there are a myriad of programs that does not respect the specification and writes data to a non-canonical location in the user's home directory.
+Unfortunately, although the [XDG Base Directory specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) defines clear locations where configuration files should be placed and, as a user, you expect that softwares adhere to these specifications, the truth is that there are a myriad of programs that does not respect the specification and writes data to a non-canonical location in the user's home directory.
 
-The Arch Wiki has a [list of programs](https://wiki.archlinux.org/title/XDG_Base_Directory#Support) that are XBD-compliant by default and those with hard-coded non-XBD paths. The latter two lists combined is almost twice as long as the compliant list, and includes some very prominent *nix-first software like Bash, Vim, ZSH, and Firefox.
+The Arch Wiki has a [list of programs](https://wiki.archlinux.org/title/XDG_Base_Directory#Support) that are XBD-compliant by default and those with hard-coded non-XBD paths. The latter two lists combined is almost twice as long as the compliant list, and includes some very prominent *nix-first software like Bash, ZSH, and Firefox.
 
-Below there is a list of open issues that worth to keep an eye on:
+> [!NOTE]
+> Starting with version 9.1.0337, [Vim has incorporated support for the XDG Base Directory Specification](https://github.com/vim/vim/pull/14182). This is a significant development, but it may take some time for Apple to integrate it. In the meantime, this repository implements a slightly different [workaround](https://jorenar.com/blog/vim-xdg) suggested by Jorengarenar. For further details, see: [https://github.com/vim/vim/blob/master/runtime/doc/starting.txt](https://github.com/vim/vim/blob/master/runtime/doc/starting.txt)
+
+Below there is a list of open issues that worth to keep an eye on if you are a .NET developer :rocket::
 
 | **Application**         | **Path**                          | **Discussion**        |
 |-------------------------|-----------------------------------|-----------------------|
@@ -44,9 +56,6 @@ Below there is a list of open issues that worth to keep an eye on:
 > [!IMPORTANT]
 > By default, **git config** will read configuration options from multiple files. When the `XDG_CONFIG_HOME` environment variable is not set or empty, `$HOME/.config/` is used as `$XDG_CONFIG_HOME`. However, on MacOS we need to manually create a `git` folder on `XDG_CONFIG_HOME` and have our `.gitconfig` file renamed to `config` to adhere to the following structure: `$XDG_CONFIG_HOME/git/config`.
 > For further details, see: [https://git-scm.com/docs/git-config](https://git-scm.com/docs/git-config#FILES)
-
-> [!NOTE]
-> Starting with version 9.1.0337, [Vim has incorporated support for the XDG Base Directory Specification](https://github.com/vim/vim/pull/14182). This is a significant development, but it may take some time for Apple to integrate it. In the meantime, this repository implements a slightly different [workaround](https://jorenar.com/blog/vim-xdg) suggested by Jorengarenar. For further details, see: [https://github.com/vim/vim/blob/master/runtime/doc/starting.txt](https://github.com/vim/vim/blob/master/runtime/doc/starting.txt)
 
 ## References
 

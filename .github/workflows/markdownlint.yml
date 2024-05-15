@@ -1,0 +1,29 @@
+
+name: Markdownlint
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Run Markdownlint
+        run: |
+          echo "::add-matcher::.github/workflows/markdownlint-problem-matcher.json"
+          npm install --global markdownlint-cli
+          markdownlint "**/*.md"

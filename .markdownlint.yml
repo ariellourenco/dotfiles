@@ -1,0 +1,23 @@
+default: true
+
+# Exclusions for deliberate/widespread violations
+MD010:                        # Hard tabs
+  code_blocks: false
+MD013: false                  # Line length
+MD026:                        # Trailing punctuation in header
+  punctuation: ".,;"
+MD033:                        # Allow inline HTML
+  allowed_elements:
+    - "br"
+    - "details"
+    - "img"
+    - "picture"
+    - "source"
+    - "sub"
+    - "sup"
+    - "summary"
+MD041: false                  # First line in file should be a top level header
+MD046: false                  # Code block style
+
+# Rule settings and options are documented in https://github.com/DavidAnson/markdownlint
+# feel free to disable more low value rules in here; get rule code from the error message.

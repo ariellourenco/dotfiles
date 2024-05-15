@@ -1,12 +1,12 @@
 # YubiKey Hardware Authentication
 
-A YubiKey is a hardware-based authentication device that can securely store secret keys. When used in a web browser with two-factor authentication enabled, it provides a strong, convenient, and phishing-proof alternative to one-time passwords provided by applications or SMS. Much of the data on the key is protected from external access and modification, ensuring the secrets cannot be taken from the security key. 
+A YubiKey is a hardware-based authentication device that can securely store secret keys. When used in a web browser with two-factor authentication enabled, it provides a strong, convenient, and phishing-proof alternative to one-time passwords provided by applications or SMS. Much of the data on the key is protected from external access and modification, ensuring the secrets cannot be taken from the security key.
 
-Setting up a new YubiKey as a second factor is easy — your browser walks you through the entire process. However, setting up a YubiKey to sign commits and Secure Shell (SSH) authentication is a very different experience. 
+Setting up a new YubiKey as a second factor is easy — your browser walks you through the entire process. However, setting up a YubiKey to sign commits and Secure Shell (SSH) authentication is a very different experience.
 
 This guide will walk you through how to generate GPG keys that are good for general use, including encryption and code signing with all keys generated and stored on YubiKey, instead of generating the keys elsewhere and importing them into the YubiKey later. This guarantees that only the YubiKey holder can use the YubiKey's private keys. We also protect all applications on YubiKey that can be protected by PIN or passphrase to prevent thieves whose steal your YubiKey from using any credentials stored on it.
 
-> [!WARNING] 
+> [!WARNING]
 > This is the result of my own curiosity, investigation and preferences which might not suit your needs. Do your own research and pick the appropriate strategy for your specific requirements.
 
 ## Overview
@@ -15,23 +15,23 @@ This guide will walk you through how to generate GPG keys that are good for gene
 - Why ED25519 Keys?
 - Install and Configure Necessary Software
 - YubiKey Manager
-   - YubiKey Lock Code
+- YubiKey Lock Code
 - Setting up YubiKey OpenPGP
-   - Configure PIN/Admin PIN
-   - Changing to Better Defaults
-   - Key Creation
+  - Configure PIN/Admin PIN
+  - Changing to Better Defaults
+  - Key Creation
 - Adding a New GPG Key to your GitHub Account
 - Signing Commits & Tags
 - Enable GPG Key for SSH
-   - Using The Authentication Subkey
-   - Set SSH_AUTH_SOCK
-   - Take It For a Spin
+  - Using The Authentication Subkey
+  - Set SSH_AUTH_SOCK
+  - Take It For a Spin
 - FIDO2 Security Keys for SSH
-   - Resident vs Non-Resident Keys
-      - Benefits of resident keys
-      - Benefits of non-resident keys
-   - Setting up OpenSSH for FIDO2 Authentication
-   - Adding the SSH Key To The ssh-agent
+  - Resident vs Non-Resident Keys
+    - Benefits of resident keys
+    - Benefits of non-resident keys
+  - Setting up OpenSSH for FIDO2 Authentication
+  - Adding the SSH Key To The ssh-agent
 
 ## What Is OpenPGP?
 
@@ -43,9 +43,9 @@ OpenPGP is a specification ([RFC-4880](https://datatracker.ietf.org/doc/html/rfc
 
 ## Why ED25519 Keys?
 
-Historically RSA has been more widely used than ECC ([Elliptic Curve Cryptography](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/)) with TLS and PGP both make heavy use of it. However, Elliptic Curve Cryptography has been increasingly used more, becoming the digital signature scheme of choice for new cryptographic non-web applications. In Apple’s [white paper on iOS security](http://images.apple.com/ipad/business/docs/iOS_Security_Feb14.pdf), they relayed how they use ECDSA extensively in the Apple ecosystem. [GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [Gitlab](https://docs.gitlab.com/ee/user/ssh.html) also recommend it for SSH keys. 
+Historically RSA has been more widely used than ECC ([Elliptic Curve Cryptography](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/)) with TLS and PGP both make heavy use of it. However, Elliptic Curve Cryptography has been increasingly used more, becoming the digital signature scheme of choice for new cryptographic non-web applications. In Apple’s [white paper on iOS security](http://images.apple.com/ipad/business/docs/iOS_Security_Feb14.pdf), they relayed how they use ECDSA extensively in the Apple ecosystem. [GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [Gitlab](https://docs.gitlab.com/ee/user/ssh.html) also recommend it for SSH keys.
 
-Furthermore, ECC keys are smaller and their operations run faster and use less power on most hardware. Lastly, all the curves available on the YubiKey are at least as strong or stronger than RSA-2048 against classical-computing attacks. 
+Furthermore, ECC keys are smaller and their operations run faster and use less power on most hardware. Lastly, all the curves available on the YubiKey are at least as strong or stronger than RSA-2048 against classical-computing attacks.
 
 For more information, see [ECDSA: The digital signature algorithm of a better internet](https://blog.cloudflare.com/ecdsa-the-digital-signature-algorithm-of-a-better-internet/) by Nick Sullivan.
 
@@ -76,6 +76,7 @@ scdaemon:Smartcards:/usr/local/Cellar/gnupg/2.4.3/libexec/scdaemon
 dirmngr:Network:/usr/local/Cellar/gnupg/2.4.3/bin/dirmngr
 pinentry:Passphrase Entry:/usr/local/opt/pinentry/bin/pinentry
 ```
+
 Make sure the pinentry shows a GUI prompt by running the `echo GETPIN | pinentry-mac` command.
 
 ## YubiKey Manager
@@ -91,7 +92,7 @@ Form factor: Keychain (USB-A)
 Enabled USB interfaces: FIDO, CCID
 NFC transport is enabled.
 
-Applications	USB          	NFC          
+Applications	USB          	NFC
 OTP         	Disabled     	Disabled
 FIDO U2F    	Enabled      	Enabled
 FIDO2       	Enabled      	Enabled
@@ -179,8 +180,8 @@ The OpenPGP app has 3 PINs: the **Admin PIN**, the **User PIN**, and the **Reset
 
 You need to change the various default PINs on the YubiKey. Pick something unique and consider using a password manager such as [Bitwarden](https://bitwarden.com/) for storing them.
 
-> [!NOTE]  
-> We don't need and won’t set a **Reset Code**. 
+> [!NOTE]
+> We don't need and won’t set a **Reset Code**.
 
 ```bash
 gpg/card> passwd
@@ -201,16 +202,14 @@ Enter `1` at the prompt for the `passwd` command, and then enter `123456` which 
 For the **Admin PIN** enter `12345678`, which is the default PIN, and use a simple passphrase with at least 8 characters long. It doesn’t need to be any stronger than the **User PIN**, just different (enough so that an adversary wouldn’t be able to guess the **Admin PIN** if she finds out your user PIN).
 
 > [!NOTE]
-> Optionally, we can protect against unintended operations by requiring every remote Git operation an additional key tap to ensure that malwares cannot initiate requests without approval.
-> ```bash
-> ykman openpgp keys set-touch aut on
-> ykman openpgp keys set-touch dec on
-> ykman openpgp keys set-touch sig on
-> ```
+> Optionally, we can protect against unintended operations by requiring every remote Git operation an additional key tap to ensure that malwares cannot initiate requests without approval. <br/><br/>
+> `ykman openpgp keys set-touch aut on` <br/>
+> `ykman openpgp keys set-touch dec on` <br/>
+> `ykman openpgp keys set-touch sig on` <br/>
 
 ### Changing to Better Defaults
 
-We want to make sure we're using the strongest key types that are available for GPG. For our purposes, we going to use [Ed25519](https://ed25519.cr.yp.to/) signing key for signing messages, an [X25519](https://cr.yp.to/ecdh.html) decryption key for decrypting messages, and an [Ed25519](https://ed25519.cr.yp.to/) authentication key for signature-based authentication (such as for SSH). 
+We want to make sure we're using the strongest key types that are available for GPG. For our purposes, we going to use [Ed25519](https://ed25519.cr.yp.to/) signing key for signing messages, an [X25519](https://cr.yp.to/ecdh.html) decryption key for decrypting messages, and an [Ed25519](https://ed25519.cr.yp.to/) authentication key for signature-based authentication (such as for SSH).
 
 So, use the `key-attr` command so that when you generate your keys, it will generate Curve 25519 keys instead of RSA keys:
 
@@ -269,7 +268,7 @@ Enter `n` to ensure that the private keys never leave the YubiKey, and enter the
 Make off-card backup of encryption key? (Y/n) n
 
 Please specify how long the key should be valid.
-         0 = key does not expire
+        0 = key does not expire
       <n>  = key expires in n days
       <n>w = key expires in n weeks
       <n>m = key expires in n months
@@ -289,7 +288,7 @@ You selected this USER-ID:
 Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 ```
 
-When prompted for your real name, email address, and comment, use the “real name” field for the display name or alias you want associated with the OpenPGP key, the “email address” field for the email account associated with the key (to keep your email private use your GitHub-provided no-reply email address) and the “comment” field for a word or phrase that will distinguish this key from other keys you have used or will use in the future with the same name and email. 
+When prompted for your real name, email address, and comment, use the “real name” field for the display name or alias you want associated with the OpenPGP key, the “email address” field for the email account associated with the key (to keep your email private use your GitHub-provided no-reply email address) and the “comment” field for a word or phrase that will distinguish this key from other keys you have used or will use in the future with the same name and email.
 
 > [!NOTE]
 > Note that we can later add more UIDs to an OpenPGP key via the `gpg --edit-key` command. We can also delete existing UIDs from a key the same way — but deleting UIDs can be difficult to get completely right and correctly propagated to all copies of the key.
@@ -310,14 +309,14 @@ sec>  ed25519/36264D8005D951D8 2023-10-23 [SC]
       Card serial no. = 0006 12345678
 uid                 [ultimate] RealName <youremail@example.com>
 ssb>  ed25519/AC59547D0CCB5ACE 2023-10-23 [A]
-ssb>  cv25519/2B5F29BB2DCA942D 2023-10-23 [E] 
+ssb>  cv25519/2B5F29BB2DCA942D 2023-10-23 [E]
 ```
 
 Determine the key ID for your signing key. This is the hexadecimal number on the line designated [SC] above `36264D8005D951D8`.
 
 Log in to GitHub and go to Settings → [Add new GPG key](https://github.com/settings/gpg/new) page. Copy the output from `gpg --armor --export {your-key-id}` and add a new GPG key.
 
-Copy the entire text block, including the `-----BEGIN PGP PUBLIC KEY BLOCK-----` and `-----END PGP PUBLIC KEY BLOCK-----`. 
+Copy the entire text block, including the `-----BEGIN PGP PUBLIC KEY BLOCK-----` and `-----END PGP PUBLIC KEY BLOCK-----`.
 
 Give the key a name and save it.
 
@@ -365,22 +364,22 @@ GitHub also marks a commit or tag as "Verified" or "Partially Verified" if a com
 
 ## Enable GPG Key for SSH
 
-There are a few moving parts needed to expose your new GPG key in a way that your SSH client will use them. The SSH client reads the `SSH_AUTH_SOCK` environment variable which contains the location of a Unix socket managed by an agent. A `gpg-agent` running in the background controls this socket and allows your GPG key to be used for authentication. 
+There are a few moving parts needed to expose your new GPG key in a way that your SSH client will use them. The SSH client reads the `SSH_AUTH_SOCK` environment variable which contains the location of a Unix socket managed by an agent. A `gpg-agent` running in the background controls this socket and allows your GPG key to be used for authentication.
 
 Enable SSH support using standard sockets by updating the `~/.gnupg/gpg-agent.conf` file:
 
-```
+```bash
 # Enable SSH Support
-# The OpenSSH Agent protocol is always enabled, but gpg-agent will only set the 
+# The OpenSSH Agent protocol is always enabled, but gpg-agent will only set the
 # SSH_AUTH_SOCK variable if this flag is given. In this mode of operation, the agent does not
 # only implement the gpg-agent protocol, but also the agent protocol used by OpenSSH.
-# https://www.gnupg.org/documentation/manuals/gnupg/Agent-Options.html  
+# https://www.gnupg.org/documentation/manuals/gnupg/Agent-Options.html
 enable-ssh-support
 
-# Connects gpg-agent to the OSX keychain via the pinentry-mac program from GPGtools. 
-# This is the OSX 'magic sauce', allowing the gpg key's passphrase to be stored in 
+# Connects gpg-agent to the OSX keychain via the pinentry-mac program from GPGtools.
+# This is the OSX 'magic sauce', allowing the gpg key's passphrase to be stored in
 # the login keychain, enabling automatic key signing.
-pinentry-program /usr/local/bin/pinentry-mac 
+pinentry-program /usr/local/bin/pinentry-mac
 ```
 
 Optionally, the `gpg-agent` can be configured via `pinentry-program` stanza to use a particular pinentry user interface when prompting the user for a passphrase. The default is a CLI program that does not provide a nice user experience, in this guide we use `pinentry-mac` instead. With `pinentry-mac` you can choose to save your passphrase in your MacOS keychain.
@@ -405,13 +404,13 @@ sec>  ed25519/36264D8005D951D8 2023-10-23 [SC]
 uid                 [ultimate] RealName <youremail@example.com>
 ssb>  ed25519/AC59547D0CCB5ACE 2023-10-23 [A]
       Keygrip = 28E05AC1DCFCB0C23EFD89A86C627B0959758813
-ssb>  cv25519/2B5F29BB2DCA942D 2023-10-23 [E]                      
+ssb>  cv25519/2B5F29BB2DCA942D 2023-10-23 [E]
       Keygrip = 48B8049057AE142926CADB23A816DFF57DC85098
 ```
 
-Update `~/.gnupg/sshcontrol` with the authentication _keygrip_; this allows the `gpg-agent` to use this key with SSH. 
+Update `~/.gnupg/sshcontrol` with the authentication _keygrip_; this allows the `gpg-agent` to use this key with SSH.
 
-```
+```bash
 # List of allowed ssh keys.  Only keys present in this file are used
 # in the SSH protocol.  The ssh-add tool may add new entries to this
 # file to enable them; you may also add them manually.  Comment
@@ -426,12 +425,12 @@ Update `~/.gnupg/sshcontrol` with the authentication _keygrip_; this allows the 
 28E05AC1DCFCB0C23EFD89A86C627B0959758813
 ```
 
-> [!IMPORTANT] 
+> [!IMPORTANT]
 > Do not confuse the Key ID with the Keygrip which is the hexadecimal number right below the line designated [A]: `28E05AC1DCFCB0C23EFD89A86C627B0959758813`.
 
 ### Set SSH_AUTH_SOCK
 
-Edit the `~/.zshrc` file (or similar shell startup file) to include the following variables that enable the communication with `gpg-agent` instead of the default `ssh-agent` and start the `gpg-agent` if it isn't started already. 
+Edit the `~/.zshrc` file (or similar shell startup file) to include the following variables that enable the communication with `gpg-agent` instead of the default `ssh-agent` and start the `gpg-agent` if it isn't started already.
 
 ```bash
 # Enable GPG Key for SSH
@@ -445,7 +444,7 @@ export GPG_TTY=$(tty)
 
 # gpg-agent is a daemon to manage secret (private) keys independently from any protocol.
 # It's automatically started on demand by gpg, gpgsm, gpgconf, or gpg-connect-agent.
-# However, as we want to use the included Secure Shell Agent we need to start the 
+# However, as we want to use the included Secure Shell Agent we need to start the
 # agent if it isn't started already.
 gpgconf --launch gpg-agent
 ```
@@ -473,7 +472,7 @@ ssh-add -L | grep -iF 'cardno' | pbcopy
 
 Log in to GitHub and go to Settings → [Add new SSH](https://github.com/settings/ssh/new) page.
 
-Then, execute: 
+Then, execute:
 
 ```bash
 ssh -T git@github.com
@@ -481,13 +480,11 @@ ssh -T git@github.com
 
 Enter your PIN when prompted in the GUI. You should authenticate successfully to GitHub:
 
-```
-Hi username! You've successfully authenticated, but GitHub does not provide shell access.
-```
+> Hi username! You've successfully authenticated, but GitHub does not provide shell access.
 
 ## FIDO2 Security Keys for SSH
 
-Starting with 8.2p1, [OpenSSH has added support for registering and authenticating with FIDO2 Credentials](https://www.openssh.com/txt/release-8.2). This is achieved in SSH by storing the credential ID along with some other non-sensitive metadata in an SSH identity file, in the `~\.ssh\` folder, of the logged in user. Although this file look like an SSH private key, it is just a unique identifier for the public key that is stored on the YubiKey. 
+Starting with 8.2p1, [OpenSSH has added support for registering and authenticating with FIDO2 Credentials](https://www.openssh.com/txt/release-8.2). This is achieved in SSH by storing the credential ID along with some other non-sensitive metadata in an SSH identity file, in the `~\.ssh\` folder, of the logged in user. Although this file look like an SSH private key, it is just a unique identifier for the public key that is stored on the YubiKey.
 
 While it has long been possible to use the YubiKey for [SSH via the OpenPGP](#enable-gpg-key-for-ssh) or PIV features, the direct support in SSH is easier to set up, more portable, and works with any U2F or FIDO2 security key.
 
@@ -517,7 +514,7 @@ Before generating a new SSH key to store on our YubiKey we must consider which a
 | No PIN or touch are required     | Required to enter the FIDO2 PIN or touch the YubiKey each time to authenticate | `ssh-keygen -t ed25519-sk -O resident -O no-touch-required`|
 | PIN but no touch required        | Entering the PIN will be required but touching the physical key will not | `ssh-keygen -t ed25519-sk -O resident -O verify-required -O no-touch-required` |
 | No PIN but touch is required     | You will only need to touch the YubiKey to authenticate | `ssh-keygen -t ed25519-sk -O resident` |
-| A PIN and a touch are required   | This is the most secure option, it requires both the PIN and touching to be used| ` ssh-keygen -t ed25519-sk -O resident -O verify-required` |
+| A PIN and a touch are required   | This is the most secure option, it requires both the PIN and touching to be used| `ssh-keygen -t ed25519-sk -O resident -O verify-required` |
 
 > [!NOTE]
 > Worth note that if using a PIN you don't need to add an additional SSH passphrase as it's redundant due to the FIDO2 PIN being used instead.
@@ -549,17 +546,7 @@ ssh-keygen -t ed25519-sk -C "youremail@example.com"
 ```
 
 > [!IMPORTANT]
-> The OpenSSH bundled with macOS can not generate resident keys, despite being compatible with them. This is due to the version shipped by macOS does not bundle the required middleware `libsk-libfido2.dylib` and generating a key results in:
->
-> ```bash
-> Generating public/private ed25519-sk key pair.
-> You may need to touch your authenticator to authorize key generation.
-> No FIDO SecurityKeyProvider specified
-> Key enrollment failed: invalid format
->
-> OpenSSH_9.6p1, LibreSSL 3.3.6
-> ```
-> For further information, see: [Bundled version of OpenSSH with macOS Monterey doesn't support FIDO2 yubikeys](https://github.com/Yubico/libfido2/issues/464)
+> The OpenSSH bundled with macOS can not generate resident keys, despite being compatible with them. This is due to the version shipped by macOS does not bundle the required middleware `libsk-libfido2.dylib` and generating a key results in `No FIDO SecurityKeyProvider specified` error message. For further information, see: [Bundled version of OpenSSH with macOS Monterey doesn't support FIDO2 yubikeys](https://github.com/Yubico/libfido2/issues/464)
 
 When prompted, touch the button on your YubiKey and press `Enter` to accept the default file location.
 
