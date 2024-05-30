@@ -288,12 +288,15 @@ You selected this USER-ID:
 Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
 ```
 
-When prompted for your real name, email address, and comment, use the “real name” field for the display name or alias you want associated with the OpenPGP key, the “email address” field for the email account associated with the key (to keep your email private use your GitHub-provided no-reply email address) and the “comment” field for a word or phrase that will distinguish this key from other keys you have used or will use in the future with the same name and email.
+When prompted for your real name, email address, and comment, use the “real name” field for the display name or alias you want associated with the OpenPGP key, the “email address” field for the email account associated with the key (to keep your email private use your GitHub/GitLab-provided no-reply email address) and the “comment” field for a word or phrase that will distinguish this key from other keys you have used or will use in the future with the same name and email.
 
-> [!NOTE]
+> [!IMPORTANT]
 > Note that we can later add more UIDs to an OpenPGP key via the `gpg --edit-key` command. We can also delete existing UIDs from a key the same way — but deleting UIDs can be difficult to get completely right and correctly propagated to all copies of the key.
 
 ## Adding a New GPG Key to your GitHub Account
+
+> [!NOTE]
+> Most of the steps below also works with GitLab. Therefore, for the rest of this guide I will focus on GitHub as it is arguably the most famous Git Hosting solution.
 
 GitHub supports several GPG key algorithms. By adding your public key to your GitHub account, you enable GitHub to verify that your signatures are in fact yours.
 
