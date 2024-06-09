@@ -54,8 +54,7 @@ Below there is a list of open issues that worth to keep an eye on if you are a .
 | Visual Studio Code      | `~/.vscode[-variant]/extensions/` | [5](https://github.com/microsoft/vscode/issues/3884)            |
 
 > [!IMPORTANT]
-> By default, **git config** will read configuration options from multiple files. When the `XDG_CONFIG_HOME` environment variable is not set or empty, `$HOME/.config/` is used as `$XDG_CONFIG_HOME`. However, on MacOS we need to manually create a `git` folder on `XDG_CONFIG_HOME` and have our `.gitconfig` file renamed to `config` to adhere to the following structure: `$XDG_CONFIG_HOME/git/config`.
-> For further details, see: [https://git-scm.com/docs/git-config](https://git-scm.com/docs/git-config#FILES)
+> By default, Git reads configuration options from [two user-wide configs](https://git-scm.com/docs/git-config#_configuration): `.gitconfig` in the home directory, and `$HOME/.config/git/config` unless `$XDG_CONFIG_HOME/git/config` is set. Since neither of these are Windows-native directories, [Git for Windows now looks for Git/config in the AppData directory](https://github.com/git-for-windows/git/pull/5030), unless `$HOME/.config/git/config` exists. Worth note that this feature isn't enable by default, the presence of the file in one of the specified directories as a cue that the user wants to use this feature, therefore, we need to create it manually.
 
 ## References
 
