@@ -41,7 +41,9 @@ Unfortunately, although the [XDG Base Directory specification](https://specifica
 The Arch Wiki has a [list of programs](https://wiki.archlinux.org/title/XDG_Base_Directory#Support) that are XBD-compliant by default and those with hard-coded non-XBD paths. The latter two lists combined is almost twice as long as the compliant list, and includes some very prominent *nix-first software like Bash, ZSH, and Firefox.
 
 > [!NOTE]
-> Starting with version 9.1.0337, [Vim has incorporated support for the XDG Base Directory Specification](https://github.com/vim/vim/pull/14182). This is a significant development, but it may take some time for Apple to integrate it. In the meantime, this repository implements a slightly different [workaround](https://jorenar.com/blog/vim-xdg) suggested by Jorengarenar. For further details, see: [https://github.com/vim/vim/blob/master/runtime/doc/starting.txt](https://github.com/vim/vim/blob/master/runtime/doc/starting.txt)
+> Starting with version [9.1.0327](https://github.com/vim/vim/commit/c9df1fb35a1866901c32df37dd39c8b39dbdb64a), [Vim has incorporated support for the XDG Base Directory Specification](https://github.com/vim/vim/pull/14182).
+This is a significant development, but it may take some time for Apple to integrate it. In the meantime, this repository implements a slightly different [workaround](https://jorenar.com/blog/vim-xdg) suggested by Jorengarenar.
+For further details, see: [https://github.com/vim/vim/blob/master/runtime/doc/starting.txt](https://github.com/vim/vim/blob/master/runtime/doc/starting.txt)
 
 Below there is a list of open issues that worth to keep an eye on if you are a .NET developer :rocket::
 
