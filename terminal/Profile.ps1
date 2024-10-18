@@ -2,8 +2,33 @@
 using namespace System.Management.Automation.Language
 
 Import-Module -Name posh-git
-Import-Module -Name PSReadLine
 Import-Module -Name Terminal-Icons
+
+# Initializes Oh My Posh - A prompt theme engine.
+# If we are in an integrated terminal (Rider or VSCode) use default prompt.
+if ($null -eq $env:TERMINAL_EMULATOR)
+{
+    oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/poshv.json" | Invoke-Expression
+}
+
+# Enable tab completion for Winget 
+Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+        [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
+        $Local:word = $wordToComplete.Replace('"', '""')
+        $Local:ast = $commandAst.ToString().Replace('"', '""')
+        winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+}
+
+# Enable tab completion for the dotnet CLI
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+        dotnet complete --position $cursorPosition "$commandAst" | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+}
 
 # Configure the PSreadLine module.
 Set-PSReadLineOption -EditMode Windows
@@ -74,66 +99,6 @@ Set-PSReadLineKeyHandler -Key F7 `
     }
 }
 
-# F1 for help on the command line - naturally
-Set-PSReadLineKeyHandler -Key F1 `
-                         -BriefDescription CommandHelp `
-                         -LongDescription "Open the help window for the current command" `
-                         -ScriptBlock {
-    param($key, $arg)
-
-    $ast = $null
-    $tokens = $null
-    $errors = $null
-    $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
-
-    $commandAst = $ast.FindAll( {
-        $node = $args[0]
-        $node -is [CommandAst] -and
-            $node.Extent.StartOffset -le $cursor -and
-            $node.Extent.EndOffset -ge $cursor
-        }, $true) | Select-Object -Last 1
-
-    if ($commandAst -ne $null)
-    {
-        $commandName = $commandAst.GetCommandName()
-        if ($commandName -ne $null)
-        {
-            $command = $ExecutionContext.InvokeCommand.GetCommand($commandName, 'All')
-            if ($command -is [AliasInfo])
-            {
-                $commandName = $command.ResolvedCommandName
-            }
-
-            if ($commandName -ne $null)
-            {
-                Get-Help $commandName -ShowWindow
-            }
-        }
-    }
-}
-
-# Insert text from the clipboard as a here string
-Set-PSReadLineKeyHandler -Key Ctrl+V `
-                         -BriefDescription PasteAsHereString `
-                         -LongDescription "Paste the clipboard text as here string" `
-                         -ScriptBlock {
-    param($key, $arg)
-
-    Add-Type -AssemblyName PresentationCore
-
-    if ([System.Windows.Clipboard]::ContainsText())
-    {
-        # Get clipboard text - remove trailing spaces, convert \r\n to \n, and remove the final \n.
-        $text = ([System.Windows.Clipboard]::GetText() -replace "\p{Zs}*`r?`n","`n").TrimEnd()
-
-        [Microsoft.PowerShell.PSConsoleReadLine]::Insert("@'`n$text`n'@")
-    }
-    else
-    {
-        [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
-    }
-}
 
 # Sometimes you enter a command but realize you forgot to do something else first.
 # This binding will let you save that command in the history so you can recall it,
