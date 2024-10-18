@@ -1,0 +1,13 @@
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[credential]
+	helper = manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[core]
+	autocrlf = true
+[init]
+	defaultBranch = main
+[user]
+	name = Ariel Lourenco
+	email = ariel.lourenco@paneratech.com
