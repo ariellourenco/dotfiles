@@ -33,8 +33,9 @@ setopt correct                  # Auto-correct commands
 setopt extended_glob            # Enable extended globbing – ls *(a|b)*file
 setopt pushd_ignore_dups        # Do not push duplicated directories into directory stack
 setopt pushdminus               # Swap the top two directories when using cd -
-setopt correct                  # Auto-correct commands
-setopt extended_glob            # Enable extended globbing – ls *(a|b)*file
+
+# Extends the zsh capabilities by sourcing external configuration files.
+[ -f "${ZDOTDIR}/modules/completion.zsh" ] && source "${ZDOTDIR}/modules/completion.zsh"
 
 # Enable GPG Key for SSH
 unset SSH_AGENT_PID
