@@ -7,10 +7,31 @@ export XDG_CONFIG_HOME="${HOME}/Library/Preferences"
 export XDG_DATA_HOME="${HOME}/Library/Application Support"
 export XDG_STATE_HOME="${HOME}/Library/Application Support"
 
-# Sets the paths of Zsh dotfiles directory.
-# These folders are created by the installation script and should be present at this stage.
-[[ -d "$XDG_CONFIG_HOME/zsh" ]] && export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-[[ -d "$XDG_CACHE_HOME/zsh"  ]] && export ZCACHEDIR="$XDG_CACHE_HOME/zsh"
+if [[ ! -d "$XDG_CACHE_HOME/zsh" ]]; then
+    # Create a directory for Zsh cache, with the specified permissions:
+    #   Owner: read, write, execute (7)
+    #   Group: read (4)
+    #   Others: read (4)
+    mkdir -p -m 0744 "$XDG_CACHE_HOME/zsh"
+fi
+
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export ZCACHEDIR="$XDG_CACHE_HOME/zsh"
+
+# Disables macOS's "Save/Restore Shell State" feature and unify
+# the terminal command history
+if [[ "$OSTYPE" == darwin* ]]; then
+    export SHELL_SESSIONS_DISABLE=1
+fi
+
+# Sets the default system editor.
+export EDITOR="vim"
+export VISUAL="vim"
+
+# Disables the creation of the history file used by the Less command.
+# Note: Since version 590 Less respects the XDG Base Directory Specification, however, it may
+# take sometime to Apple updates the version bundled with macOS.
+export LESSHISTFILE=-
 
 # Sets GnuPG configuration files directory.
 # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration.html
