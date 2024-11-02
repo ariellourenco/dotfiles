@@ -11,7 +11,7 @@
 
 # Sets the history file path and options.
 # The values chosen here are the recoomended value to have a substantial history without overly impacting performance.
-HISTFILE=${ZCACHEDIR:-$HOME}/.zsh_history  # History filepath
+HISTFILE=${ZCACHEDIR:-$HOME}/.zsh_history     # History filepath
 HISTSIZE=2000                                 # Maximum number of commands that are stored in memory during a shell session.
 SAVEHIST=1000                                 # Maximum number of commands that are saved in the history file when the shell exits.
 
@@ -35,7 +35,10 @@ setopt pushd_ignore_dups        # Do not push duplicated directories into direct
 setopt pushdminus               # Swap the top two directories when using cd -
 
 # Extends the zsh capabilities by sourcing external configuration files.
-[ -f "${ZDOTDIR}/modules/completion.zsh" ] && source "${ZDOTDIR}/modules/completion.zsh"
+[[ -f "${ZDOTDIR}/modules/aliases.zsh" ]] && source "${ZDOTDIR}/modules/aliases.zsh"
+[[ -f "${ZDOTDIR}/modules/completion.zsh" ]] && source "${ZDOTDIR}/modules/completion.zsh"
+
+[[ -d "${ZDOTDIR}/plugins/zsh-completions" ]] && fpath=("${ZDOTDIR}/plugins/zsh-completions/src" $fpath)
 
 # Enable GPG Key for SSH
 unset SSH_AGENT_PID
