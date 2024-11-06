@@ -20,3 +20,19 @@ if !empty($XDG_DATA_HOME)
 
 	set viminfofile=$XDG_DATA_HOME/vim/viminfo
 endif
+
+filetype plugin on      " Enable filetype plugingsi
+filetype indent on      " Load indent file for detected file type
+
+set history=500         " Sets how many lines of history VIM has to remember
+set nocompatible        " Disables compatibility with Vi
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set noexpandtab         " Use tabs instead of spaces
+set number              " Show line numbers
+set tabstop=4           " Number of spaces a <Tab> counts for
+
+syntax on               " Turn syntax highlighting on
