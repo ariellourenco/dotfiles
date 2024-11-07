@@ -38,6 +38,7 @@ setopt pushdminus               # Swap the top two directories when using cd -
 [[ -f "${ZDOTDIR}/modules/aliases.zsh" ]] && source "${ZDOTDIR}/modules/aliases.zsh"
 [[ -f "${ZDOTDIR}/modules/completion.zsh" ]] && source "${ZDOTDIR}/modules/completion.zsh"
 
+[[ -d "${ZDOTDIR}/plugins/zsh-autosuggestions" ]] && source "${ZDOTDIR}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 [[ -d "${ZDOTDIR}/plugins/zsh-completions" ]] && fpath=("${ZDOTDIR}/plugins/zsh-completions/src" $fpath)
 
 # Enable GPG Key for SSH
