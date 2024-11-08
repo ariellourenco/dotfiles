@@ -40,6 +40,7 @@ setopt pushdminus               # Swap the top two directories when using cd -
 
 [[ -d "${ZDOTDIR}/plugins/zsh-autosuggestions" ]] && source "${ZDOTDIR}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 [[ -d "${ZDOTDIR}/plugins/zsh-completions" ]] && fpath=("${ZDOTDIR}/plugins/zsh-completions/src" $fpath)
+[[ -d "${ZDOTDIR}/plugins/zsh-syntax-highlighting" ]] && source "${ZDOTDIR}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # Enable GPG Key for SSH
 unset SSH_AGENT_PID
