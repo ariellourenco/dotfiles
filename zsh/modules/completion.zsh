@@ -75,3 +75,6 @@ zstyle -e ':completion:*:hosts' hosts 'reply=(
   ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
   ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
 )'
+
+# Add additional completion definitions for Zsh.
+[[ -d "${ZDOTDIR}/plugins/zsh-completions" ]] && fpath=("${ZDOTDIR}/plugins/zsh-completions/src" $fpath)
