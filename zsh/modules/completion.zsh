@@ -78,3 +78,4 @@ zstyle -e ':completion:*:hosts' hosts 'reply=(
 
 # Add additional completion definitions for Zsh.
 [[ -d "${ZDOTDIR}/plugins/zsh-completions" ]] && fpath=("${ZDOTDIR}/plugins/zsh-completions/src" $fpath)
+[[ -d "${ZDOTDIR}/completions/" ]] && source "${ZDOTDIR}/completions/_dotnet"
