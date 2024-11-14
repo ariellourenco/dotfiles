@@ -37,6 +37,7 @@ setopt pushdminus               # Swap the top two directories when using cd -
 # Extends the zsh capabilities by sourcing external configuration files.
 [[ -f "${ZDOTDIR}/modules/aliases.zsh" ]] && source "${ZDOTDIR}/modules/aliases.zsh"
 [[ -f "${ZDOTDIR}/modules/completion.zsh" ]] && source "${ZDOTDIR}/modules/completion.zsh"
+[[ -f "${ZDOTDIR}/modules/key-bindings.zsh" ]] && source "${ZDOTDIR}/modules/key-bindings.zsh"
 
 [[ -d "${ZDOTDIR}/plugins/zsh-autosuggestions" ]] && source "${ZDOTDIR}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 [[ -d "${ZDOTDIR}/plugins/zsh-syntax-highlighting" ]] && source "${ZDOTDIR}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
