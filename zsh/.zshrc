@@ -10,7 +10,7 @@
 # It can also set any variables that are only used in the interactive shell (e.g. $LS_COLORS).
 
 # Sets the history file path and options.
-# The values chosen here are the recoomended value to have a substantial history without overly impacting performance.
+# The values chosen here are the recommended value to have a substantial history without overly impacting performance.
 HISTFILE=${ZCACHEDIR:-$HOME}/.zsh_history     # History filepath
 HISTSIZE=2000                                 # Maximum number of commands that are stored in memory during a shell session.
 SAVEHIST=1000                                 # Maximum number of commands that are saved in the history file when the shell exits.
