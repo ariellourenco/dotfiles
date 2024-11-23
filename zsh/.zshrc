@@ -39,6 +39,8 @@ setopt pushdminus               # Swap the top two directories when using cd -
 [[ -f "${ZDOTDIR}/modules/completion.zsh" ]] && source "${ZDOTDIR}/modules/completion.zsh"
 [[ -f "${ZDOTDIR}/modules/key-bindings.zsh" ]] && source "${ZDOTDIR}/modules/key-bindings.zsh"
 
+# Be extra careful about plugin load order, or subtle breakage can emerge.
+# This is the best order I've sussed out for these plugins.
 [[ -d "${ZDOTDIR}/plugins/zsh-autosuggestions" ]] && source "${ZDOTDIR}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 [[ -d "${ZDOTDIR}/plugins/zsh-syntax-highlighting" ]] && source "${ZDOTDIR}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
