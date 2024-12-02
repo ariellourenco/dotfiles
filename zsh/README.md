@@ -110,6 +110,24 @@ The table below depicts the list of key bindings configured:
 | `Ctrl-r`             | `history-incremental-search-backward` | Incrementally search backward in history for a specified string. |
 | `Space`              | `magic-space`                         | Insert a space without triggering history expansion.             |
 
+### Prompt
+
+The prompt in this Zsh configuration is powered by [Spaceship](https://spaceship-prompt.sh/), a minimalistic yet powerful and highly customizable Zsh prompt. Spaceship provides a clean and modern look, displaying only relevant information dynamically. Additionally, the Terminal.app is further styled with the [Monokai Pro](https://monokai.pro) theme to ensure a visually appealing and consistent terminal experience.
+
+Below is an example of how the prompt might look during typical use:
+
+![Screenshot of a configured Terminal.app](../assets/terminal.png)
+
+#### Other Great Themes
+
+While [Monokai Pro](https://monokai.pro) is the default in this setup, there are many excellent terminal themes with great support and documentation. Three standout options are:
+
+- [Dracula](https://draculatheme.com): A dark theme with vibrant colors and wide compatibility.
+- [Nord](https://www.nordtheme.com): A cool, Arctic-inspired theme with a focus on readability.
+- [One Half](https://github.com/sonph/onehalf): A modern theme with a clean and consistent color palette.
+
+Feel free to experiment with these themes to find the one that best suits your preferences!
+
 ## References
 
 - [$HOME, Not So Sweet $HOME](https://gist.github.com/sharadhr/39b804236c1941e9c30d90af828ad41e)
