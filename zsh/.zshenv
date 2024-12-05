@@ -33,6 +33,22 @@ export VISUAL="vim"
 # take sometime to Apple updates the version bundled with macOS.
 export LESSHISTFILE=-
 
+# MAN colors
+export LESS_TERMCAP_mb=$'e[1;35m'
+export LESS_TERMCAP_md=$'e[1;36m'
+export LESS_TERMCAP_me=$'e[0m'
+export LESS_TERMCAP_se=$'e[0m'
+export LESS_TERMCAP_so=$'e[1;44;33m'
+export LESS_TERMCAP_ue=$'e[0m'
+export LESS_TERMCAP_us=$'e[1;32m'
+
+# Enables colored output for the ls command
+export CLICOLOR=1
+export LSCOLORS=gxfxexdxcxegedabagacad
+
+# grep colors
+export GREP_OPTIONS='--color=auto'
+
 # Sets GnuPG configuration files directory.
 # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration.html
 if [[ -d "$XDG_DATA_HOME/gnupg" ]] ; then
