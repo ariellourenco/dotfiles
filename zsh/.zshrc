@@ -63,10 +63,3 @@ export GPG_TTY=$(tty)
 # However, as we want to use the included Secure Shell Agent we need to start the
 # agent if it isn't started already.
 gpgconf --launch gpg-agent
-
-# Make Vim follow XDG Base Directory specification
-# After version 9.1.0327, Vim supports the XDG Base Directory specification and this code is not needed.
-if [ -x "$(command -v vim)" ]; then
-  [ "$(vim --clean -es + 'exec "!echo" has("patch-9.1.0327")' +q)" -eq 0 ] && \
-    export VIMINIT="set nocp | source ${XDG_DATA_HOME:-$HOME/.config}/vim/vimrc"
-fi
