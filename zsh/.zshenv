@@ -3,7 +3,7 @@
 # https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
 # https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html
 export XDG_CACHE_HOME="${HOME}/Library/Caches"
-export XDG_CONFIG_HOME="${HOME}/Library/Preferences"
+export XDG_CONFIG_HOME="${HOME}/Library/Application Support"
 export XDG_DATA_HOME="${HOME}/Library/Application Support"
 export XDG_STATE_HOME="${HOME}/Library/Application Support"
 
