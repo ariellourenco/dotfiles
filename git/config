@@ -1,0 +1,29 @@
+[include]
+    path = ./config.personal
+[includeIf "gitdir:%(prefix)//mnt/c/**"]
+    ; include only if Git itself was installed on WSL
+    path= %(prefix)//mnt/c/appdata/roaming/git/config.wsl
+[core]
+	autocrlf = input
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[fetch]
+	prune = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+[gpg]
+	program = gpg
+[user]
+	name = Ariel Lourenco
+	email = ariellourenco@users.noreply.github.com
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
