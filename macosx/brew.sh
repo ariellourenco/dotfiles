@@ -30,17 +30,18 @@ brew upgrade
 brew install gnupg
 brew install pinentry-mac
 brew install ykman
+brew install spaceship
 
 # Apps I use
 # brew install --cask bitwarden
 brew install --cask ccleaner
 # brew install --cask microsoft-excel
-brew install --cask microsoft-onenote
+# brew install --cask microsoft-onenote
 # brew install --cask microsoft-powerpoint
 # brew install --cask microsoft-word
-brew install --cask microsoft-edge
+# brew install --cask microsoft-edge
 brew install --cask protonvpn
-brew install --cask spotify
+# brew install --cask spotify
 brew install --cask visual-studio-code
 
 # Remove outdated versions from the cellar.
