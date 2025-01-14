@@ -51,14 +51,9 @@ export GREP_OPTIONS='--color=auto'
 
 # Sets GnuPG configuration files directory.
 # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration.html
-if [[ -d "$XDG_DATA_HOME/gnupg" ]] ; then
-    # To fix the "WARNING: unsafe permissions on homedir error"
-    # corrent the permissons and access rights on the directory as follow:
-    # chmod 600 ~/Library/Application Support/gnupg/*
-    # chmod 700 ~/Library/Application Support/gnupg
+[[ ! -d "$XDG_DATA_HOME/gnupg" ]] && mkdir -p -m 0700 "$XDG_DATA_HOME/gnupg"
 
-    export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-fi
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 
 # Overrides the global location for .NET CLI settings and opt out of the telemetry feature.
 export DOTNET_CLI_HOME="$XDG_DATA_HOME/Microsoft/Dotnet CLI"

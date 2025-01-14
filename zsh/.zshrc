@@ -44,9 +44,11 @@ setopt pushdminus               # Swap the top two directories when using cd -
 [[ -d "${ZDOTDIR}/plugins/zsh-autosuggestions" ]] && source "${ZDOTDIR}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 [[ -d "${ZDOTDIR}/plugins/zsh-syntax-highlighting" ]] && source "${ZDOTDIR}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-# Install Spaceship as the default prompt if it is available
-if [[ -f "$(brew --prefix)/opt/spaceship/spaceship.zsh" ]]; then
-  source "$(brew --prefix)/opt/spaceship/spaceship.zsh"
+# Source Spaceship as the default prompt if it is available
+if command -v brew &> /dev/null; then
+  if [[ -f "$(brew --prefix)/opt/spaceship/spaceship.zsh" ]]; then
+    source "$(brew --prefix)/opt/spaceship/spaceship.zsh"
+  fi;
 fi;
 
 # Enable GPG Key for SSH
