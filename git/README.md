@@ -32,6 +32,12 @@ To include a personal configuration file, use the following directive:
 
 This line includes a personal configuration file, allowing you to separate sensitive information, such as email address, signing key, or any other information that could be harmful if exposed, from the main configuration.
 
+```text
+[user]
+    email = youremail@example.com
+    signingkey = 36264D8005D951D8
+```
+
 ### Conditional Inclusion
 
 To conditionally include configurations based on specific directories, use the following directive:
