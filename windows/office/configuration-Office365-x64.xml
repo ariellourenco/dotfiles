@@ -1,0 +1,25 @@
+﻿<!--
+  Office 365 client configuration file to be used for Office 365 ProPlus apps
+  and Office 365 Home.
+-->
+
+<Configuration>
+  <Add OfficeClientEdition="64" Channel="Current" AllowCdnFallback="TRUE" ForceUpgrade="TRUE">
+    <Product ID="O365HomePremRetail">
+      <Language ID="en-us" />
+      <Language ID="pt-br" />
+      <ExcludeApp ID="Access" />
+      <ExcludeApp ID="Bing" />
+      <ExcludeApp ID="Groove" />
+      <ExcludeApp ID="Lync" />
+      <ExcludeApp ID="Outlook" />
+      <ExcludeApp ID="Publisher" />
+      <ExcludeApp ID="Teams" />
+    </Product>
+  </Add>
+
+  <Display Level="Full" AcceptEULA="TRUE" />
+  <Property Name="AUTOACTIVATE" Value="1" />
+  <Updates Enabled="TRUE" Channel="Current" />
+  <RemoveMSI All="TRUE" />
+</Configuration>
