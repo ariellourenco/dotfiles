@@ -1,6 +1,6 @@
 # Terminal
 
-This folder contains files to setup a fancy experience on Windows across all its terminal options such as PowerShell, Linux Subsystem on Windows and Windows Terminal. This repository and its files was inspired by the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized).
+This folder and its files was ~~inspired by~~ copied from the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized). I have only added the Ubuntu theme for Linux Subsystem.
 
 ## Color Schemes
 
@@ -25,7 +25,7 @@ This updates the registry defaults that are used for NEW shortcuts that start af
 
 ### Update PowerShell shortcut .lnks
 
-The easiest way to do this on Windows 10 is to click `Start`, then type in the command you want to change. When it appears in the list, `right-click` and select `Open file location`. This will open an Explorer window and show you the shortcut. Hold shift and right-click on the shortcut, then select `Copy as path`. Now open a PowerShell to the location of this project.
+The easiest way to do this on Windows is to click `Start`, then type in the command you want to change. When it appears in the list, `right-click` and select `Open file location`. This will open an Explorer window and show you the shortcut. Hold shift and right-click on the shortcut, then select `Copy as path`. Now open a PowerShell to the location of this project.
 
 In the PowerShell window use this command.
 
@@ -53,12 +53,3 @@ To restore the shortcut file defaults use the follow command.
 ```PowerShell
 Update-Link "<shortcut.lnk>" System
 ```
-
-## Side Notes
-
-There are a bunch of great modules out there that can help boost your experience using PowerShell such as [PSReadLine](https://github.com/PowerShell/PSReadLine), which makes PowerShell behave like zsh, that is my favorite shell in GNU/Linux. It gives you substring history search, incremental history search, and awesome tab-completion. Down below, some other modules that compose my Powershell customizations:
-
-* [PackageManagement (WinGet)](https://github.com/microsoft/winget-cli)
-* [PSReadLine](https://github.com/PowerShell/PSReadLine)
-* [posh-git](https://github.com/dahlbyk/posh-git)
-* [Termnal-Icons](https://github.com/devblackops/Terminal-Icons)
