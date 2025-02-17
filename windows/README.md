@@ -1,6 +1,6 @@
 # Windows
 
-This folder contains all the necessary files and steps to customize a new Windows 11 machine to be able to start building apps 🚀. This is done using a combination of [Windows Package Manager](https://learn.microsoft.com/windows/package-manager/winget/) (WinGet) [Configuration File](https://learn.microsoft.com/windows/package-manager/configuration/) (*configuration.dsc.yaml*) that will work with the WinGet command line interface (`winget configure --file [path: configuration.dsc.yaml]`) and manual tasks.
+This folder contains all the necessary files and steps to customize a new Windows 11 machine with a fancy experience across all its terminal options such as PowerShell, Linux Subsystem on Windows and Windows Terminal 🎨. This is done using a combination of [Windows Package Manager](https://learn.microsoft.com/windows/package-manager/winget/) (WinGet) [Configuration File](https://learn.microsoft.com/windows/package-manager/configuration/) (*configuration.dsc.yaml*) that will work with the WinGet command line interface (`winget configure --file [path: configuration.dsc.yaml]`) and manual tasks.
 
 When run, the `configuration.dsc.yaml` file will install the following list of applications:
 
@@ -20,7 +20,7 @@ The `configuration.dsc.yaml` file will also apply the following changes on the t
 > [!IMPORTANT]
 > The [PowerShell Desired State Configuration (DSC)](https://learn.microsoft.com/en-us/powershell/dsc/overview?view=dsc-2.0) that enable Windows optional features has been commented out due to an error with winget configuration calls to DSC resource. For further details, see: <https://github.com/microsoft/winget-cli/issues/4264>.
 
-## How do I use this folder? 🤔
+## How to use this folder? 🤔
 
 To use this folder, simple follow the steps below.
 
@@ -34,7 +34,7 @@ winget configure --file [path: configuration.dsc.yaml]
 
 ### Microsoft Office 365
 
-**Microsoft Office 365** requires its own subsection in this document. In earlier versions of **Microsoft Office**, users could customize the installation by selecting specific applications. In **Office 365**, this is no longer possible. The full Office suite of applications will be installed, whether it is an MSI installation from ISO or a Click-to-Run installation, and it is no longer possible to remove or add individual Office applications.
+**Microsoft Office 365** requires its own subsection in this document. In earlier versions of **Microsoft Office**, users could customize the installation by selecting specific applications. However, in **Office 365**, this is no longer possible. The full Office suite of applications will be installed, whether it is an MSI installation from ISO or a Click-to-Run installation, and it is no longer possible to remove or add individual Office applications.
 
 To achieve this custom installation behavior, Microsoft released the [Office Deployment Tool (ODT)](https://learn.microsoft.com/microsoft-365-apps/deploy/overview-office-deployment-tool) — a command-line tool that provides more control over an Office installation. With ODT, you can define which products and languages are installed, how those products should be updated, and whether or not to display the installation experience.
 
@@ -57,6 +57,19 @@ You can [customize](https://learn.microsoft.com/microsoft-365-apps/deploy/office
 
 >[!NOTE]
 > We're aiming to streamline our WinGet configuration by automating the Office 365 Apps installation as well as other features! Currently, this step requires manual intervention, which isn't ideal. If you have WinGet experience, we encourage you to submit a pull request adding this functionality. Help us make this happen! 🥇
+
+### PowerShell Profile
+
+A [PowerShell profile](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles) is a script that a PowerShell host loads and executes automatically every time you start that host, letting you customize your environment. It's similar to `.zprofile` and `.zshrc` files in zsh. The script is, in effect, dot-sourced, so any alias, variables, functions, and the like that you define in a profile script remain available in the PowerShell session, which is incredibly handy. I use profiles to create a fancy and productive PowerShell experience.
+
+The [profile](Profile.ps1) available in this folder reflects my preferred setup. It contains modules that help me boost my experience using PowerShell such as [PSReadLine](https://github.com/PowerShell/PSReadLine), which makes PowerShell behave like zsh (that is my favorite shell in GNU/Linux) by giving you substring history search, incremental history search, and awesome tab-completion 🤯.
+
+Down below, some other modules that compose my PowerShell customizations:
+
+* [Termnal-Icons](https://github.com/devblackops/Terminal-Icons)
+
+> [!IMPORTANT]
+> Be aware that complex profiles can cause a significant delay in the startup of PowerShell as it is a script that needs to be executed before the prompt first shows up. For more info about how to speed up your profile, see: <https://devblogs.microsoft.com/powershell/optimizing-your-profile/>
 
 ## References 📚
 
