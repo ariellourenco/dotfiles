@@ -142,3 +142,29 @@ properties:
           Write-Host "🔗 Symlinking configuration files."
 
           New-Item -ItemType SymbolicLink -Path $destinationPath -Target $sourceDir -Force
+    - resource: PSDscResources/Script
+      dependsOn:
+        - Dotfiles
+      directives:
+        description: Install Windows PowerShell profile
+        allowPrerelease: true
+      settings:
+        GetScript: return $false
+        TestScript: return $false
+        SetScript: |
+          $directory = Split-Path -Path $PROFILE.CurrentUserAllHots -Parent
+          $profile = "D:\dotfiles\windows\Profile.ps1"
+
+          Write-Host
+          Write-Host "📄 Copying Profile.ps1 to WindowsPowerShell profile folder."
+
+          if (-not (Test-Path -Path $directory)) {
+            New-Item -Path $directory -ItemType Directory -Force
+          }
+
+          # Copy the file, overwriting if it exists
+          Copy-Item -Path $profile -Destination $directory -Force
+
+          # Install PowerShell modules from PowerShell Gallery
+          Install-Module -Name PSReadLine -AllowPrerelease -Force
+          Install-Module -Name Terminal-Icons -Force
