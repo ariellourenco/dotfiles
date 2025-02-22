@@ -141,3 +141,23 @@ properties:
           Write-Verbose -Message "🔗 Symlinking configuration files." -Verbose
 
           New-Item -ItemType SymbolicLink -Path $destinationPath -Target $sourceDir -Force
+    - resource: PSDscResources/Script
+      dependsOn:
+        - Dotfiles
+      directives:
+        description: Install Windows PowerShell profile
+        allowPrerelease: true
+      settings:
+        GetScript: return $false
+        TestScript: return $false
+        SetScript: |
+          $profile = 'D:\dotfiles\windows\Profile.ps1'
+          $profilePath = Join-Path -Path $env:USERPROFILE -ChildPath 'Documents' -AdditionalChildPath 'WindowsPowerShell'
+
+          if (-not (Test-Path -Path $profilePath)) {
+            New-Item -Path $profilePath -ItemType Directory -Force
+          }
+
+          Write-Verbose -Message "📄 Copying Profile.ps1 to $profilePath directory." -Verbose
+
+          Copy-Item -Path $profile -Destination $profilePath -Force
