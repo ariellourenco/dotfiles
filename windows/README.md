@@ -32,6 +32,8 @@ To use this folder, simple follow the steps below.
 winget configure --file [path: configuration.dsc.yaml]
 ```
 
+![Screenshot of winget execution](../assets/winget.png)
+
 ### Microsoft Office 365
 
 **Microsoft Office 365** requires its own subsection in this document. In earlier versions of **Microsoft Office**, users could customize the installation by selecting specific applications. However, in **Office 365**, this is no longer possible. The full Office suite of applications will be installed, whether it is an MSI installation from ISO or a Click-to-Run installation, and it is no longer possible to remove or add individual Office applications.
