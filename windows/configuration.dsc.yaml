@@ -153,6 +153,8 @@ properties:
         SetScript: |
           $profile = 'D:\dotfiles\windows\Profile.ps1'
           $profilePath = Join-Path -Path $env:USERPROFILE -ChildPath 'Documents' -AdditionalChildPath 'WindowsPowerShell'
+          $currentUserModulePath = Join-Path -Path $profilePath -ChildPath 'Modules'
+          $env:PSModulePath = $currentUserModulePath + ";" + [System.Environment]::GetEnvironmentVariable("PSModulePath", "Machine")
 
           if (-not (Test-Path -Path $profilePath)) {
             New-Item -Path $profilePath -ItemType Directory -Force
@@ -161,3 +163,7 @@ properties:
           Write-Verbose -Message "📄 Copying Profile.ps1 to $profilePath directory." -Verbose
 
           Copy-Item -Path $profile -Destination $profilePath -Force
+
+          Write-Verbose -Message "🧩 Installing PowerShell modules." -Verbose
+
+          Install-Module -Name 'Terminal-Icons' -Scope CurrentUser -Force
