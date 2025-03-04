@@ -14,10 +14,13 @@ This repository includes multiple configuration files that help me setting up a 
 ## Top-level directory layout
 
     .
-    ├── assets             # Contains image and other asset files used by the documents on this repo.
-    ├── docs               # The central hub for all documentation related to this project.
-    ├── terminal           # Configuration files for Windows Terminal and PowerShell.
-    ├── zsh                # Configuration files for ZSH such as extra prompt info, autocompletion and so on.
+    ├── assets        # Contains images and other asset files used in the documentation and project materials
+    ├── docs          # The central hub for all documentation related to this project
+    ├── git           # Configuration files and scripts for Git, including aliases, templates, and global settings
+    ├── macosx        # Configuration files and scripts to automate the setup of a macOS machine
+    ├── vim           # Configuration files for Vim, including custom settings and plugins to enhance the editing experience
+    ├── windows       # Configuration files used to consolidate automate Windows machine setup
+    ├── zsh           # Configuration files for ZSH such as extra prompt info, autocompletion and so on
     ├── LICENSE
     └── README.md
 
