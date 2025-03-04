@@ -105,3 +105,40 @@ properties:
     #       wsl --install -d Ubuntu
     #     GetScript: return $false
     #     TestScript: return $false
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Git
+      directives:
+        description: Install Git
+        allowPrerelease: true
+      settings:
+        id: Git.Git
+    - resource: GitDsc/GitClone
+      id: Dotfiles
+      dependsOn:
+        - DevDrive
+        - Git
+      directives:
+        description: Clone dotfiles repository
+        allowPrerelease: true
+      settings:
+        HttpsUrl: https://github.com/ariellourenco/dotfiles/
+        RootDirectory: D:\
+        Ensure: Present
+    - resource: PSDscResources/Script
+      dependsOn:
+        - Dotfiles
+      directives:
+        description: Install dotfiles
+        allowPrerelease: true
+      settings:
+        GetScript: return $false
+        TestScript: return $false
+        SetScript: |
+          $sourceDir = "D:\dotfiles\git"
+          $folderName = Split-Path $sourceDir -Leaf
+          $destinationDir = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+          $destinationPath = Join-Path -Path $destinationDir -ChildPath $folderName
+
+          Write-Verbose -Message "🔗 Symlinking configuration files." -Verbose
+
+          New-Item -ItemType SymbolicLink -Path $destinationPath -Target $sourceDir -Force
