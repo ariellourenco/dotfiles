@@ -134,14 +134,13 @@ properties:
         GetScript: return $false
         TestScript: return $false
         SetScript: |
-          $sourceDir = "D:\dotfiles\git"
-          $folderName = Split-Path $sourceDir -Leaf
+          $sourceDir = "D:\dotfiles"
           $destinationDir = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
-          $destinationPath = Join-Path -Path $destinationDir -ChildPath $folderName
 
           Write-Verbose -Message "🔗 Symlinking configuration files." -Verbose
 
-          New-Item -ItemType SymbolicLink -Path $destinationPath -Target $sourceDir -Force
+          New-Item -ItemType SymbolicLink -Path "$destinationDir\Git" -Target "$sourceDir\git" -Force
+          New-Item -ItemType SymbolicLink -Path "$destinationDir\Vim" -Target "$sourceDir\vim" -Force
     - resource: PSDscResources/Script
       dependsOn:
         - Dotfiles
