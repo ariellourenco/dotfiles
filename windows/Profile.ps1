@@ -8,9 +8,14 @@ Import-Module -Name Terminal-Icons
 # Configure the PSReadLine module
 Set-PSReadLineOption -HistoryNoDuplicates
 Set-PSReadLineOption -MaximumHistoryCount 100
-Set-PSReadLineOption -PredictionViewStyle ListView
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+Set-PSReadLineOption -HistorySearchCursorMovesToEn
+
+if ($PSVersionTable.PSEdition -eq 'Core') {
+    # Windows PowerShell does not support predictive suggestion feature because the console
+    # output does not support virtual terminal processing or it's redirected.
+    Set-PSReadLineOption -PredictionSource History
+    Set-PSReadLineOption -PredictionViewStyle ListView
+}
 
 # Configure key handlers for history search
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
@@ -183,7 +188,6 @@ Set-PSReadLineKeyHandler -Key '"',"'" `
 
 #endregion Smart Insert/Delete
 
-# Additional handlers and configurations omitted for brevity...
 # Sometimes you want to get a property or invoke a member on what you've entered so far,
 # but you need parentheses to do that. This binding will help by putting parentheses
 # around the current selection, or if nothing is selected, the whole line.
