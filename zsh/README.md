@@ -54,8 +54,8 @@ Below is a list of open issues worth monitoring if you are a .NET developer :roc
 |-------------------------|-----------------------------------|-----------------------|
 | .NET Runtime            | `~/.microsoft/`                   | [1](https://github.com/dotnet/runtime/issues/101012)            |
 | ASP.NET Core            | `~/.aspnet/`                      | [2](https://github.com/dotnet/aspnetcore/issues/43278)          |
-| Mono                    | `~/.mono/`                        | [3](https://github.com/mono/mono/pull/12764)                    |
-| C# Dev Kit for VS Code  | `~/.ServiceHub/`                  | [4](https://github.com/microsoft/vscode-dotnettools/issues/514) |
+| C# Dev Kit for VS Code  | `~/.ServiceHub/`                  | [3](https://github.com/microsoft/vscode-dotnettools/issues/514) |
+| C# Dev Kit for VS Code  | `~/.dotnet/`                      | [4](https://github.com/microsoft/vscode-dotnettools/issues/1963)|
 | Visual Studio Code      | `~/.vscode[-variant]/extensions/` | [5](https://github.com/microsoft/vscode/issues/3884)            |
 
 > [!NOTE]
