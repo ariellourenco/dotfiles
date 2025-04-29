@@ -1,6 +1,6 @@
 #################################################################################
-## Ignore MacOS temporary files
-## From: https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
+## Ignore temporary files
+## From: https://github.com/github/gitignore/
 #################################################################################
 
 # General
@@ -11,21 +11,9 @@
 # Sensitive Information
 config.personal
 
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-.apdisk
-Network Trash Folder
-Temporary Items
+# Vim
+vim/*
+!vim/colors
+!vim/plugins
+!vim/spell
+!vim/vimrc
