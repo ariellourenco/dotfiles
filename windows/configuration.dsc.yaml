@@ -75,6 +75,18 @@ properties:
         description: Manage NuGet global packages
       settings:
         SetScript: |
+          $destinationPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+
+          # Replace backslashes with forward slashes
+          $gnupgHome = $destinationPath -replace '\\', '/'
+
+          # Convert drive letter (e.g. C:) to lowercase
+          if ($gnupgHome -match '^([A-Za-z]):') {
+              $drive = $matches[1].ToLower()
+              $gnupgHome = $gnupgHome -replace '^[A-Za-z]:', "$drive"
+          }
+
+          [System.Environment]::SetEnvironmentVariable("GNUPGHOME", "$gnupgHome/gnupg", "User")
           [System.Environment]::SetEnvironmentVariable("NUGET_PACKAGES", "D:\NuGet\Packages", "User")
         GetScript: return $false
         TestScript: return $false
