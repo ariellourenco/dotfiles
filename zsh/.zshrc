@@ -11,9 +11,10 @@
 
 # Sets the history file path and options.
 # The values chosen here are the recommended value to have a substantial history without overly impacting performance.
-HISTFILE=${ZCACHEDIR:-$HOME}/.zsh_history     # History filepath
-HISTSIZE=2000                                 # Maximum number of commands that are stored in memory during a shell session.
-SAVEHIST=1000                                 # Maximum number of commands that are saved in the history file when the shell exits.
+HISTFILE=${ZCACHEDIR:-$HOME}/.zsh_history                        # History filepath
+HISTSIZE=2000                                                    # Maximum number of commands that are stored in memory during a shell session.
+SAVEHIST=1000                                                    # Maximum number of commands that are saved in the history file when the shell exits.
+HISTORY_IGNORE='(ls|ll|la|cd|cd ..|pwd|exit|date|history|clear)' # Make some commands not show up in history
 
 # Zsh history command configuration
 setopt append_history           # Append history to the history file
