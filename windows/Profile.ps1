@@ -13,7 +13,7 @@ Set-PSReadLineOption -HistorySearchCursorMovesToEn
 if ($PSVersionTable.PSEdition -eq 'Core') {
     # Windows PowerShell does not support predictive suggestion feature because the console
     # output does not support virtual terminal processing or it's redirected.
-    Set-PSReadLineOption -PredictionSource History
+    Set-PSReadLineOption -PredictionSource HistoryAndPlugin
     Set-PSReadLineOption -PredictionViewStyle ListView
 }
 
