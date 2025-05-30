@@ -27,32 +27,28 @@ properties:
       settings:
         GetScript: |
           # Find the registry key for the Office 365 product
-          $keyName = (Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" |
-            Where-Object { $_.GetValue("DisplayName") -like "Office*" }).Name
+          $key = (Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" |
+            Where-Object { $_.GetValue("DisplayName") -like "Office*" })
 
-          return $keyName.Length -gt 0
+          return $null -ne $key
         TestScript: |
           # Find the registry key for the Office 365 product
-          $keyName = (Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" |
-            Where-Object { $_.GetValue("DisplayName") -like "Office*" }).Name
+          $key = (Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" |
+            Where-Object { $_.GetValue("DisplayName") -like "Office*" })
 
-          return $keyName.Length -gt 0
+          return $null -ne $key
         SetScript: |
           $url = "https://raw.githubusercontent.com/ariellourenco/dotfiles/main/windows/office/configuration-Office365-x64.xml"
-          $filename = Split-Path -Path $url -Leaf
-          $localPathForRemoteFile = "$env:PROGROMFILES\OfficeDeploymentTool\$filename"
+          $filePath = Join-Path -Path $env:PROGRAMFILES -ChildPath "OfficeDeploymentTool"
+          $fileName = Split-Path -Path $url -Leaf
 
-          $directory = Split-Path -Path $localPathForRemoteFile -Parent
-          if (-not (Test-Path -Path $directory)) {
-            Write-Error
-            Write-Error "The directory $directory does not exist. Please, ensure that the Office Deployment Tool is installed." -ForegroundColor Red
+          if (-not (Test-Path -Path $filePath)) {
+            Write-Error "The directory $filePath does not exist. Please, ensure that the Office Deployment Tool is installed."
           }
 
           # Download the file from the URL, overwriting if it exists
-          Invoke-WebRequest -Uri $url -OutFile $localPathForRemoteFile
+          Invoke-WebRequest -Uri $url -OutFile "$filePath/$fileName"
           Start-Sleep -Seconds 5
 
-          $sourcePath = $localPathForRemoteFile
-
           # Execute ODT to install Office 365
-          Start-Process -FilePath "$directory\setup.exe" -ArgumentList "/configure $sourcePath" -Wait
+          Start-Process -FilePath "$filePath\setup.exe" -WorkingDirectory $filePath -ArgumentList "/configure $fileName" -Wait
