@@ -1,29 +1,49 @@
 [include]
     path = ./config.personal
-[includeIf "gitdir:%(prefix)//mnt/c/**"]
+
+[includeIf "gitdir/i:%(prefix)//mnt/c/"]
     ; include only if Git itself was installed on WSL
     path= %(prefix)//mnt/c/appdata/roaming/git/config.wsl
-[core]
-	autocrlf = input
+
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+
+[core]
+	autocrlf = input
+
 [fetch]
 	prune = true
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
 [init]
 	defaultBranch = main
+
 [commit]
 	gpgsign = true
+
 [tag]
 	gpgsign = true
+
 [gpg]
 	program = gpg
+
+[pull]
+    rebase = true
+
 [user]
 	name = Ariel Lourenco
 	email = ariellourenco@users.noreply.github.com
+
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    ; Deletes all branches merged into the specified branch (or the default branch if no branch is specified)
+    bclean = "!git gone | xargs -r git branch -D"
+    gone = "!git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads/ | awk '$2 == \"[gone]\" { print $1 }'"
+	history = log --abbrev-commit --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    sync = !git pull --rebase && git push
+    undo = reset HEAD~1 --mixed
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
