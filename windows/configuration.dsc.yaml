@@ -10,25 +10,19 @@ properties:
       settings:
         MinVersion: "10.0.22621.2338"
   resources:
-    - resource: Microsoft.Windows.Developer/DeveloperMode
-      id: DeveloperMode
+    - resource: Microsoft.Windows.Settings/WindowsSettings
       directives:
-        description: Enable Developer Mode
-        allowPrerelease: false
-      settibgs:
-        Ensure: present
-    - resource: Microsoft.Windows.Developer/EnableDarkMode
-      id: DarkMode
-      directives:
-        description: Enable Dark Mode
-        allowPrerelease: false
+        allowPrerelease: true
+        description: Configure Windows Settings
+        securityContext: elevated
       settings:
-        Ensure: Present
-        RestartExplorer: true
+        AppColorMode: 'Dark'
+        DeveloperMode: true
     - resource: PSDscResources/Script
       id: DisableUAC
       directives:
         description: Disables User Account Control (UAC)
+        securityContext: elevated
       settings:
         SetScript: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -38,9 +32,10 @@ properties:
     - resource: VirtualHardDisk
       id: VHD
       directives:
+        allowPrerelease: true
         description: Create a new Virtual Hard Drive
         module: StorageDsc
-        allowPrerelease: true
+        securityContext: elevated
       settings:
         FilePath: 'C:\Users\ariellourenco\DevDrives\DevHome.vhdx'
         DiskSize: 65552Mb
@@ -52,9 +47,10 @@ properties:
       dependsOn:
         - VHD
       directives:
+        allowPrerelease: true
         description: Format a new Dev Drive volume onto VHD
         module: StorageDsc
-        allowPrerelease: true
+        securityContext: elevated
       settings:
         DiskId: 1
         DiskIdType: 'Number'
