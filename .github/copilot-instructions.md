@@ -1,3 +1,9 @@
+# dotfiles - GitHub Copilot Instructions
+
+This document provides guidance for GitHub Copilot when generating code for this project. Follow these guidelines to ensure that generated code aligns with the project's coding standards and architectural principles.
+
+## Commit
+
 - Avoid undescriptive one-liner commit messages
 - The first line should be short, 50 characters or less, and express intention
 - Write the commit message in present imperative tense

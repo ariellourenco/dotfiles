@@ -1,7 +1,8 @@
 {
-	"github.copilot.chat.commitMessageGeneration.instructions": [
+  "github.copilot.chat.commitMessageGeneration.instructions": [
 		{
-			"file": ".github/commit-instructions.md"
+			"file": ".github/copilot-instructions.md"
 		}
-	]
+	],
+  "files.trimTrailingWhitespace": true
 }
