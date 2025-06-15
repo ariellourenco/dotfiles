@@ -1,8 +1,10 @@
 {
+  "files.associations": {
+    "vimrc": "vimscript"
+  },
   "github.copilot.chat.commitMessageGeneration.instructions": [
 		{
 			"file": ".github/copilot-instructions.md"
 		}
-	],
-  "files.trimTrailingWhitespace": true
+	]
 }
