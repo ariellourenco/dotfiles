@@ -15,18 +15,30 @@ if !empty($XDG_CONFIG_HOME)
 	set viminfofile=$XDG_CONFIG_HOME/vim/viminfo
 endif
 
-filetype plugin on      " Enable filetype plugingsi
-filetype indent on      " Load indent file for detected file type
+filetype plugin on              " Enable filetype plugingsi
+filetype indent on              " Load indent file for detected file type
 
-set history=500         " Sets how many lines of history VIM has to remember
-set nocompatible        " Disables compatibility with Vi
+set encoding=utf-8              " Set the default encoding to UTF-8
+set hidden                      " Allow switching between buffers without saving them
+set history=500                 " Sets how many lines of history VIM has to remember
+set nocompatible                " Disables compatibility with Vi
+set nomodeline                  " Disable modeline processing to prevent malicious settings from files
+set updatetime=1000             " Update the file every second
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set noexpandtab         " Use tabs instead of spaces
-set number              " Show line numbers
-set tabstop=4           " Number of spaces a <Tab> counts for
+set autoindent                  " Copy indent from current line when starting a new line
+set backspace=indent,eol,start  " Allow backspacing over everything in insert mode
+set noexpandtab                 " Use tabs instead of spaces
+set nowrap                      " Do not wrap long lines
+set number                      " Displays line numbers on the left side
+set tabstop=4                   " Number of spaces a <Tab> counts for
+set ruler                       " Show the current line and column number in the status line
+set smarttab                    " Use smart tabbing
+set shiftwidth=4                " Number of spaces to use for each step of (auto)indent
+set splitbelow                  " Split windows below the current window
+set splitright                  " Split windows to the right of the current window
 
-syntax on               " Turn syntax highlighting on
+syntax on                       " Turn syntax highlighting on
