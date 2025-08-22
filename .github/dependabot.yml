@@ -1,0 +1,9 @@
+version: 2
+updates:
+  # Keep submodules up to date
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "[deps]"
