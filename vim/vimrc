@@ -57,4 +57,12 @@ syntax on                       " Turn syntax highlighting on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 call plug#begin(data_dir.'/plugins')
+
+Plug 'vim-airline/vim-airline'             " Lean & mean status/tabline for vim
+Plug 'vim-airline/vim-airline-themes'      " Themes for vim-airline
+
 call plug#end()
+
+" airline
+let g:airline_theme="onedark"
+let g:airline_powerline_fonts = 1
