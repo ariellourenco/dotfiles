@@ -60,6 +60,7 @@ call plug#begin(data_dir.'/plugins')
 
 Plug 'vim-airline/vim-airline'             " Lean & mean status/tabline for vim
 Plug 'vim-airline/vim-airline-themes'      " Themes for vim-airline
+Plug 'tpope/vim-fugitive'                  " Vim plugin for Git
 
 call plug#end()
 
