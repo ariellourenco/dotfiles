@@ -57,7 +57,7 @@ syntax on                       " Turn syntax highlighting on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Install Plugins with Vim-Plug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin(data_dir . '/plugins')
+call plug#begin(data_dir . '/plugged')
 
 Plug 'vim-airline/vim-airline'                                          " Lean & mean status/tabline for vim
 Plug 'vim-airline/vim-airline-themes'        						    " Themes for vim-airline
@@ -73,7 +73,7 @@ call plug#end()
 
 " airline
 let g:airline_theme="gruvbox"
-let g:airline_powerline_fonts = 1 
+let g:airline_powerline_fonts = 1
 
 " Set Vim color scheme
 set background=dark              " Setting dark mode
