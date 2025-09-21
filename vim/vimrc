@@ -19,6 +19,8 @@ endif
 " After installation, it triggers plugin installation on Vim startup and reloads the VIMRC.
 " For more details, visit: https://github.com/junegunn/vim-plug
 let data_dir = split(&runtimepath, ',')[0]
+let colors_dir = data_dir . '/colors'
+
 if empty(glob(data_dir . '/autoload/plug.vim'))
 	silent execute '!curl -fLo '.shellescape(data_dir).'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -55,16 +57,26 @@ syntax on                       " Turn syntax highlighting on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Install Plugins with Vim-Plug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin(data_dir . '/plugins')
 
-call plug#begin(data_dir.'/plugins')
+Plug 'vim-airline/vim-airline'                                          " Lean & mean status/tabline for vim
+Plug 'vim-airline/vim-airline-themes'        						    " Themes for vim-airline
+Plug 'tpope/vim-fugitive'                    						    " Vim plugin for Git
+Plug 'tpope/vim-surround'                    							" Vim plugin for manipulate surrounding characters
 
-Plug 'vim-airline/vim-airline'             " Lean & mean status/tabline for vim
-Plug 'vim-airline/vim-airline-themes'      " Themes for vim-airline
-Plug 'tpope/vim-fugitive'                  " Vim plugin for Git
-Plug 'tpope/vim-surround'                  " Vim plugin for manipulate surrounding characters
+" Save themes within /colors folder to better organization
+Plug 'morhetz/gruvbox', { 'dir':  colors_dir . '/gruvbox' }             " Gruvbox color scheme for Vim
+Plug 'nordtheme/vim', { 'dir': colors_dir . '/nord' }                   " Nord color scheme for Vim
+Plug 'dracula/vim', { 'as': 'dracula', 'dir': colors_dir . '/dracula' } " Dracula color scheme for Vim
 
 call plug#end()
 
 " airline
-let g:airline_theme="onedark"
-let g:airline_powerline_fonts = 1
+let g:airline_theme="gruvbox"
+let g:airline_powerline_fonts = 1 
+
+" Set Vim color scheme
+set background=dark              " Setting dark mode
+let g:gruvbox_italic=1			 " Enabling italic text
+
+colorscheme gruvbox
