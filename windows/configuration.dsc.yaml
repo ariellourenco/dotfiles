@@ -142,45 +142,38 @@ properties:
           Write-Verbose -Message "🔗 Symlinking configuration files." -Verbose
 
           New-Item -ItemType SymbolicLink -Path "$destinationDir\Git" -Target "$sourceDir\git" -Force
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Powershell
+      directives:
+        description: Install PowerShell 7
+        securityContext: elevated
+      settings:
+        id: Microsoft.PowerShell
+        source: winget
     - resource: PSDscResources/Script
       dependsOn:
         - Dotfiles
+        - PowerShell
       directives:
-        description: Setup Windows PowerShell
+        description: Setup PowerShell
         securityContext: elevated
       settings:
         GetScript: return $false
         TestScript: return $false
         SetScript: |
-          $profile                = 'D:\dotfiles\windows\Profile.ps1'
-          $windowsPSProfileFolder = "$env:USERPROFILE\Documents\WindowsPowerShell"
-          $windowsPSFolder        = "$env:SystemRoot\System32\WindowsPowershell\v1.0"
-          $windowsPSExe           = "$windowsPSFolder\powershell.exe"
+          $profile = 'D:\dotfiles\windows\Profile.ps1'
+          $profilePath = Join-Path -Path ([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::MyDocuments)) -ChildPath 'PowerShell'
 
-          # DSC creates a dedicated PowerShell session for each configuration to manage dependencies per-configuration.
-          # It uses a different $env:PSModulePath which enforce us to temporarily set the PSModulePath to run Windows PowerShell
-          # instead of PowerShell to discover required modules available.
-          # See: https://learn.microsoft.com/azure/governance/machine-configuration/whats-new/psdsc-in-machine-configuration
-          $location = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
-          $env:PSModulePath = "$windowsPSProfileFolder\Modules" + ";" + (Get-ItemProperty $location).PSModulePath
-
-          $powerShellGetVersion = Get-Module -ListAvailable -Name PowerShellGet | Select-Object -First 1 -ExpandProperty Version
-
-          Write-Debug "PowerShellGet version $powerShellGetVersion"
-
-          if ($powerShellGetVersion -lt [version]"1.6.0") {
-            # Windows PowerShell 5.1 comes with version 1.0.0.1 of the PowerShellGet and PackageManagement preinstalled.
-            # However, this version of PowerShellGet has a limited features and must be updated to work with
-            # the PowerShell Gallery.
-            throw "The installed PowerShellGet version ($powerShellGetVersion) is less than the required version 1.6.0."
-          }
+          # Specifies the installation policy
+          Set-PSRepository -InstallationPolicy Trusted -Name PSGallery
 
           Write-Verbose -Message "🧩 Installing PowerShell modules." -Verbose
 
-          & $windowsPSExe -Command "Install-Module -Name PSReadLine -Scope CurrentUser -Force"
-          & $windowsPSExe -Command "Install-Module -Name posh-git -Scope CurrentUser -Force"
-          & $windowsPSExe -Command "Install-Module -Name Terminal-Icons -Scope CurrentUser -Force"
+          Install-Module -Name PSReadLine -Force -ErrorAction Stop
+          Install-Module -Name CompletionPredictor -Force -ErrorAction Stop
+          Install-Module -Name posh-git -Force -ErrorAction Stop
+          Install-Module -Name Terminal-Icons -Force -ErrorAction Stop
 
-          Write-Verbose -Message "🔗 Symlinking Profile.ps1 to $windowsPSProfileFolder directory." -Verbose
+          Write-Verbose -Message "🔗 Symlinking Profile.ps1 to $profilePath directory." -Verbose
 
-          New-Item -ItemType SymbolicLink -Path "$windowsPSProfileFolder\Profile.ps1'" -Target $profile -Force
+          New-Item -ItemType SymbolicLink -Path "$profilePath\Profile.ps1" -Target $profile -Force | Out-Null
