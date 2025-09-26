@@ -114,6 +114,14 @@ properties:
         securityContext: elevated
       settings:
         id: Git.Git
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Powershell
+      directives:
+        description: Install PowerShell 7
+        securityContext: elevated
+      settings:
+        id: Microsoft.PowerShell
+        source: winget
     - resource: GitDsc/GitClone
       id: Dotfiles
       dependsOn:
@@ -134,20 +142,14 @@ properties:
         GetScript: return $false
         TestScript: return $false
         SetScript: |
-          $sourceDir = "D:\dotfiles"
-          $destinationDir = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+          $appDataDirectory = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+          $homeDirectory    = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
+          $sourceDirectory  = "D:\dotfiles"
 
           Write-Verbose -Message "🔗 Symlinking configuration files." -Verbose
 
-          New-Item -ItemType SymbolicLink -Path "$destinationDir\Git" -Target "$sourceDir\git" -Force
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Powershell
-      directives:
-        description: Install PowerShell 7
-        securityContext: elevated
-      settings:
-        id: Microsoft.PowerShell
-        source: winget
+          New-Item -ItemType SymbolicLink -Path "$homeDirectory" -Target "$sourceDir\bash\.bash_profile" -Force
+          New-Item -ItemType SymbolicLink -Path "$appDataDirectory\Git" -Target "$sourceDir\git" -Force
     - resource: PSDscResources/Script
       dependsOn:
         - Dotfiles
