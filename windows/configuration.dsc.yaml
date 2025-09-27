@@ -60,23 +60,29 @@ properties:
     # unintentional sharing we need to set a user-level environment variable to store package caches.
     # See: https://learn.microsoft.com/en-us/windows/dev-drive/#storing-package-cache-on-dev-drive
     - resource: PSDscResources/Script
-      id: Nuget.Packages
+      id: Environment.Variables
       directives:
-        description: Manage NuGet global packages
+        description: Set user environment variables
       settings:
         SetScript: |
-          $destinationPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+          $appDataDirectory      = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+          $appLocalDataDirectory = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::LocalApplicationData)
+          $gnupgPath = Join-Path -Path $appDataDirectory -ChildPath "Gnupg"
 
-          # Replace backslashes with forward slashes
-          $gnupgHome = $destinationPath -replace '\\', '/'
-
-          # Convert drive letter (e.g. C:) to lowercase
-          if ($gnupgHome -match '^([A-Za-z]):') {
-              $drive = $matches[1].ToLower()
-              $gnupgHome = $gnupgHome -replace '^[A-Za-z]:', "$drive"
+          if (-not (Test-Path $gnupgPath)) {
+              New-Item -ItemType Directory -Path $gnupgPath -Force | Out-Null
           }
 
-          [System.Environment]::SetEnvironmentVariable("GNUPGHOME", "$gnupgHome/gnupg", "User")
+          # Convert backslashes to forward slashes and convert drive letter to lowercase
+          # to comply with Linux path format used by tools shipped with Git for Windows
+          $gnupgPath = $gnupgPath -replace '\\', '/'
+          if ($gnupgPath -match '^([A-Za-z]):') {
+              $drive = $matches[1].ToLower()
+              $gnupgPath = $gnupgPath -replace '^[A-Za-z]:', "$drive"
+          }
+
+          [System.Environment]::SetEnvironmentVariable("GNUPGHOME", "$gnupgPath", "User")
+          [System.Environment]::SetEnvironmentVariable("DOTNET_CLI_HOME", "$appLocalDataDirectory\Dotnet", "User")
           [System.Environment]::SetEnvironmentVariable("NUGET_PACKAGES", "D:\NuGet\Packages", "User")
         GetScript: return $false
         TestScript: return $false
