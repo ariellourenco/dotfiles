@@ -1,49 +1,53 @@
-[include]
-    path = ./config.personal
-
-[includeIf "gitdir/i:%(prefix)//mnt/c/"]
-    ; include only if Git itself was installed on WSL
-    path= %(prefix)//mnt/c/appdata/roaming/git/config.wsl
-
+[alias]
+	bclean = "!git gone | xargs -r git branch -D"
+	gone = "!git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads/ | awk '$2 == \"[gone]\" { print $1 }'"
+	history = log --abbrev-commit --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	sync = !git pull --rebase && git push
+	undo = reset HEAD~1 --mixed
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+[apply]
+	ignoreWhitespace = change
 [credential "https://dev.azure.com"]
 	useHttpPath = true
-
+[color]
+	ui = auto
+[commit]
+	gpgSign = true
 [core]
 	autocrlf = input
-
+	editor = vim
+	preloadindex = true
 [fetch]
 	prune = true
-
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-
-[init]
-	defaultBranch = main
-
-[commit]
-	gpgsign = true
-
-[tag]
-	gpgsign = true
-
 [gpg]
 	program = gpg
-
+[http]
+    sslVerify = true
+[init]
+	defaultBranch = main
+[include]
+	path = config.personal
+[log]
+	abbrevCommit = true
+	decorate = short
+[merge]
+	conflictstyle = diff3
 [pull]
-    rebase = true
-
+	ff = only
+	rebase = true
+[push]
+	autoSetupRemote = true
+	default = current
+[rerere]
+	autoUpdate = true
+	enabled = true
+[tag]
+	gpgsign = true
 [user]
-	name = Ariel Lourenco
 	email = ariellourenco@users.noreply.github.com
-
-[alias]
-    ; Deletes all branches merged into the specified branch (or the default branch if no branch is specified)
-    bclean = "!git gone | xargs -r git branch -D"
-    gone = "!git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads/ | awk '$2 == \"[gone]\" { print $1 }'"
-	history = log --abbrev-commit --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    sync = !git pull --rebase && git push
-    undo = reset HEAD~1 --mixed
-    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	name = Ariel Lourenco
