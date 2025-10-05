@@ -1,9 +1,6 @@
 # Git Configuration
 
-Git provides a myriad of configuration options that help developers optimize their environments and boost productivity. However, working with different Git cloud providers, such as [GitHub](https://github.com) or [GitLab](https://gitlab.com), or across various operating systems can create challenges where a single Git configuration file becomes impractical. To tackle this problem, Git offers `include` and `includeIf` directives to import platform-specific settings and personal information from other sources.
-
-> The `include` and `includeIf` sections allow you to include config directives from another source. These sections behave identically, with the exception that `includeIf` sections may be ignored if their condition does not evaluate to true; see "Conditional includes" below.
-— Git - [git-config Documentation](https://git-scm.com/docs/git-config#_includes)
+Git provides a myriad of configuration options that help developers optimize their environments and boost productivity. However, working with different Git cloud providers, such as [GitHub](https://github.com) or [GitLab](https://gitlab.com), or across various operating systems can create challenges where a single Git configuration file becomes impractical. The git configuration in this project is designed to maintain a clean separation between common settings and personal, sensitive information.
 
 This document provides information about the strategy used to organize my Git configuration files.
 
@@ -23,31 +20,22 @@ The following are examples:
 
 ### Including Personal Configurations
 
-To include a personal configuration file, use the following directive:
+> The `include` and `includeIf` sections allow you to include config directives from another source. These sections behave identically, with the exception that `includeIf` sections may be ignored if their condition does not evaluate to true; see "Conditional includes" below.
+— Git - [git-config Documentation](https://git-scm.com/docs/git-config#_includes)
+
+To maintain a clean separation between common settings and personal, sensitive information we leverage the `include` directive in the [main config](config#L31) file, which references an additional personal configuration file. The personal configuration file, such as `config.personal`, is intentionally excluded from the repository's version control to protect private data like email addresses, signing keys, and other sensitive details that should not be publicly exposed.
+
+In addition to personal configurations, the project accommodates platform-specific settings through the inclusion of system-specific config files like `config.windows` or `config.wsl`. These files contain environment-dependent configurations tailored for different operating systems or environments, ensuring Git behaves correctly regardless of the host machine. By including these files conditionally, the [main git configuration](config) remains unchanged, while allowing the user to seamlessly adapt settings to their current machine without affecting others.
+
+#### Personal Configuration Sample
 
 ```text
 [include]
-    path = ./config.personal
-```
-
-This line includes a personal configuration file, allowing you to separate sensitive information, such as email address, signing key, or any other information that could be harmful if exposed, from the main configuration.
-
-```text
+	path = config.windows
 [user]
     email = youremail@example.com
     signingkey = 36264D8005D951D8
 ```
-
-### Conditional Inclusion
-
-To conditionally include configurations based on specific directories, use the following directive:
-
-```text
-[includeIf "gitdir/i:%(prefix)//mnt/c/"]
-    path = %(prefix)//mnt/c/appdata/roaming/git/config.wsl
-```
-
-The `gitdir` condition ensures that the specified configuration is only loaded when working within certain directories, enhancing security and flexibility. The `/i` part configures the matching to be case-insensitive, and by ending the path with `/`, it automatically adds `/**`, thus matching all subdirectories.
 
 > [!NOTE]
 > By default, Git reads configuration options from [two user-wide configs](https://git-scm.com/docs/git-config#_configuration): `.gitconfig` in the home directory, and `$HOME/.config/git/config` unless `$XDG_CONFIG_HOME/git/config` is set. Since neither of these are Windows-native directories, [Git for Windows now looks for Git/config in the AppData directory](https://github.com/git-for-windows/git/pull/5030), unless `$HOME/.config/git/config` exists. Worth note that this feature isn't enable by default, the presence of the file in one of the specified directories as a cue that the user wants to use this feature, therefore, we need to create it manually.
