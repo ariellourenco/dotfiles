@@ -2,6 +2,7 @@
 using namespace System.Management.Automation.Language
 
 # Import necessary modules
+Import-Module -Name CompletionPredictor
 Import-Module -Name posh-git
 Import-Module -Name Terminal-Icons
 
