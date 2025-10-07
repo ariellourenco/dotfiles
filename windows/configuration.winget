@@ -185,4 +185,4 @@ properties:
 
           Write-Verbose -Message "🔗 Symlinking Profile.ps1 to $profilePath directory." -Verbose
 
-          New-Item -ItemType SymbolicLink -Path "$profilePath\Profile.ps1'" -Target $profile -Force | Out-Null
+          New-Item -ItemType SymbolicLink -Path "$profilePath\Profile.ps1" -Target $profile -Force | Out-Null
