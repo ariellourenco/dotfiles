@@ -45,8 +45,6 @@ The Arch Wiki has a [list of programs](https://wiki.archlinux.org/title/XDG_Base
 
 > [!IMPORTANT]
 > It's worth noting that even though some programs support [XDG Base Directory specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html) it isn't enabled by default, the presence of a file in the specified directory indicates that programs should enable this feature. For instance, starting with version [9.1.0327](https://github.com/vim/vim/commit/c9df1fb35a1866901c32df37dd39c8b39dbdb64a), [Vim has incorporated support for the XDG Base Directory Specification](https://github.com/vim/vim/pull/14182). By default, Vim reads configuration options from [three user-wide configs](https://github.com/vim/vim/blob/master/runtime/doc/starting.txt): `.vimrc` in the home directory, `$HOME/.vim/vimrc`, and `$XDG_CONFIG_HOME/vim/vimrc`. The first that exists is used, the others are ignored.
->
-> The same strategy is used by Git, which reads configuration options from [two user-wide configs](https://git-scm.com/docs/git-config#_configuration): `.gitconfig` in the home directory, and `$HOME/.config/git/config` unless `$XDG_CONFIG_HOME/git/config` is set.
 
 Below is a list of open issues worth monitoring if you are a .NET developer :rocket::
 
@@ -57,9 +55,6 @@ Below is a list of open issues worth monitoring if you are a .NET developer :roc
 | C# Dev Kit for VS Code  | `~/.ServiceHub/`                  | [3](https://github.com/microsoft/vscode-dotnettools/issues/514) |
 | C# Dev Kit for VS Code  | `~/.dotnet/`                      | [4](https://github.com/microsoft/vscode-dotnettools/issues/1963)|
 | Visual Studio Code      | `~/.vscode[-variant]/extensions/` | [5](https://github.com/microsoft/vscode/issues/3884)            |
-
-> [!NOTE]
-> By default, Git reads configuration options from [two user-wide configs](https://git-scm.com/docs/git-config#_configuration): `.gitconfig` in the home directory, and `$HOME/.config/git/config` unless `$XDG_CONFIG_HOME/git/config` is set. Since neither of these are Windows-native directories, [Git for Windows now looks for Git/config in the AppData directory](https://github.com/git-for-windows/git/pull/5030), unless `$HOME/.config/git/config` exists. Worth note that this feature isn't enable by default, the presence of the file in one of the specified directories as a cue that the user wants to use this feature, therefore, we need to create it manually.
 
 ## ZSHRC
 
