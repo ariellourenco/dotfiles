@@ -74,11 +74,12 @@ properties:
           }
 
           # Convert backslashes to forward slashes and convert drive letter to lowercase
-          # to comply with Linux path format used by tools shipped with Git for Windows
+          # to comply with Linux path format used by tools shipped with Git for Windows.
+          # e.g.: /c/users/username/appdata/roaming/gnupg
           $gnupgPath = $gnupgPath -replace '\\', '/'
           if ($gnupgPath -match '^([A-Za-z]):') {
-              $drive = $matches[1].ToLower()
-              $gnupgPath = $gnupgPath -replace '^[A-Za-z]:', "$drive"
+            $gnupgPath = $gnupgPath -replace '^([A-Za-z]):', '/$1'
+            $gnupgPath = $gnupgPath.ToLower()
           }
 
           [System.Environment]::SetEnvironmentVariable("GNUPGHOME", "$gnupgPath", "User")
