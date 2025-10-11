@@ -3,7 +3,10 @@ default: true
 # Exclusions for deliberate/widespread violations
 MD010:                        # Hard tabs
   code_blocks: false
-MD013: false                  # Line length
+MD013:                        # Line length
+  line_length: 140
+  code_blocks: false
+  tables: false
 MD026:                        # Trailing punctuation in header
   punctuation: ".,;"
 MD033:                        # Allow inline HTML
