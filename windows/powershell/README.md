@@ -1,6 +1,7 @@
 # Terminal
 
-This folder and its files was ~~inspired by~~ copied from the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized). I have only added the Ubuntu theme for Linux Subsystem.
+This folder and its files was ~~inspired by~~ copied from the work done by Neil Pankey, Ryan Beesley, Scott Hanselman, Russell West, and
+Paul Hampson in this [repository](https://github.com/neilpa/cmd-colors-solarized). I have only added the Ubuntu theme for Linux Subsystem.
 
 ## Color Schemes
 
@@ -10,7 +11,9 @@ Included are three color schemes:
 * Solarized Dark - The default theme for all PowerShell instances
 * Ubuntu - The default theme for Linux Subsystem (Ubuntu distro)
 
-For more details and screenshots, as well as color schemes for other applications see the [Solarized](https://ethanschoonover.com/solarized) home page. The [ColorTool](https://github.com/Microsoft/Terminal/tree/master/src/tools/ColorTool) is also a great tool to create and explore new color schemes and it also  includes support for [iTerm](https://github.com/mbadolato/iTerm2-Color-Schemes) themes!
+For more details and screenshots, as well as color schemes for other applications see the [Solarized](https://ethanschoonover.com/solarized)
+home page. The [ColorTool](https://github.com/Microsoft/Terminal/tree/master/src/tools/ColorTool) is also a great tool to create and explore
+new color schemes and it also  includes support for [iTerm](https://github.com/mbadolato/iTerm2-Color-Schemes) themes!
 
 ## Installation
 
@@ -18,14 +21,18 @@ For more details and screenshots, as well as color schemes for other application
 
 Import the `.reg` file of choice, e.g. `regedit /s Solarized-Dark.reg`.
 
-This updates the registry defaults that are used for NEW shortcuts that start afresh, via `Windows+R`. It won't change existing shortcuts you may already created because they have their own color mapping stored as opaque blobs of data directly into the .lnk file.
+This updates the registry defaults that are used for NEW shortcuts that start afresh, via `Windows+R`. It won't change existing shortcuts
+you may already created because they have their own color mapping stored as opaque blobs of data directly into the .lnk file.
 
 >[!WARNING]
-> Editing the registry carries risks, as a single mistake can lead to system instability. Therefore, it is essential to back up the registry and create a restore point before proceeding with the following steps.
+> Editing the registry carries risks, as a single mistake can lead to system instability. Therefore, it is essential to back up the registry
+> and create a restore point before proceeding with the following steps.
 
 ### Update PowerShell shortcut .lnks
 
-The easiest way to do this on Windows is to click `Start`, then type in the command you want to change. When it appears in the list, `right-click` and select `Open file location`. This will open an Explorer window and show you the shortcut. Hold shift and right-click on the shortcut, then select `Copy as path`. Now open a PowerShell to the location of this project.
+The easiest way to do this on Windows is to click `Start`, then type in the command you want to change. When it appears in the list,
+`right-click` and select `Open file location`. This will open an Explorer window and show you the shortcut. Hold shift and right-click on
+the shortcut, then select `Copy as path`. Now open a PowerShell to the location of this project.
 
 In the PowerShell window use this command.
 
@@ -33,13 +40,17 @@ In the PowerShell window use this command.
 Update-Link "<shortcut.lnk>" [Light|Dark|System]
 ```
 
-The path to the shortcut.lnk is the same as you copied to your clipboard in the previous step. To easily paste it in Windows 10, just right-click on the window. If the path has spaces, you will want to wrap it in quotes, but if you followed the recommended way to use Copy as path, it will be done for you. If no theme is given, `Update-Link` will default to Solarized Dark.
+The path to the shortcut.lnk is the same as you copied to your clipboard in the previous step. To easily paste it in Windows 10, just
+right-click on the window. If the path has spaces, you will want to wrap it in quotes, but if you followed the recommended way to use Copy
+as path, it will be done for you. If no theme is given, `Update-Link` will default to Solarized Dark.
 
 ## Uninstall
 
 ### Registry for PowerShell
 
-The file `Defaults.reg` is provided to restore the command prompt colors back to their shipping defaults. The registry settings have been checked for versions of Windows back to at least Windows 7 and the values are the same. To restore the defaults, open the `regedit` and delete the following keys:
+The file `Defaults.reg` is provided to restore the command prompt colors back to their shipping defaults. The registry settings have been
+checked for versions of Windows back to at least Windows 7 and the values are the same. To restore the defaults, open the `regedit` and
+delete the following keys:
 
 * `[HKEY_CURRENT_USER\Console\%SystemRoot%_System32_WindowsPowerShell_v1.0_powershell.exe]`
 * `[HKEY_CURRENT_USER\Console\%SystemRoot%_SysWOW64_WindowsPowerShell_v1.0_powershell.exe]`
