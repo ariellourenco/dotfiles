@@ -374,6 +374,32 @@ Give the key a name and save it.
 > [!TIP]
 > On macOS, you can pipe the output directly to your clipboard using `pbcopy`, for example, `gpg --armor --export {your-key-id} | pbcopy`.
 
+### Importing the Public Key on a Fresh Machine
+
+GitHub can act as a lightweight, HTTPS‑only key‑hosting service. By adding your public OpenPGP key to your GitHub profile, you obtain a
+stable URL such as `https://github.com/username.gpg`. This makes the key instantly accessible from any device, which is especially handy
+when you’re provisioning a new machine – you can retrieve the key directly from GitHub instead of copying it from another computer or a backup.
+
+Once the key is hosted, configure the **“URL of public key”** field in the YubiKey OpenPGP app to point at that GitHub URL. Then, on a fresh
+system, open the card editor:
+
+```bash
+gpg --card-edit
+```
+
+Inside the interactive prompt run:
+
+```bash
+gpg/card> fetch
+gpg: requesting key from 'https://github.com/ariellourenco.gpg'
+gpg: key 36264D8005D951D8: "Ariel Lourenco (GitHub) <ariellourenco@users.noreply.github.com>" not changed
+gpg: Total number processed: 1
+gpg:              unchanged: 1
+```
+
+After these steps the public key is present locally, the YubiKey recognises it, and you can immediately start signing, encrypting, or
+authenticating on the new machine.
+
 ## Signing Commits & Tags
 
 From a security standpoint, by default, Git does not provide any assurance of authorship. Although every Git _"blob"_ is hashed using SHA-1,
