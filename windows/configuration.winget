@@ -148,18 +148,7 @@ properties:
       settings:
         GetScript: return $false
         TestScript: return $false
-        SetScript: |
-          $appDataDirectory = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
-          $homeDirectory    = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
-          $dotfiles         = "D:\dotfiles"
-
-          Write-Verbose -Message "🔗 Symlinking configuration files." -Verbose
-
-          New-Item -ItemType SymbolicLink -Path "$homeDirectory\.bash_profile" -Target "$dotfiles\bash\.bash_profile" -Force
-          New-Item -ItemType SymbolicLink -Path "$appDataDirectory\Git" -Target "$dotfiles\git" -Force
-
-          Write-Verbose -Message "Set Git platform-specific configuration." -Verbose
-          git config --file="$appDataDirectory\Git\config.personal" include.path config.windows
+        SetScript: D:\dotfiles\windows\scripts\Install-Dotfiles.ps1
     - resource: PSDscResources/Script
       dependsOn:
         - Dotfiles
