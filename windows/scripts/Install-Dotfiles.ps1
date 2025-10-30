@@ -1,6 +1,6 @@
 ﻿################################################################################
 ## File: Install-Dotfiles.ps1
-## Desc: Installs dotfiles for Windows environment by symlinking configuration files.
+## Desc: Installs dotfiles on Windows environment by symlinking configuration files.
 ## Author: Ariel Lourenço <ariellourenco@users.noreply.github.com>
 ################################################################################
 
@@ -13,6 +13,30 @@ param()
 # Global configuration
 $script:Config = @{
     DotfilesPath = "D:\dotfiles"
+}
+
+# Set Bash configurations on Git Bash and Windows Subsystem for Linux (WSL)
+function Set-BashConfigurations {
+    $homeDirectory = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
+    New-Item -ItemType SymbolicLink -Path "$homeDirectory\.bash_profile" -Target "$($script:Config.DotfilesPath)\bash\.bash_profile" -Force
+
+    return $true
+}
+
+function Set-GitConfigurations {
+    $appDataDirectory = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+
+    New-Item -ItemType SymbolicLink -Path "$appDataDirectory\Git" -Target "$($script:Config.DotfilesPath)\git" -Force
+
+    # Ensure git is installed; otherwise, skip configuration
+    if (Get-Command git -ErrorAction SilentlyContinue) {
+        Write-Verbose -Message "💻 Set Git platform-specific configuration."
+        git config --file="$appDataDirectory\Git\config.personal" include.path config.windows
+    } else {
+        Write-Warning -Message "⚠️ Git is not installed. Skipping Git configuration."
+    }
+
+    return $true
 }
 
 function Set-WindowsTerminalSettings {
@@ -61,6 +85,8 @@ function Set-WindowsTerminalSettings {
 # installation function junction
 function Start-Installation {
     $steps = @(
+        {Set-BashConfigurations},
+        {Set-GitConfigurations},
         {Set-WindowsTerminalSettings}
     )
 
@@ -100,6 +126,8 @@ try {
 
     if ($success) {
         Write-Host ""
+        Write-Host " ✔️ Bash configuration symlinked successfully." -ForegroundColor Green
+        Write-Host " ✔️ Git configuration set successfully." -ForegroundColor Green
         Write-Host " ✔️ Windows Terminal settings symlinked successfully." -ForegroundColor Green
         Write-Host ""
 
