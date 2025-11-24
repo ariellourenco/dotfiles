@@ -117,7 +117,6 @@ function Start-Installation {
 
 # Script entry point
 try {
-    Clear-Host
     Write-Host "-----------------------------------------------------------------" -ForegroundColor Yellow
     Write-Host "    https://github.com/ariellourenco/dotfiles                    " -ForegroundColor yellow
     Write-Host "-----------------------------------------------------------------" -ForegroundColor Yellow
@@ -126,9 +125,9 @@ try {
 
     if ($success) {
         Write-Host ""
-        Write-Host " ✔️ Bash configuration symlinked successfully." -ForegroundColor Green
-        Write-Host " ✔️ Git configuration set successfully." -ForegroundColor Green
-        Write-Host " ✔️ Windows Terminal settings symlinked successfully." -ForegroundColor Green
+        Write-Host " ✅ Bash configuration symlinked successfully." -ForegroundColor Green
+        Write-Host " ✅ Git configuration set successfully." -ForegroundColor Green
+        Write-Host " ✅ Windows Terminal settings symlinked successfully." -ForegroundColor Green
         Write-Host ""
 
         exit 0

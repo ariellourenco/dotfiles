@@ -146,9 +146,10 @@ properties:
       directives:
         description: Install dotfiles
       settings:
-        GetScript: return $false
+        GetScript: Test-Path 'D:\dotfiles\windows\scripts\Install-Dotfiles.ps1'
         TestScript: return $false
-        SetScript: D:\dotfiles\windows\scripts\Install-Dotfiles.ps1
+        SetScript: |
+          & 'D:\dotfiles\windows\scripts\Install-Dotfiles.ps1'
     - resource: PSDscResources/Script
       dependsOn:
         - Dotfiles
