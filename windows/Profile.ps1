@@ -6,10 +6,17 @@ Import-Module -Name CompletionPredictor
 Import-Module -Name posh-git
 Import-Module -Name Terminal-Icons
 
+if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
+    # Disable oh-my-posh when running in VSCode and Visual Studio integrated terminals
+    if ($env:TERM_PROGRAM -ne 'vscode' -and $env:VSAPPIDNAME -ne 'devenv.exe') {
+        oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/ariellourenco/dotfiles/main/windows/mytheme.omp.json' | Invoke-Expression
+    }
+}
+
 # Configure the PSReadLine module
 Set-PSReadLineOption -HistoryNoDuplicates
 Set-PSReadLineOption -MaximumHistoryCount 100
-Set-PSReadLineOption -HistorySearchCursorMovesToEn
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 
 if ($PSVersionTable.PSEdition -eq 'Core') {
     # Windows PowerShell does not support predictive suggestion feature because the console
