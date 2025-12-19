@@ -1,27 +1,37 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 4,
+  "final_space": true,
   "blocks": [
     {
       "type": "prompt",
       "alignment": "left",
       "segments": [
         {
-          "properties": {
+          "type": "path",
+          "style": "diamond",
+          "background": "#FF479C",
+          "cache": {
             "cache_duration": "none",
             "style": "folder"
           },
-          "leading_diamond": "\ue0b6",
-          "trailing_diamond": "\ue0b0",
-          "template": " \ue5ff {{ .Path }} ",
           "foreground": "#FFFFFF",
+          "leading_diamond": "\ue0b6",
           "powerline_symbol": "\ue0b0",
-          "background": "#FF479C",
-          "type": "path",
-          "style": "diamond"
-        },
+          "template": " \ue5ff {{ .Path }} ",
+          "trailing_diamond": "\ue0b0"        },
         {
+          "type": "git",
+          "style": "powerline",
+          "background": "#FFEB3B",
+          "background_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}#FFEB3B{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}",
+            "{{ if gt .Ahead 0 }}#B388FF{{ end }}",
+            "{{ if gt .Behind 0 }}#B388FB{{ end }}"
+          ],
+          "foreground": "#193549",
           "properties": {
-            "cache_duration": "none",
             "fetch_status": true,
             "fetch_upstream_icon": true,
             "mapped_branches": {
@@ -30,61 +40,36 @@
             },
             "source": "cli"
           },
-          "template": "{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf0c7 {{ .StashCount }}{{ end }}",
-          "foreground": "#193549",
           "powerline_symbol": "\ue0b0",
-          "background": "#FFEB3B",
-          "type": "git",
-          "style": "powerline",
-          "background_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}#FFEB3B{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}",
-            "{{ if gt .Ahead 0 }}#B388FF{{ end }}",
-            "{{ if gt .Behind 0 }}#B388FB{{ end }}"
-          ]
+          "template": "{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf0c7 {{ .StashCount }}{{ end }}"
         },
         {
-          "properties": {
+          "type": "dotnet",
+          "style": "powerline",
+          "background": "#6CA35E",
+          "foreground": "#FFFFFF",
+          "options": {
             "cache_duration": "none",
             "fetch_version": true
           },
-          "template": " \ue70c {{ if .Unsupported }}\uf071{{ else }}{{ .Full }}{{ end }} ",
-          "foreground": "#FFFFFF",
           "powerline_symbol": "\ue0b0",
-          "background": "#6CA35E",
-          "type": "dotnet",
-          "style": "powerline"
+          "template": " \ue70c {{ if .Unsupported }}\uf071{{ else }}{{ .Full }}{{ end }} "
         },
         {
-          "properties": {
-            "cache_duration": "none"
-          },
-          "template": " \uf0e7 ",
+          "type": "text",
+          "style": "powerline",
+          "background": "#2E9599",
+          "background_templates": [ "{{ if gt .Code 0 }}#F1184C{{ end }}" ],
           "foreground": "#FFFFFF",
-          "powerline_symbol": "\ue0b0",
-          "background": "#FFFF66",
-          "type": "root",
-          "style": "powerline"
-        },
-        {
-          "properties": {
+          "options": {
             "always_enabled": true,
             "cache_duration": "none"
           },
-          "trailing_diamond": "\ue0b4",
-          "template": " \ue23a ",
-          "foreground": "#FFFFFF",
           "powerline_symbol": "\ue0b0",
-          "background": "#2E9599",
-          "style": "powerline",
-          "type": "text",
-          "background_templates": [
-            "{{ if gt .Code 0 }}#F1184C{{ end }}"
-          ]
+          "template": " \ue23a ",
+          "trailing_diamond": "\ue0b4"
         }
       ]
     }
-  ],
-  "version": 3,
-  "final_space": true
+  ]
 }
