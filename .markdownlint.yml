@@ -21,6 +21,7 @@ MD033:                        # Allow inline HTML
     - "summary"
 MD041: false                  # First line in file should be a top level header
 MD046: false                  # Code block style
+MD060: false                  # Table column style
 
 # Rule settings and options are documented in https://github.com/DavidAnson/markdownlint
 # feel free to disable more low value rules in here; get rule code from the error message.

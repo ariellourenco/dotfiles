@@ -70,8 +70,8 @@ prominent *nix-first software like Bash, ZSH, and Firefox.
 
 Below is a list of open issues worth monitoring if you are a .NET developer :rocket::
 
-| **Application**         | **Path**                          | **Discussion**        |
-|-------------------------|-----------------------------------|-----------------------|
+| **Application**         | **Path**                          | **Discussion**                                                  |
+|-------------------------|-----------------------------------|-----------------------------------------------------------------|
 | .NET Runtime            | `~/.microsoft/`                   | [1](https://github.com/dotnet/runtime/issues/101012)            |
 | ASP.NET Core            | `~/.aspnet/`                      | [2](https://github.com/dotnet/aspnetcore/issues/43278)          |
 | C# Dev Kit for VS Code  | `~/.ServiceHub/`                  | [3](https://github.com/microsoft/vscode-dotnettools/issues/514) |
