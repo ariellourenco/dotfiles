@@ -146,20 +146,10 @@ properties:
       directives:
         description: Install dotfiles
       settings:
-        GetScript: return $false
+        GetScript: Test-Path 'D:\dotfiles\windows\scripts\Install-Dotfiles.ps1'
         TestScript: return $false
         SetScript: |
-          $appDataDirectory = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
-          $homeDirectory    = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
-          $dotfiles         = "D:\dotfiles"
-
-          Write-Verbose -Message "🔗 Symlinking configuration files." -Verbose
-
-          New-Item -ItemType SymbolicLink -Path "$homeDirectory\.bash_profile" -Target "$dotfiles\bash\.bash_profile" -Force
-          New-Item -ItemType SymbolicLink -Path "$appDataDirectory\Git" -Target "$dotfiles\git" -Force
-
-          Write-Verbose -Message "Set Git platform-specific configuration." -Verbose
-          git config --file="$appDataDirectory\Git\config.personal" include.path config.windows
+          & 'D:\dotfiles\windows\scripts\Install-Dotfiles.ps1'
     - resource: PSDscResources/Script
       dependsOn:
         - Dotfiles
@@ -187,3 +177,13 @@ properties:
           Write-Verbose -Message "🔗 Symlinking Profile.ps1 to $profilePath directory." -Verbose
 
           New-Item -ItemType SymbolicLink -Path "$profilePath\Profile.ps1" -Target $profile -Force | Out-Null
+    # ------------------------------------------------------------------------------------------
+    # Install general tools and utilities via Winget
+    # ------------------------------------------------------------------------------------------
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: OMP
+      directives:
+        description: Install Oh My Posh
+        allowPrerelease: false
+      settings:
+        id: JanDeDobbeleer.OhMyPosh
