@@ -1,3 +1,5 @@
 ﻿[core]
 	autocrlf = true
 	editor = edit
+[gpg]
+	program = C:\\Program Files\\Git\\usr\\bin\\gpg.exe
