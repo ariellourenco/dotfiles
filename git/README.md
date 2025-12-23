@@ -69,3 +69,7 @@ When managing Git configurations, be mindful of security implications related to
 
 By following these guidelines, you can effectively manage your Git configurations across different environments while maintaining
 security and organization.
+
+## References
+
+For more information about the most common configurations refer to <https://learn.microsoft.com/en-us/visualstudio/version-control/git-settings?view=visualstudio>
