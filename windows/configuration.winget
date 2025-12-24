@@ -181,16 +181,20 @@ properties:
     # Install general tools and utilities via Winget
     # ------------------------------------------------------------------------------------------
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Bitwarden
+      directives:
+        description: Install Bitwarden
+      settings:
+        id: Bitwarden.Bitwarden
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: CCleaner
       directives:
         description: Install CCleaner
-        allowPrerelease: false
       settings:
         id: Piriform.CCleaner
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: OMP
       directives:
         description: Install Oh My Posh
-        allowPrerelease: false
       settings:
         id: JanDeDobbeleer.OhMyPosh
