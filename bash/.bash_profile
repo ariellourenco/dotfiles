@@ -28,3 +28,36 @@ test -d "$XDG_CONFIG_HOME" || test ! -d "$APPDATA" || {
 # Sets GnuPG configuration files directory.
 # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration.html
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+
+# Customize the bash prompt (PS1)
+__bash_prompt() {
+  local green='\[\033[32m\]'
+  local yellow='\[\033[33m\]'
+  local red='\[\033[31m\]'
+  local reset='\[\033[0m\]'
+
+  # $? is a special Bash variable that holds the exit status of the last command (0 = success, non-zero = failure).
+  local userpart='`export XIT=$? \
+    && [ "$XIT" -ne "0" ] && echo -n "\[\033[30m\]➜ " || echo -n "\[\033[0m\]➜ "`'
+
+  # local gitbranch='`\
+  #     if [ "$(git config --get devcontainers-theme.hide-status 2>/dev/null)" != 1 ] && [ "$(git config --get codespaces-theme.hide-status 2>/dev/null)" != 1 ]; then \
+  #         export BRANCH="$(git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null || git --no-optional-locks rev-parse --short HEAD 2>/dev/null)"; \
+  #         if [ "${BRANCH:-}" != "" ]; then \
+  #             echo -n "\[\033[0;36m\](\[\033[1;31m\]${BRANCH:-}" \
+  #             && if [ "$(git config --get devcontainers-theme.show-dirty 2>/dev/null)" = 1 ] && \
+  #                 git --no-optional-locks ls-files --error-unmatch -m --directory --no-empty-directory -o --exclude-standard ":/*" > /dev/null 2>&1; then \
+  #                     echo -n " \[\033[1;33m\]✗"; \
+  #             fi \
+  #             && echo -n "\[\033[0;36m\]) "; \
+  #         fi; \
+  #     fi`'
+
+  # PS1="${userpart} ${lightblue}\w ${gitbranch}${removecolor}\$ "
+  # Show current path on one line, then arrow on the next
+  PS1="${green}\w${reset}\n${userpart} "
+
+  unset -f __bash_prompt
+}
+__bash_prompt
+export PROMPT_DIRTRIM=4
