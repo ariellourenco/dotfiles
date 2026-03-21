@@ -8,8 +8,10 @@ WinGet command line interface (`winget configure --file [path: configuration.win
 
 When executed, the `configuration.winget` file will install the following list of applications:
 
-* Git for Windows
-* PowerShell 7
+* [Bitwarden](https://bitwarden.com/)
+* [Git for Windows](https://gitforwindows.org)
+* [Piriform CCleaner](https://www.ccleaner.com/)
+* [PowerShell 7](https://learn.microsoft.com/powershell/scripting/overview)
 
 It will also apply the following changes on the target machine:
 
