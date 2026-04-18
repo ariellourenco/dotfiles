@@ -362,7 +362,7 @@ ssb>  ed25519/AC59547D0CCB5ACE 2023-10-23 [A]
 ssb>  cv25519/2B5F29BB2DCA942D 2023-10-23 [E]
 ```
 
-Determine the key ID for your signing key. This is the hexadecimal number on the line designated [SC] above `36264D8005D951D8`.
+Determine the key ID for your signing key. This is the hexadecimal number on the line designated \[SC\] above `36264D8005D951D8`.
 
 Log in to GitHub and go to Settings → [Add new GPG key](https://github.com/settings/gpg/new) page. Copy the output from
 `gpg --armor --export {your-key-id}` and add a new GPG key.
@@ -513,7 +513,7 @@ Update `~/.gnupg/sshcontrol` with the authentication _keygrip_; this allows the 
 ```
 
 > [!IMPORTANT]
-> Do not confuse the Key ID with the Keygrip which is the hexadecimal number right below the line designated [A]:
+> Do not confuse the Key ID with the Keygrip which is the hexadecimal number right below the line designated \[A\]:
 > `28E05AC1DCFCB0C23EFD89A86C627B0959758813`.
 
 ### Set SSH_AUTH_SOCK
