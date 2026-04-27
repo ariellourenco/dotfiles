@@ -1,7 +1,7 @@
 [alias]
 	bclean = "!git gone | xargs -r git branch -D"
 	gone = "!git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads/ | awk '$2 == \"[gone]\" { print $1 }'"
-	history = log --abbrev-commit --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	pretty-log = log --abbrev-commit --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 	sync = !git pull --rebase && git push
 	undo = reset HEAD~1 --mixed
 	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
