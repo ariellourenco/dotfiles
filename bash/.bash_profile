@@ -77,7 +77,7 @@ __bash_prompt() {
         fi`'
   fi
 
-  # Line 1: user@host path (git branch)
+  # Line 1: working directory with optional git branch/status info
   # Line 2: λ prompt symbol (yellow on success, red on error)
   PS1="${green}\w${reset} ${gitbranch}\n${userpart}${reset}"
 
