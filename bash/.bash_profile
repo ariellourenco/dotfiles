@@ -38,6 +38,7 @@ for __git_prompt_path in \
     "/usr/share/git-core/contrib/completion/git-prompt.sh"; do
   [ -f "$__git_prompt_path" ] && { . "$__git_prompt_path"; break; }
 done
+
 unset __git_prompt_path
 
 export GIT_PS1_SHOWDIRTYSTATE=1       # * unstaged, + staged
@@ -82,5 +83,11 @@ __bash_prompt() {
 
   unset -f __bash_prompt
 }
+
 __bash_prompt
 export PROMPT_DIRTRIM=4
+
+# Print a blank line before each prompt except the very first one.
+__bash_first_prompt=1
+
+PROMPT_COMMAND='[ -z "$__bash_first_prompt" ] && printf "\n" || unset __bash_first_prompt'
