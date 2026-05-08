@@ -56,7 +56,7 @@ __bash_prompt() {
 
   # $? is a special Bash variable that holds the exit status of the last command (0 = success, non-zero = failure).
   # Uses λ (lambda) as the prompt symbol, matching Cmder's visual style.
-  local userpart='`export XIT=$? \
+  local userpart='`XIT=$? \
     && [ "$XIT" -ne "0" ] && echo -n "\[\033[31m\]λ " || echo -n "\[\033[33m\]λ "`'
 
   # Use __git_ps1 (from git-prompt.sh) when available for richer git status:
