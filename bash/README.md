@@ -12,7 +12,7 @@ experience on Windows and Linux alike.
 ## .bash_profile
 
 The `.bash_profile` is the primary configuration file for interactive Bash sessions. It handles environment variables, the `PS1` prompt,
-and sources supporting scripts. It's desined to be portable across diffrent enviroments, with conditional logic to improve unix tools on
+and sources supporting scripts. It's designed to be portable across diffrent enviroments, with conditional logic to improve unix tools on
 Windows.
 
 ### Prompt (PS1)
