@@ -5,12 +5,14 @@ properties:
     - resource: Microsoft.Windows.Developer/OsVersion
       id: OsVersion
       directives:
+        allowPrerelease: true
         description: Minimum OS version requirement
       settings:
         MinVersion: "10.0.22621.2338"
   resources:
     - resource: Microsoft.Windows.Settings/WindowsSettings
       directives:
+        allowPrerelease: true
         description: Configure Windows Settings
         securityContext: elevated
       settings:
@@ -28,6 +30,7 @@ properties:
     - resource: VirtualHardDisk
       id: VHD
       directives:
+        allowPrerelease: true
         description: Create a new Virtual Hard Drive
         module: StorageDsc
         securityContext: elevated
@@ -42,6 +45,7 @@ properties:
       dependsOn:
         - VHD
       directives:
+        allowPrerelease: true
         description: Format a new Dev Drive volume onto VHD
         module: StorageDsc
         securityContext: elevated
@@ -49,7 +53,7 @@ properties:
         DiskId: 1
         DiskIdType: 'Number'
         DriveLetter: 'D'
-        FSLabel: 'Dev Drive'
+        FSLabel: 'Devlabs'
         DevDrive: true
         AllowDestructive: true
         PartitionStyle: 'GPT'
@@ -121,6 +125,7 @@ properties:
         securityContext: elevated
       settings:
         id: Git.Git
+        source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Powershell
       directives:
@@ -135,6 +140,7 @@ properties:
         - DevDrive
         - Git
       directives:
+        allowPrerelease: true
         description: Clone dotfiles repository
       settings:
         HttpsUrl: https://github.com/ariellourenco/dotfiles/
@@ -177,6 +183,7 @@ properties:
           Write-Verbose -Message "🔗 Symlinking Profile.ps1 to $profilePath directory." -Verbose
 
           New-Item -ItemType SymbolicLink -Path "$profilePath\Profile.ps1" -Target $profile -Force | Out-Null
+          
     # ------------------------------------------------------------------------------------------
     # Install general tools and utilities via Winget
     # ------------------------------------------------------------------------------------------
@@ -186,15 +193,18 @@ properties:
         description: Install Bitwarden
       settings:
         id: Bitwarden.Bitwarden
+        source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: CCleaner
       directives:
         description: Install CCleaner
       settings:
         id: Piriform.CCleaner
+        source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: OMP
       directives:
         description: Install Oh My Posh
       settings:
         id: JanDeDobbeleer.OhMyPosh
+        source: winget
