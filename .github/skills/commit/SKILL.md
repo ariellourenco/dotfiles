@@ -22,7 +22,6 @@ and follow the general guidelines below:
 - Next line optionally defines a summary of changes done, the commit body, and should focus on _Why_, not the _What_.
   - Context
   - Justification
-  - Implementation
 - Wrap the body at 76 characters columns per line
 
 ## Usage Scenarios
@@ -30,10 +29,12 @@ and follow the general guidelines below:
 - `/commit`
 - `/commit --force`
 
-`force` = **true** if `--force` is present in the arguments. If `force` is true, skip the preview and confirmation step and commit immediately
-with the provided message. This allows users to bypass the review process when they are confident in their changes and want to commit quickly.
+`force` = **true** if `--force` is present in the arguments.
 
 ## Workflow
+
+Pre-flight check: If `force` is **true**, execute Steps 1, 2, and 4 in sequence without pausing. Skip Step 3 entirely. This allows users to
+bypass the review process when they are confident in their changes and want to commit quickly.
 
 ### 1. Review Changes
 
@@ -45,7 +46,12 @@ with the provided message. This allows users to bypass the review process when t
 4. Stage your changes with `git add <file>`.
 5. Construct your commit message using the format defined below.
 
-If `git status` shows a clean working tree with nothing staged, tell the user there is nothing to commit and stop.
+- If any git command in Step 1 exits with a non-zero code, show the error output to the user and stop. Do not proceed to generate a commit message.
+- If `git status` shows a clean working tree with nothing staged, tell the user there is nothing to commit and stop.
+- If files are already staged (`git diff --cached` shows output), commit only those staged files unless the user explicitly asks to include
+additional unstaged files. Do not stage additional files without user confirmation.
+- When `force` is **true** and Step 3 is skipped, treat all files that were unstaged (but not untracked) at the time of `git status` as
+implicitly confirmed for staging. Never stage untracked files without explicit user confirmation.
 
 ### 2. Write Commit Message
 
@@ -57,14 +63,18 @@ Imperative subject line, ≤50 characters
 Optional body — include only when the subject alone does not tell a reader why the change exists; omit entirely for small, obvious changes.
 Wrap body text to 76 columns per line.
 
-Use emojis when possible to convey the type of change made. For example:
+Prefix the subject line with a single emoji that matches the change type from the list below. If no emoji in the list fits the change,
+omit the emoji entirely. Count each emoji as 2 characters toward the 50-character subject limit, based on visible terminal width
+(grapheme cluster width). When in doubt, keep the subject including the emoji to 48 characters of plain text to leave margin.
+
+Examples:
   - ✨ for new features
   - 🐛 for bug fixes
   - 📝 for documentation changes
   - 🔧 for configuration changes
   - 🚀 for performance improvements
   - 🗑️ for removing code or files
-  - 🤖 for AI related artifacts
+  - 🤖 for automation-related artifacts
 ```
 
 **Subject line rules:**
@@ -72,7 +82,8 @@ Use emojis when possible to convey the type of change made. For example:
 - Start with an imperative verb: "Add", "Fix", "Remove", "Update", "Refactor", etc.
 - No period at the end
 - Describe the final state — what the code does now, not what it replaced
-- If `message_hint` is non-empty, use it verbatim as the subject line (trim whitespace; do not rephrase)
+- If the user explicitly provides an exact subject line in their request, use it verbatim (trim whitespace; do not rephrase)
+- The explicit user-provided subject line rule takes precedence over automatic emoji prefixing
 
 **Attribution rules (non-negotiable):**
 
@@ -95,22 +106,33 @@ Commit message:
   <body, if any>
 ```
 
+Never stage untracked files automatically. If untracked files are present, note them in the preview but do not offer to add them unless
+the user explicitly asks. Under `force`, always skip untracked files.
+
 Ask: "Commit with this message? Reply yes to confirm, or describe any changes."
 
 Do not proceed until the user replies. If the user requests changes, update the message and show the full preview again before asking once
 more.
 
-If `force` is **true**, skip to Step 4 immediately — do not show a preview or ask for confirmation.
+If the user replies with "no", "cancel", "abort", or any equivalent, tell the user the commit has been cancelled and stop. Do not commit.
 
 ### 4. Commit
 
 Stage specific files by name. Do not use `git add -A` or `git add .`.
+
+In Step 4, only `git add` files that were unstaged at the time of preview and that the user confirmed should be included. Do not re-add
+files already listed under staged.
 
 Use absolute paths in all bash commands.
 
 Write the full commit message (subject, blank line, and wrapped body) to a temporary file named `commit-msg.txt` in the repo root,
 then pass it to `git commit` with `--file`. This ensures the 76-column body wrapping is preserved exactly as composed, since `-m` does not
 honour embedded newlines reliably across shells.
+
+Before writing `commit-msg.txt`, check whether it already exists. If it does, warn the user and stop. Do not overwrite an existing
+`commit-msg.txt`.
+
+If writing `commit-msg.txt` fails, show the error to the user, skip the `git commit` call, and stop. Do not attempt to fall back to `-m`.
 
 #### bash/Linux/macOS:
 
@@ -128,8 +150,13 @@ git commit --file commit-msg.txt
 Remove-Item commit-msg.txt
 ```
 
-Always delete `commit-msg.txt` after the commit, whether it succeeded or failed, to avoid leaving stale files in the working tree.
+If the commit succeeds, delete `commit-msg.txt`. If the commit fails, keep `commit-msg.txt` for troubleshooting and stop.
+
+If deletion of `commit-msg.txt` fails after a successful commit, show a warning with the file path and ask the user to delete it manually.
+Do not treat this as a commit failure.
 
 ### 5. Report Result
 
-On success, show the short commit hash and subject line. On failure, show the full error output and stop.
+On success, show the short commit hash and subject line.
+
+On failure, show the full error output, tell the user whether `commit-msg.txt` was kept, and stop.
