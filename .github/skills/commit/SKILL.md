@@ -1,7 +1,6 @@
 ---
 name: commit
 description: Prompt and workflow for generating clear, consistent commit messages.
-argument-hint: '[--force]'
 ---
 
 # Commit
@@ -24,17 +23,12 @@ and follow the general guidelines below:
   - Justification
 - Wrap the body at 76 characters columns per line
 
-## Usage Scenarios
-
-- `/commit`
-- `/commit --force`
-
-`force` = **true** if `--force` is present in the arguments.
-
 ## Workflow
 
-Pre-flight check: If `force` is **true**, execute Steps 1, 2, and 4 in sequence without pausing. Skip Step 3 entirely. This allows users to
-bypass the review process when they are confident in their changes and want to commit quickly.
+Never run `git push`; only do so if the user explicitly asks for it in this request.
+
+If the user asks only for a commit message and not to commit, perform Steps 1–2, then output the message as a fenced code block and stop.
+Do not proceed to Step 3 or Step 4.
 
 ### 1. Review Changes
 
@@ -44,30 +38,53 @@ bypass the review process when they are confident in their changes and want to c
 2. Run `git diff` or `git diff --cached` to inspect changes.
 3. Run `git log --oneline -10` to review recent commit history for context.
 4. Stage your changes with `git add <file>`.
-5. Construct your commit message using the format defined below.
+5. Construct your commit message using the format defined below:
 
-- If any git command in Step 1 exits with a non-zero code, show the error output to the user and stop. Do not proceed to generate a commit message.
-- If `git status` shows a clean working tree with nothing staged, tell the user there is nothing to commit and stop.
+- If `git log --oneline -10` fails because the repository has no commits yet, treat the history as empty and continue.
+- If any other git command in Step 1 exits with a non-zero code, show the error output to the user and stop. Do not proceed to generate a
+  commit message.
+- If `git status` shows no staged, unstaged, or untracked changes, tell the user there is nothing to commit and stop.
+- If a merge is in progress (`.git/MERGE_HEAD` exists), tell the user this workflow doesn't support merge commits and stop.
 - If files are already staged (`git diff --cached` shows output), commit only those staged files unless the user explicitly asks to include
-additional unstaged files. Do not stage additional files without user confirmation.
-- When `force` is **true** and Step 3 is skipped, treat all files that were unstaged (but not untracked) at the time of `git status` as
-implicitly confirmed for staging. Never stage untracked files without explicit user confirmation.
+  additional unstaged files. Do not stage additional files without user confirmation. Never stage untracked files without explicit user
+  confirmation.
+- Inspect the last 10 subject lines from `git log --oneline -10`. If most of them follow the [Conventional Commits](https://www.conventionalcommits.org/)
+  pattern (`type(scope): description` or `type: description`), use the Conventional Commits format in Step 2 instead of the emoji format.
 
 ### 2. Write Commit Message
 
-**Format:**
+If Step 1 detected that the project follows Conventional Commits, use the **Conventional Commits format**. Otherwise, use the **emoji
+format**. Both share the subject-line length limit, body wrapping, and attribution rules below.
+
+**Conventional Commits format:**
+
+```text
+type(scope): imperative subject line, ≤50 characters total
+
+Optional body — include only when the subject alone does not tell a reader why the change exists; omit entirely for small, obvious changes.
+Wrap body text to 76 columns per line.
+
+BREAKING CHANGE: <description of the break>
+```
+
+Use a `type` consistent with the ones seen in `git log --oneline -10` (e.g. `feat`, `fix`, `docs`, `refactor`, `chore`, `perf`, `test`).
+Include `scope` only when the recent history uses scopes. Omit the emoji prefix — the type token already conveys the change type. Include
+the `BREAKING CHANGE:` footer only when this commit introduces a breaking change.
+
+**Emoji format:**
 
 ```text
 Imperative subject line, ≤50 characters
 
 Optional body — include only when the subject alone does not tell a reader why the change exists; omit entirely for small, obvious changes.
 Wrap body text to 76 columns per line.
+```
 
-Prefix the subject line with a single emoji that matches the change type from the list below. If no emoji in the list fits the change,
-omit the emoji entirely. Count each emoji as 2 characters toward the 50-character subject limit, based on visible terminal width
-(grapheme cluster width). When in doubt, keep the subject including the emoji to 48 characters of plain text to leave margin.
+Prefix the subject line with a single emoji matching the change type from the list below. If no emoji in the list fits the change, omit the
+emoji entirely. Count the emoji as 2 characters toward the 50-character subject limit — keep the plain-text portion to 48 characters or
+fewer when an emoji is present.
 
-Examples:
+Emoji by change type:
   - ✨ for new features
   - 🐛 for bug fixes
   - 📝 for documentation changes
@@ -75,15 +92,15 @@ Examples:
   - 🚀 for performance improvements
   - 🗑️ for removing code or files
   - 🤖 for automation-related artifacts
-```
 
 **Subject line rules:**
 
-- Start with an imperative verb: "Add", "Fix", "Remove", "Update", "Refactor", etc.
+- After the emoji or `type(scope):` prefix (if any), the first word must be an imperative verb, E.g.: "Add", "Fix", "Remove", "Update", etc.
 - No period at the end
 - Describe the final state — what the code does now, not what it replaced
-- If the user explicitly provides an exact subject line in their request, use it verbatim (trim whitespace; do not rephrase)
-- The explicit user-provided subject line rule takes precedence over automatic emoji prefixing
+- If the user explicitly provides an exact subject line, or a full message (subject and body), in their request, use it verbatim (trim
+  whitespace; do not rephrase, reformat, or add an emoji or type prefix), subject only to the Attribution Rules below.
+- The explicit user-provided message rule takes precedence over both formats above.
 
 **Attribution rules (non-negotiable):**
 
@@ -107,12 +124,12 @@ Commit message:
 ```
 
 Never stage untracked files automatically. If untracked files are present, note them in the preview but do not offer to add them unless
-the user explicitly asks. Under `force`, always skip untracked files.
+the user explicitly asks.
 
-Ask: "Commit with this message? Reply yes to confirm, or describe any changes."
+Ask: "Commit with this message? Reply yes to confirm, or describe any changes to the message or file list."
 
-Do not proceed until the user replies. If the user requests changes, update the message and show the full preview again before asking once
-more.
+Do not proceed until the user replies. If the user requests changes to the message or the file list, update accordingly and show the full
+preview again before asking once more.
 
 If the user replies with "no", "cancel", "abort", or any equivalent, tell the user the commit has been cancelled and stop. Do not commit.
 
@@ -123,14 +140,14 @@ Stage specific files by name. Do not use `git add -A` or `git add .`.
 In Step 4, only `git add` files that were unstaged at the time of preview and that the user confirmed should be included. Do not re-add
 files already listed under staged.
 
-Use absolute paths in all bash commands.
+If `git add` exits with a non-zero code, show the error output, do not proceed to `git commit`, and keep `commit-msg.txt` for retry.
+
+Use absolute paths in all bash/powershell commands.
 
 Write the full commit message (subject, blank line, and wrapped body) to a temporary file named `commit-msg.txt` in the repo root,
 then pass it to `git commit` with `--file`. This ensures the 76-column body wrapping is preserved exactly as composed, since `-m` does not
-honour embedded newlines reliably across shells.
-
-Before writing `commit-msg.txt`, check whether it already exists. If it does, warn the user and stop. Do not overwrite an existing
-`commit-msg.txt`.
+honour embedded newlines reliably across shells. Before writing `commit-msg.txt`, check whether it already exists. If it does, tell the user
+it may be left over from a previous failed commit and ask whether to overwrite it or cancel. Do not overwrite it without that confirmation.
 
 If writing `commit-msg.txt` fails, show the error to the user, skip the `git commit` call, and stop. Do not attempt to fall back to `-m`.
 
@@ -157,6 +174,6 @@ Do not treat this as a commit failure.
 
 ### 5. Report Result
 
-On success, show the short commit hash and subject line.
-
-On failure, show the full error output, tell the user whether `commit-msg.txt` was kept, and stop.
+- On success, show the short commit hash and subject line.
+- On failure, show the full error output, explain the likely cause when identifiable (e.g. a pre-commit hook rejection, a GPG signing
+  failure, or nothing left staged), tell the user whether `commit-msg.txt` was kept, and stop.
