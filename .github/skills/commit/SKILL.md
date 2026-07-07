@@ -1,6 +1,7 @@
 ---
 name: commit
 description: Prompt and workflow for generating clear, consistent commit messages.
+model: haiku
 ---
 
 # Commit
