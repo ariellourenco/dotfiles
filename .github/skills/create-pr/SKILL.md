@@ -1,9 +1,10 @@
 ---
 name: "create-pr"
 description: >
-  Create a pull request using the repository PR template. Use when asked to:
+  Create or update a GitHub pull request with automatic template detection and filling. Use when asked to:
   create PR, open PR, push and create PR, submit PR, open pull request, send changes for review.
 argument-hint: '[--draft] [--force] [<title>]'
+model: "sonnet"
 ---
 
 # Create Pull Request
@@ -25,6 +26,27 @@ Example invocations:
 - `/create-pr Add support for webhook retries`
 - `/create-pr --draft Fix race condition in job queue`
 - `/create-pr --force --draft Fix race condition in job queue`
+
+## Writing Voice
+
+Write the Pull Request body the way a staff engineer would write it. One direct sentence per idea. No ceremony.
+
+Three things immediately signal AI authorship. Never produces any of these:
+
+* Em dashes (—) or en dashes (–). Use a comma, colon, semicolon, parenthesis, or split into two sentences. No exceptions.
+* Bold inside prose sentences. Bold is for labels at the start of a line only (e.g., **Test plan:**). Never bold error messages, key terms,
+  or warnings mid-paragraph.
+* Bolded pseudo-labels like **Root cause:**, **Caveat:**, **Note:**. Make it a real heading or fold the content into a sentence without a label.
+
+For everything else: plain verbs ("is" not "serves as"), Sentence case headings, short paragraphs. No inflation words (critical, pivotal,
+robust, seamless, leverage, utilize, ensure, facilitate). No hedging meta-commentary ("I'm an agent", "I have not verified"). No closers.
+
+How it sounds (cause and effect in one sentence, caveats as plain declarative sentences with no label):
+
+> The workflow calls getMembershipForUserInOrg() with the default GITHUB_TOKEN, which only has repo scope and can't read org-private team
+> memberships. The API returns 404 (not 403) when it can't see the membership, producing the misleading error.
+>
+>If the app doesn't have Organization > Members > Read permission, the same error will recur.
 
 ## Workflow
 
@@ -56,7 +78,7 @@ git diff origin/<base-branch>...HEAD                                    # full d
 gh pr view --json number,title,body,isDraft,url 2>/dev/null             # existing PR, if any
 ```
 
-If a PR already exists, note its number and URL — you will update it rather than create a new one, see [Step 7](#7-update-existing-pr).
+If a PR already exists, note its number and URL — you will update it rather than create a new one, see Step 7.
 
 ### 3. Find PR Template
 
@@ -67,13 +89,19 @@ Check these locations in order and stop at the first match:
 3. `docs/pull_request_template.md`
 4. `pull_request_template.md`
 
-### 4. Compose PR Body
+### 4. Compose PR
+
+#### Title:
+
+- If `title_hint` is non-empty, use it as the title (trim and keep under 70 characters)
+- Otherwise derive a short imperative title from the commits (e.g., "Add webhook retry support")
+
+#### Body:
 
 If a template was found, fill each section using the commits and diff:
 
 - Use the template structure as the PR body.
-- Fill known details in `## Description` (summary, motivation/context, dependencies, validation).
-  Describe final state — What change your PR adds.
+- Describe final state: what the code does now, not what it replaced
 - Remove unfilled optional sections rather than leaving placeholder text.
 - Leave checkboxes intact; check the ones clearly satisfied by the diff.
 - **Never hard-wrap prose** — write each paragraph as a single line and let GitHub's renderer handle wrapping; only insert newlines between
@@ -88,7 +116,7 @@ Write the body to a temporary file named `pr-body.md` in the repo root.
 
 ### 5. Show Preview and Confirm
 
-If `force` is true, skip to [Step 6](#6-create-pr) immediately — do not show a preview or ask for confirmation.
+If `force` is true, skip to Step 6 immediately — do not show a preview or ask for confirmation.
 
 Otherwise, display the proposed PR to the user:
 
@@ -142,14 +170,14 @@ If a PR already exists for the branch:
 - Do not create another.
 - If requested (or if the body is still mostly unfilled), update it:
 
-  **bash:** `GH_PAGER=cat gh pr edit <pr-number-or-url> --body-file pr-body.md`
-  **PowerShell:** `$env:GH_PAGER = "cat"; gh pr edit <pr-number-or-url> --body-file pr-body.md`
+   - **bash:** `GH_PAGER=cat gh pr edit <pr-number-or-url> --body-file pr-body.md`
+   - **PowerShell:** `$env:GH_PAGER = "cat"; gh pr edit <pr-number-or-url> --body-file pr-body.md`
 
 - Return the existing PR URL.
 
 ### 8. Clean up
 
-After you are completely finished creating or updating the PR — after [step 6](#6-create-pr) and, if needed, [step 7](#7-update-existing-pr)
+After you are completely finished creating or updating the PR — after Step 6 and, if needed, Step 7
 — delete the temporary body file:
 
 - **bash:** `rm pr-body.md`
