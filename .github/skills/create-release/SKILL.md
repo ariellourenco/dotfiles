@@ -1,9 +1,8 @@
 ---
 name: create-release
 description: >
-  Generates release notes for a pull request or branch. Use this when asked to
-  fill out, generate, or summarize release details, release notes, or a release
-  checklist.
+  Generates release notes for a pull request or branch. Use this when asked to fill out, generate, or summarize release details,
+  release notes, or a release checklist.
 ---
 
 # Release Notes
@@ -57,8 +56,8 @@ pwsh ./scripts/collect-data.ps1 `
 - `-Author` — GitHub login to filter PRs by; defaults to the authenticated `gh` user
 - `-OutputDir` — Output directory for the generated CSV and JSON files
 
-**Reliability check:** If the script reports `No commits found`, no PRs were merged between the two
-releases. Confirm this is expected and stop — no release notes are needed.
+**Reliability check:** If the script reports `No commits found`, no PRs were merged between the two releases. Confirm this is expected and
+stop — no release notes are needed.
 
 The script detects both merge commits (`Merge pull request #12345`) and squash commits (`Feature (#12345)`).
 
@@ -74,9 +73,9 @@ artifacts/releases/{{CurrentReleaseTag}}/
 
 ### 2. Generate Release Notes
 
-Read `artifacts/releases/{{CurrentReleaseTag}}/milestone_prs.json` and use each PR's `Title`, `Body`, and `CopilotSummary`
-to fill out the [release details template](./references/release_notes.md). Summarize the changes in a
-user-friendly way, and include notes for the test team.
+Read `artifacts/releases/{{CurrentReleaseTag}}/milestone_prs.json` and use each PR's `Title`, `Body`, and `CopilotSummary` to fill out the
+[release details template](./references/release_notes.md). Summarize the changes in a user-friendly way, and include notes for the
+test team.
 
 - Write the release notes to `artifacts/releases/{{CurrentReleaseTag}}/release_notes.md`
 - Display the proposed release notes to the user
