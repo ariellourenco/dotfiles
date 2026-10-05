@@ -8,6 +8,12 @@
 .AppleDouble
 .LSOverride
 
+# Claude account skills synced into CLAUDE_CONFIG_DIR/skills (symlinked here).
+# Holds skills enabled on the claude.ai account: Anthropic's built-in skills, ones provisioned
+# by the organization, and personal uploads. They're managed in claude.ai, not here.
+# Introduced in Claude Code 2.1.275; opt out with `syncClaudeAiSkills: false`.
+.github/skills/synced/
+
 # Sensitive Information
 config.personal
 
