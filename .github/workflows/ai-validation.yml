@@ -1,0 +1,28 @@
+name: AI Validation
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/skills/**'
+      - '.github/scripts/validate-skills.sh'
+      - '.github/workflows/ai-validation.yml'
+  push:
+    branches: ['main']
+    paths:
+      - '.github/skills/**'
+      - '.github/scripts/validate-skills.sh'
+      - '.github/workflows/ai-validation.yml'
+
+jobs:
+  validate-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate SKILLs
+        run: ./.github/scripts/validate-skills.sh
