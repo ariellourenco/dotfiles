@@ -1,8 +1,9 @@
 ---
 name: create-release
 description: >
-  Generates release notes for a pull request or branch. Use this when asked to fill out, generate, or summarize release details,
-  release notes, or a release checklist.
+  Generates release notes for a pull request or branch. Use this when asked to fill out, generate, or summarize release details, release
+  notes, or a release checklist.
+compatibility: "Requires the GitHub CLI (gh), installed and authenticated, PowerShell (pwsh), and the GitHub MCP server."
 ---
 
 # Release Notes
@@ -10,18 +11,12 @@ description: >
 Generate professional release details by collecting merged PRs and producing user-facing summaries.
 
 When asked to generate release details, analyze the changes in the repository since the last release or between branches. Identify
-merged PRs, extract their titles and descriptions and fill out the [release details template](./references/release_notes.md) in a clear and
+merged PRs, extract their titles and descriptions and fill out the [release details template](./assets/release_notes.md) in a clear and
 concise manner.
 
 **Example invocations:**
 
 - `/create-release`
-
-## Prerequisites
-
-- **GitHub CLI (`gh`) installed and authenticated** — The collection script uses `gh pr view` and `gh api graphql` to fetch PR metadata and
-  co-author information.
-- MCP Server: github-mcp-server installed
 
 ## Workflow
 
@@ -74,8 +69,20 @@ artifacts/releases/{{CurrentReleaseTag}}/
 ### 2. Generate Release Notes
 
 Read `artifacts/releases/{{CurrentReleaseTag}}/milestone_prs.json` and use each PR's `Title`, `Body`, and `CopilotSummary` to fill out the
-[release details template](./references/release_notes.md). Summarize the changes in a user-friendly way, and include notes for the
-test team.
+[release details template](./assets/release_notes.md). Summarize the changes in a user-friendly way.
+
+Keep each answer in the template short: one or two sentences, or a brief list, naming only the specific endpoint, field, header, model, or
+flag involved. When nothing in the release applies to a question, answer "None" and add nothing else.
+
+Then fill in the "Notes for the test team" section with a short paragraph or bullet list that helps the test team validate the changes.
+Include:
+
+- What was changed and what the expected behavior is
+- Which scenarios to verify (happy path, edge cases, error cases, regression)
+- Any setup or prerequisite needed before testing (e.g. specific data state, auth keys, feature flags, tool requirements)
+- Any gotcha or non-obvious behavior the tester should be aware of.
+
+Once the notes are complete:
 
 - Write the release notes to `artifacts/releases/{{CurrentReleaseTag}}/release_notes.md`
 - Display the proposed release notes to the user

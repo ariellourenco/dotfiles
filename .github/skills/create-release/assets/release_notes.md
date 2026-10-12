@@ -18,9 +18,4 @@
 
 ## Notes for the test team
 
-After filling out the template above, write a short paragraph or bullet list that helps the test team validate the changes. Include:
-
-- What was changed and what the expected behavior is
-- Which scenarios to verify (happy path, edge cases, error cases, regression)
-- Any setup or prerequisite needed before testing (e.g. specific data state, auth keys, feature flags, tool requirements)
-- Any gotcha or non-obvious behavior the tester should be aware of.
+_Summarize what changed and the expected behavior, the scenarios to verify, any setup needed before testing, and any gotchas._

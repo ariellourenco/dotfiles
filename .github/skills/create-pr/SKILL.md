@@ -3,6 +3,7 @@ name: "create-pr"
 description: >
   Create or update a GitHub pull request with automatic template detection and filling. Use when asked to:
   create PR, open PR, push and create PR, submit PR, open pull request, send changes for review.
+compatibility: "Requires the GitHub CLI (gh), installed and authenticated."
 argument-hint: '[--draft] [--force] [<title>]'
 model: "sonnet"
 ---
@@ -31,7 +32,7 @@ Example invocations:
 
 Write the Pull Request body the way a staff engineer would write it. One direct sentence per idea. No ceremony.
 
-Three things immediately signal AI authorship. Never produces any of these:
+Three things immediately signal AI authorship. Never produce any of these:
 
 * Em dashes (—) or en dashes (–). Use a comma, colon, semicolon, parenthesis, or split into two sentences. No exceptions.
 * Bold inside prose sentences. Bold is for labels at the start of a line only (e.g., **Test plan:**). Never bold error messages, key terms,
