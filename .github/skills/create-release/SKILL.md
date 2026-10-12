@@ -71,6 +71,9 @@ artifacts/releases/{{CurrentReleaseTag}}/
 Read `artifacts/releases/{{CurrentReleaseTag}}/milestone_prs.json` and use each PR's `Title`, `Body`, and `CopilotSummary` to fill out the
 [release details template](./assets/release_notes.md). Summarize the changes in a user-friendly way.
 
+Keep each answer in the template short: one or two sentences, or a brief list, naming only the specific endpoint, field, header, model, or
+flag involved. When nothing in the release applies to a question, answer "None" and add nothing else.
+
 Then fill in the "Notes for the test team" section with a short paragraph or bullet list that helps the test team validate the changes.
 Include:
 

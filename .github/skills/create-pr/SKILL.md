@@ -32,7 +32,7 @@ Example invocations:
 
 Write the Pull Request body the way a staff engineer would write it. One direct sentence per idea. No ceremony.
 
-Three things immediately signal AI authorship. Never produces any of these:
+Three things immediately signal AI authorship. Never produce any of these:
 
 * Em dashes (—) or en dashes (–). Use a comma, colon, semicolon, parenthesis, or split into two sentences. No exceptions.
 * Bold inside prose sentences. Bold is for labels at the start of a line only (e.g., **Test plan:**). Never bold error messages, key terms,
