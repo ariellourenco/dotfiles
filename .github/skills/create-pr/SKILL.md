@@ -3,6 +3,7 @@ name: "create-pr"
 description: >
   Create or update a GitHub pull request with automatic template detection and filling. Use when asked to:
   create PR, open PR, push and create PR, submit PR, open pull request, send changes for review.
+compatibility: "Requires the GitHub CLI (gh), installed and authenticated."
 argument-hint: '[--draft] [--force] [<title>]'
 model: "sonnet"
 ---

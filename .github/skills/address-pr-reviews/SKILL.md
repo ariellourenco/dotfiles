@@ -3,6 +3,7 @@ name: "address-pr-reviews"
 description: >
   Evaluate and resolve a pull request's unresolved inline review comments interactively.
   Use when asked to: address PR reviews, evaluate review comments, respond to reviewer feedback, triage PR comments, resolve review threads.
+compatibility: "Requires the GitHub CLI (gh), installed and authenticated."
 argument-hint: '[<pr-number-or-url>] [--force]'
 ---
 

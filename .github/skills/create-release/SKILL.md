@@ -3,6 +3,7 @@ name: create-release
 description: >
   Generates release notes for a pull request or branch. Use this when asked to fill out, generate, or summarize release details,
   release notes, or a release checklist.
+compatibility: "Requires the GitHub CLI (gh), installed and authenticated, PowerShell (pwsh), and the GitHub MCP server."
 ---
 
 # Release Notes

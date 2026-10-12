@@ -4,6 +4,7 @@ description: >
   Review code for bugs, security flaws, correctness errors, and convention violations. Works on local uncommitted changes, a branch
   range, or a GitHub PR in any repository. Use when asked to review changes, review a PR, do a code review, or check code for problems
   before committing or merging. Focuses only on real problems — not style nits or refactoring.
+compatibility: "Requires the GitHub CLI (gh), installed and authenticated, for pull request reviews."
 argument-hint: '[<pr-number-or-url> | <ref-range> | <path>...]'
 ---
 
